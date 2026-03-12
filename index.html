@@ -304,7 +304,7 @@
 <section id="services" class="sec sec-alt">
   <div class="svc-head reveal"><div class="sec-label">What We Offer</div><h2 class="sec-h2">Our <span>Services</span></h2><p class="sec-p">Five distinct paths to financial independence — choose the right one for your goals.</p></div>
   <div class="svc-grid3 reveal">
-    <a href="https://www.coinsats.io/sign-in" class="svc">
+    <div class="svc" onclick="openLogin()" style="cursor:pointer;">
       <div class="svc-num">01</div><div class="svc-icon">📚</div>
       <div class="svc-tag">Recorded Course</div>
       <div class="svc-title">Bitcoin for Everyone</div>
@@ -312,7 +312,7 @@
       <ul class="svc-inc"><li>5-hour comprehensive video course</li><li>Lifetime support from Zubair</li><li>Study at your own pace, anytime</li><li>Access to course portal & resources</li></ul>
       <div class="svc-price"><div class="svc-aed">367 AED</div><div class="svc-usd">≈ $100</div></div>
       <span class="svc-cta">Access Course Portal →</span>
-    </a>
+    </div>
     <a href="https://wa.me/+971582213303?text=Hi%20Coinsats%2C%20I%20am%20interested%20in%20Coffee%20with%20Bitcoin" target="_blank" class="svc hot">
       <div class="svc-hot-badge">Popular</div><div class="svc-icon">☕</div>
       <div class="svc-tag">Offline Session</div>
@@ -479,11 +479,34 @@
   </div>
 </div>
 
+<!-- LOGIN MODAL -->
+<div class="overlay" id="loginMod" onclick="if(event.target===this)closeLogin()">
+  <div class="mbox" style="max-width:520px;background:#fff;">
+    <div class="mhead" style="background:#fff;border-bottom:1px solid #eee;">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--btc);margin-bottom:6px;">Bitcoin for Everyone</div>
+        <div class="mtitle" style="color:#111;">Sign in to Continue</div>
+      </div>
+      <button class="mclose" onclick="closeLogin()" style="border-color:#ddd;color:#666;">✕</button>
+    </div>
+    <div style="padding:0;">
+      <iframe
+        id="loginFrame"
+        src=""
+        style="width:100%;height:520px;border:0;display:block;"
+        title="Sign in to CoinSats"
+      ></iframe>
+    </div>
+  </div>
+</div>
+
 <script>
 function openAbout(){document.getElementById('aboutMod').classList.add('on');}
 function closeAbout(){document.getElementById('aboutMod').classList.remove('on');}
 function openVideo(e){e.preventDefault();document.getElementById('ytF').src='https://www.youtube.com/embed/7GG7cJH-XaY?autoplay=1';document.getElementById('vidMod').classList.add('on');}
 function closeVideo(){document.getElementById('ytF').src='';document.getElementById('vidMod').classList.remove('on');}
+function openLogin(){document.getElementById('loginFrame').src='https://www.coinsats.io/sign-in';document.getElementById('loginMod').classList.add('on');}
+function closeLogin(){document.getElementById('loginFrame').src='';document.getElementById('loginMod').classList.remove('on');}
 function faq(btn){const i=btn.closest('.faq-item');const o=i.classList.contains('open');document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open');}
 const ro=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach(r=>ro.observe(r));
