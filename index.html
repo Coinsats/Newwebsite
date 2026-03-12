@@ -479,34 +479,14 @@
   </div>
 </div>
 
-<!-- LOGIN MODAL -->
-<div class="overlay" id="loginMod" onclick="if(event.target===this)closeLogin()">
-  <div class="mbox" style="max-width:520px;background:#fff;">
-    <div class="mhead" style="background:#fff;border-bottom:1px solid #eee;">
-      <div>
-        <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--btc);margin-bottom:6px;">Bitcoin for Everyone</div>
-        <div class="mtitle" style="color:#111;">Sign in to Continue</div>
-      </div>
-      <button class="mclose" onclick="closeLogin()" style="border-color:#ddd;color:#666;">✕</button>
-    </div>
-    <div style="padding:0;">
-      <iframe
-        id="loginFrame"
-        src=""
-        style="width:100%;height:520px;border:0;display:block;"
-        title="Sign in to CoinSats"
-      ></iframe>
-    </div>
-  </div>
-</div>
+
 
 <script>
 function openAbout(){document.getElementById('aboutMod').classList.add('on');}
 function closeAbout(){document.getElementById('aboutMod').classList.remove('on');}
 function openVideo(e){e.preventDefault();document.getElementById('ytF').src='https://www.youtube.com/embed/7GG7cJH-XaY?autoplay=1';document.getElementById('vidMod').classList.add('on');}
 function closeVideo(){document.getElementById('ytF').src='';document.getElementById('vidMod').classList.remove('on');}
-function openLogin(){document.getElementById('loginFrame').src='https://www.coinsats.io/sign-in';document.getElementById('loginMod').classList.add('on');}
-function closeLogin(){document.getElementById('loginFrame').src='';document.getElementById('loginMod').classList.remove('on');}
+function openLogin(){window.open('https://www.coinsats.io/sign-in','coinsats_login','width=480,height=620,left='+Math.round((screen.width-480)/2)+',top='+Math.round((screen.height-620)/2)+',resizable=yes,scrollbars=yes');}
 function faq(btn){const i=btn.closest('.faq-item');const o=i.classList.contains('open');document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open');}
 const ro=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach(r=>ro.observe(r));
