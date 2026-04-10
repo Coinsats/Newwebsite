@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bitcoin Resources — CoinSats</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root{--btc:#F7931A;--btc-light:#FFA833;--btc-glow:rgba(247,147,26,.18);--black:#060606;--surface:#0E0E0E;--surface-2:#161616;--surface-3:#1E1E1E;--border:rgba(255,255,255,0.07);--text:#F0EDE8;--text-muted:rgba(240,237,232,0.52);--green:#22C55E;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--black);color:var(--text);font-family:'Open Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:.35;}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;background:rgba(6,6,6,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 6%;height:70px;}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .logo-icon{width:34px;height:34px;background:var(--btc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#000;}
+    .logo-name{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.5px;}
+    .logo-name span{color:var(--btc);}
+    .nav-links{display:flex;align-items:center;gap:32px;list-style:none;}
+    .nav-links a{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color .2s;}
+    .nav-links a:hover{color:#fff;}
+    .nav-cta{background:var(--btc)!important;color:#000!important;padding:9px 22px;border-radius:4px;}
+    .nav-cta:hover{background:var(--btc-light)!important;}
+    .hamburger{display:none;cursor:pointer;flex-direction:column;gap:5px;}
+    .hamburger span{width:24px;height:2px;background:var(--text);border-radius:2px;display:block;}
+    .mob-menu{display:none;position:fixed;inset:0;background:var(--black);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:28px;}
+    .mob-menu.on{display:flex;}
+    .mob-menu a{font-size:40px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-1px;}
+    .mob-menu a:hover{color:var(--btc);}
+    .mob-close{position:absolute;top:22px;right:22px;background:none;border:1px solid var(--border);color:var(--text);width:38px;height:38px;cursor:pointer;font-size:16px;}
+
+    /* PAGE HEADER */
+    .page-header{padding:72px 6% 56px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+    .page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 100%,rgba(247,147,26,.05) 0%,transparent 70%);}
+    .back-link{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;margin-bottom:28px;transition:color .2s;}
+    .back-link:hover{color:var(--btc);}
+    .sec-label{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--btc);display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+    .sec-label::before{content:'';width:28px;height:1px;background:var(--btc);}
+    .page-title{font-size:clamp(40px,5vw,70px);font-weight:800;letter-spacing:-2px;color:#fff;line-height:1.05;}
+    .page-title span{color:var(--btc);}
+    .page-sub{font-size:16px;font-weight:300;color:var(--text-muted);margin-top:14px;font-style:italic;max-width:520px;}
+
+    /* SECTIONS */
+    .sec{padding:72px 6%;}
+    .sec-alt{background:var(--surface);}
+    .sec-h2{font-size:clamp(26px,3vw,38px);font-weight:800;letter-spacing:-1px;color:#fff;margin-bottom:8px;}
+    .sec-h2 span{color:var(--btc);}
+    .sec-p{font-size:14px;color:var(--text-muted);margin-bottom:48px;font-style:italic;}
+
+    /* BOOK GRID */
+    .book-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
+    .book-card{background:var(--surface-2);padding:32px 24px;text-decoration:none;color:inherit;display:flex;flex-direction:column;border-top:2px solid transparent;transition:all .3s;position:relative;overflow:hidden;}
+    .book-card:hover{background:var(--surface-3);border-top-color:var(--btc);transform:translateY(-3px);}
+    .book-num{font-size:60px;font-weight:800;color:rgba(247,147,26,.06);position:absolute;top:10px;right:14px;line-height:1;}
+    .book-icon{font-size:32px;margin-bottom:18px;}
+    .book-title{font-size:16px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.25;}
+    .book-author{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btc);margin-bottom:12px;}
+    .book-desc{font-size:13px;color:var(--text-muted);line-height:1.7;flex:1;margin-bottom:20px;}
+    .book-cta{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btc);margin-top:auto;transition:gap .2s;}
+    .book-card:hover .book-cta{gap:10px;}
+
+    /* WALLET GRID */
+    .wallet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+    .wallet-card{background:var(--surface-2);padding:32px 28px;text-decoration:none;color:inherit;display:flex;flex-direction:column;border-left:3px solid transparent;transition:all .3s;}
+    .wallet-card:hover{background:var(--surface-3);border-left-color:var(--btc);}
+    .wallet-badge{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:100px;margin-bottom:16px;}
+    .badge-hot{background:rgba(247,147,26,.15);color:var(--btc);}
+    .badge-pro{background:rgba(34,197,94,.12);color:var(--green);}
+    .badge-cold{background:rgba(255,255,255,.07);color:var(--text-muted);}
+    .wallet-icon{font-size:30px;margin-bottom:14px;}
+    .wallet-name{font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;}
+    .wallet-sub{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btc);margin-bottom:10px;}
+    .wallet-desc{font-size:13px;color:var(--text-muted);line-height:1.7;flex:1;margin-bottom:20px;}
+    .wallet-cta{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btc);margin-top:auto;transition:gap .2s;}
+    .wallet-card:hover .wallet-cta{gap:10px;}
+
+    /* EXCHANGE GRID */
+    .exchange-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;}
+    .exchange-card{background:var(--surface-2);padding:36px 32px;text-decoration:none;color:inherit;display:flex;flex-direction:column;border-top:2px solid transparent;transition:all .3s;}
+    .exchange-card:hover{background:var(--surface-3);border-top-color:var(--btc);}
+    .exchange-icon{font-size:32px;margin-bottom:14px;}
+    .exchange-name{font-size:20px;font-weight:800;color:#fff;margin-bottom:6px;}
+    .exchange-region{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--btc);margin-bottom:10px;}
+    .exchange-desc{font-size:13px;color:var(--text-muted);line-height:1.7;flex:1;margin-bottom:20px;}
+    .exchange-cta{display:inline-flex;align-items:center;gap:6px;background:var(--btc);color:#000;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:10px 20px;margin-top:auto;width:fit-content;transition:background .2s;}
+    .exchange-card:hover .exchange-cta{background:var(--btc-light);}
+    .ref-note{font-size:11px;color:var(--text-muted);margin-top:8px;font-style:italic;}
+
+    /* FOOTER */
+    footer{background:var(--surface);border-top:1px solid var(--border);padding:56px 6% 28px;}
+    .ft-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:52px;margin-bottom:44px;}
+    .ft-brand p{font-size:14px;color:var(--text-muted);max-width:260px;margin-top:14px;line-height:1.7;}
+    .ft-col-title{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--btc);margin-bottom:18px;}
+    .ft-links{list-style:none;}
+    .ft-links li{margin-bottom:9px;}
+    .ft-links a{font-size:14px;color:var(--text-muted);text-decoration:none;transition:color .2s;}
+    .ft-links a:hover{color:#fff;}
+    .ft-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+    .ft-bottom p{font-size:11px;color:var(--text-muted);}
+    .ft-social{display:flex;gap:14px;}
+    .ft-social a{color:var(--text-muted);transition:color .2s;text-decoration:none;}
+    .ft-social a:hover{color:var(--btc);}
+    .ft-social svg{width:17px;height:17px;fill:currentColor;}
+
+    @media(max-width:1024px){.book-grid{grid-template-columns:1fr 1fr;}.wallet-grid{grid-template-columns:1fr 1fr;}.ft-top{grid-template-columns:1fr 1fr;gap:36px;}}
+    @media(max-width:768px){.nav-links{display:none;}.hamburger{display:flex;}.book-grid,.wallet-grid,.exchange-grid{grid-template-columns:1fr;}.ft-top{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<div class="mob-menu" id="mobM">
+  <button class="mob-close" onclick="document.getElementById('mobM').classList.remove('on')">✕</button>
+  <a href="index.html" onclick="document.getElementById('mobM').classList.remove('on')">Home</a>
+  <a href="index.html#services" onclick="document.getElementById('mobM').classList.remove('on')">Services</a>
+  <a href="index.html#about" onclick="document.getElementById('mobM').classList.remove('on')">About</a>
+  <a href="index.html#reviews" onclick="document.getElementById('mobM').classList.remove('on')">Reviews</a>
+  <a href="https://www.coinsats.xyz/" target="_blank" style="color:var(--btc);">🔥 FIRE</a>
+  <a href="index.html#faq" onclick="document.getElementById('mobM').classList.remove('on')">FAQ</a>
+</div>
+
+<nav>
+  <a href="index.html" class="logo"><div class="logo-icon">₿</div><span class="logo-name">Coin<span>Sats</span></span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#reviews">Reviews</a></li>
+    <li><a href="https://www.coinsats.xyz/" target="_blank" style="color:var(--btc);font-weight:700;">🔥 FIRE</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="index.html#services" class="nav-cta">Get Started</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.getElementById('mobM').classList.add('on')"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <a href="index.html" class="back-link">← Back to Home</a>
+  <div class="sec-label">Tools & Learn More</div>
+  <h1 class="page-title">Bitcoin <span>Resources</span></h1>
+  <p class="page-sub">Everything you need to go deep into the Bitcoin rabbit hole — books, wallets, and trusted exchanges.</p>
+</div>
+
+<!-- BOOKS -->
+<section class="sec">
+  <div class="sec-label">Essential Reading</div>
+  <h2 class="sec-h2">Recommended <span>Books</span></h2>
+  <p class="sec-p">Zubair's personally recommended reading list for every serious Bitcoiner.</p>
+  <div class="book-grid">
+    <a href="https://academy.saifedean.com/product/tbs-hardcover/" target="_blank" class="book-card">
+      <div class="book-num">01</div>
+      <div class="book-icon">📙</div>
+      <div class="book-title">The Bitcoin Standard</div>
+      <div class="book-author">Saifedean Ammous</div>
+      <p class="book-desc">The definitive book on Bitcoin as sound money. Explains why Bitcoin is the best monetary technology ever created and how it can restore economic freedom.</p>
+      <span class="book-cta">Buy Now →</span>
+    </a>
+    <a href="https://www.amazon.com/Mastering-Bitcoin-Programming-Open-Blockchain/dp/1491954388" target="_blank" class="book-card">
+      <div class="book-num">02</div>
+      <div class="book-icon">📗</div>
+      <div class="book-title">Mastering Bitcoin</div>
+      <div class="book-author">Andreas M. Antonopoulos</div>
+      <p class="book-desc">The technical bible of Bitcoin. Understand how Bitcoin works under the hood — from wallets and keys to the blockchain and mining.</p>
+      <span class="book-cta">Buy Now →</span>
+    </a>
+    <a href="https://www.amazon.com/Internet-Money-Andreas-M-Antonopoulos/dp/1537000454" target="_blank" class="book-card">
+      <div class="book-num">03</div>
+      <div class="book-icon">📘</div>
+      <div class="book-title">The Internet of Money</div>
+      <div class="book-author">Andreas M. Antonopoulos</div>
+      <p class="book-desc">A collection of talks explaining why Bitcoin matters — the philosophy, the history, and the implications for humanity's financial freedom.</p>
+      <span class="book-cta">Buy Now →</span>
+    </a>
+    <a href="https://saifedean.com/tfs" target="_blank" class="book-card">
+      <div class="book-num">04</div>
+      <div class="book-icon">📕</div>
+      <div class="book-title">The Fiat Standard</div>
+      <div class="book-author">Saifedean Ammous</div>
+      <p class="book-desc">The sequel to The Bitcoin Standard. Explains how the fiat money system works, why it is failing, and what Bitcoin offers as the alternative.</p>
+      <span class="book-cta">Buy Now →</span>
+    </a>
+  </div>
+</section>
+
+<!-- WALLETS -->
+<section class="sec sec-alt">
+  <div class="sec-label">Secure Your Bitcoin</div>
+  <h2 class="sec-h2">Recommended <span>Hardware Wallets</span></h2>
+  <p class="sec-p">Not your keys, not your coins. These are the wallets Zubair recommends for securing your Bitcoin.</p>
+  <div class="wallet-grid">
+    <a href="https://trezor.io/trezor-model-one" target="_blank" class="wallet-card">
+      <span class="wallet-badge badge-hot">Best for Beginners</span>
+      <div class="wallet-icon">🔐</div>
+      <div class="wallet-name">Trezor Model One</div>
+      <div class="wallet-sub">Entry Level Cold Storage</div>
+      <p class="wallet-desc">The original hardware wallet. Simple, reliable, and beginner-friendly. Perfect for storing your first Bitcoin securely off any exchange.</p>
+      <span class="wallet-cta">Buy Now →</span>
+    </a>
+    <a href="https://trezor.io/trezor-safe-3" target="_blank" class="wallet-card">
+      <span class="wallet-badge badge-pro">Upgraded Security</span>
+      <div class="wallet-icon">🛡️</div>
+      <div class="wallet-name">Trezor Safe 3</div>
+      <div class="wallet-sub">Advanced Cold Storage</div>
+      <p class="wallet-desc">The latest from Trezor with a secure element chip for enhanced protection. Ideal for those holding larger amounts of Bitcoin long-term.</p>
+      <span class="wallet-cta">Buy Now →</span>
+    </a>
+    <a href="https://store.coinkite.com/store/coldcard" target="_blank" class="wallet-card">
+      <span class="wallet-badge badge-cold">Maximum Security</span>
+      <div class="wallet-icon">❄️</div>
+      <div class="wallet-name">Coldcard Mk4</div>
+      <div class="wallet-sub">Bitcoin-Only Cold Storage</div>
+      <p class="wallet-desc">The gold standard for serious Bitcoiners. Air-gapped signing, Bitcoin-only firmware, and unmatched security features for self-custody experts.</p>
+      <span class="wallet-cta">Buy Now →</span>
+    </a>
+  </div>
+</section>
+
+<!-- EXCHANGES -->
+<section class="sec">
+  <div class="sec-label">Buy Bitcoin</div>
+  <h2 class="sec-h2">Recommended <span>Exchanges</span></h2>
+  <p class="sec-p">Trusted platforms to buy Bitcoin. Always move your coins to a hardware wallet after purchase.</p>
+  <div class="exchange-grid">
+    <a href="https://www.binance.com/en/activity/referral-entry/CPA?ref=CPA_00U71XL31X" target="_blank" class="exchange-card">
+      <div class="exchange-icon">🌍</div>
+      <div class="exchange-name">Binance</div>
+      <div class="exchange-region">Global · Best for UAE & International</div>
+      <p class="exchange-desc">The world's largest cryptocurrency exchange by volume. Low fees, deep liquidity, and support for DCA (Dollar Cost Averaging) with recurring buy orders. Zubair's top recommendation for UAE residents.</p>
+      <span class="exchange-cta">Register Now →</span>
+      <p class="ref-note">* Referral link — helps support CoinSats at no extra cost to you.</p>
+    </a>
+    <a href="https://wazirx.com/invite/hqmvrypd" target="_blank" class="exchange-card">
+      <div class="exchange-icon">🇮🇳</div>
+      <div class="exchange-name">WazirX</div>
+      <div class="exchange-region">India · Best for NRI Investors</div>
+      <p class="exchange-desc">India's most popular crypto exchange, now accessible to NRIs and Indians worldwide. Simple interface, INR support, and easy onboarding for first-time Bitcoin buyers.</p>
+      <span class="exchange-cta">Register Now →</span>
+      <p class="ref-note">* Referral link — helps support CoinSats at no extra cost to you.</p>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-top">
+    <div class="ft-brand">
+      <a href="index.html" class="logo" style="text-decoration:none;"><div class="logo-icon">₿</div><span class="logo-name">Coin<span>Sats</span></span></a>
+      <p>Helping people achieve Financial Independence with Bitcoin. Based in Dubai, UAE.</p>
+    </div>
+    <div><div class="ft-col-title">Services</div><ul class="ft-links"><li><a href="index.html#services">Bitcoin for Everyone</a></li><li><a href="https://wa.me/+971582213303">Coffee with Bitcoin</a></li><li><a href="https://wa.me/+971582213303">Retire with Bitcoin</a></li><li><a href="https://wa.me/+971582213303">Bitcoin + Stocks + Crypto</a></li><li><a href="https://wa.me/+971582213303">Bitcoin for CEOs</a></li></ul></div>
+    <div><div class="ft-col-title">Company</div><ul class="ft-links"><li><a href="index.html#about">About Us</a></li><li><a href="https://www.coinsats.xyz/" target="_blank" style="color:var(--btc);">🔥 FIRE Calculator</a></li><li><a href="resources.html">Resources</a></li></ul></div>
+    <div><div class="ft-col-title">Resources</div><ul class="ft-links"><li><a href="resources.html">Reading List</a></li><li><a href="https://www.youtube.com/@IamZubair" target="_blank">Video Library</a></li><li><a href="https://www.coinsats.xyz/" target="_blank">DCA Calculator</a></li></ul></div>
+  </div>
+  <div class="ft-bottom">
+    <p>© 2025 CoinSats. All Rights Reserved. Dubai, UAE.</p>
+    <div class="ft-social">
+      <a href="https://twitter.com/Zubair0910" target="_blank"><svg viewBox="0 0 24 24"><path d="M2.867 3l6.869 9.818L2.734 21h2.647l5.538-6.49 4.54 6.49h5.912L14.174 10.697 20.744 3h-2.606l-5.142 6.01L8.799 3H2.867z"/></svg></a>
+      <a href="https://www.instagram.com/zubair0910" target="_blank"><svg viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></a>
+      <a href="https://www.youtube.com/@IamZubair" target="_blank"><svg viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
