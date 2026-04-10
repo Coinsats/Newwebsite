@@ -232,15 +232,15 @@
 <div class="ticker-bar">
   <div class="ticker-track">
     <span class="t-item">₿ BITCOIN <b id="bp1">—</b> <span class="up" id="bc1">—</span></span>
-    <span class="t-item">Ξ ETHEREUM <b>$2,412</b> <span class="up">+1.2%</span></span>
-    <span class="t-item">BTC DOMINANCE <b>54.2%</b></span>
-    <span class="t-item">TOTAL MARKET CAP <b>$2.84T</b></span>
-    <span class="t-item">FEAR & GREED <b>68 — GREED</b></span>
+    <span class="t-item">Ξ ETHEREUM <b id="ep1">—</b> <span class="up" id="ec1">—</span></span>
+    <span class="t-item">BTC DOMINANCE <b id="dom1">—</b></span>
+    <span class="t-item">TOTAL MARKET CAP <b id="mcp1">—</b></span>
+    <span class="t-item">FEAR & GREED <b id="fg1">—</b></span>
     <span class="t-item">₿ BITCOIN <b id="bp2">—</b> <span class="up" id="bc2">—</span></span>
-    <span class="t-item">Ξ ETHEREUM <b>$2,412</b> <span class="up">+1.2%</span></span>
-    <span class="t-item">BTC DOMINANCE <b>54.2%</b></span>
-    <span class="t-item">TOTAL MARKET CAP <b>$2.84T</b></span>
-    <span class="t-item">FEAR & GREED <b>68 — GREED</b></span>
+    <span class="t-item">Ξ ETHEREUM <b id="ep2">—</b> <span class="up" id="ec2">—</span></span>
+    <span class="t-item">BTC DOMINANCE <b id="dom2">—</b></span>
+    <span class="t-item">TOTAL MARKET CAP <b id="mcp2">—</b></span>
+    <span class="t-item">FEAR & GREED <b id="fg2">—</b></span>
   </div>
 </div>
 
@@ -429,9 +429,9 @@
       <div class="res-title" style="color:var(--btc);">FIRE Calculator</div>
       <div class="res-desc">Financial Independence Retire Early — calculated using Bitcoin. Plan your path to retirement with our custom BTC-powered tool.</div>
     </a>
-    <a href="/resources" class="res-card"><div class="res-icon">📖</div><div class="res-title">Reading List</div><div class="res-desc">Essential books every Bitcoiner must read — from The Bitcoin Standard to Mastering Bitcoin.</div></a>
-    <a href="/resources" class="res-card"><div class="res-icon">🎬</div><div class="res-title">Video Library</div><div class="res-desc">Curated channels, documentaries and interviews that will deepen your understanding.</div></a>
-    <a href="/resources" class="res-card"><div class="res-icon">📊</div><div class="res-title">DCA Calculator</div><div class="res-desc">Calculate your Bitcoin accumulation strategy with our SIP and Dollar Cost Averaging tools.</div></a>
+    <a href="resources.html" class="res-card"><div class="res-icon">📖</div><div class="res-title">Reading List</div><div class="res-desc">Essential books every Bitcoiner must read — from The Bitcoin Standard to Mastering Bitcoin.</div></a>
+    <a href="https://www.youtube.com/@IamZubair" target="_blank" class="res-card"><div class="res-icon">🎬</div><div class="res-title">Video Library</div><div class="res-desc">Curated channels, documentaries and interviews that will deepen your understanding.</div></a>
+    <a href="https://www.coinsats.xyz/" target="_blank" class="res-card"><div class="res-icon">📊</div><div class="res-title">DCA Calculator</div><div class="res-desc">Calculate your Bitcoin accumulation strategy with our SIP and Dollar Cost Averaging tools.</div></a>
   </div>
 </section>
 
@@ -490,8 +490,49 @@ function openLogin(){window.open('https://www.coinsats.io/sign-in','coinsats_log
 function faq(btn){const i=btn.closest('.faq-item');const o=i.classList.contains('open');document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));if(!o)i.classList.add('open');}
 const ro=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach(r=>ro.observe(r));
-async function fetchBTC(){try{const r=await fetch('https://api.coinbase.com/v2/prices/BTC-USD/spot');const d=await r.json();const p=parseFloat(d.data.amount);const f='$'+p.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});['liveP','bp1','bp2'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=f;});}catch(e){}}
-fetchBTC();setInterval(fetchBTC,60000);
+
+function setEl(id,text){const el=document.getElementById(id);if(el)el.textContent=text;}
+function setColor(id,color){const el=document.getElementById(id);if(el)el.style.color=color;}
+function fmtPrice(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtChange(n){return(n>=0?'+':'')+n.toFixed(2)+'%';}
+function fmtMcap(v){if(v>=1e12)return'$'+(v/1e12).toFixed(2)+'T';if(v>=1e9)return'$'+(v/1e9).toFixed(0)+'B';return'$'+v.toLocaleString();}
+
+async function fetchCrypto(){
+  try{
+    // BTC + ETH prices & 24h change
+    const r1=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+    const p=await r1.json();
+    const btcP=fmtPrice(p.bitcoin.usd);
+    const btcC=fmtChange(p.bitcoin.usd_24h_change);
+    const ethP=fmtPrice(p.ethereum.usd);
+    const ethC=fmtChange(p.ethereum.usd_24h_change);
+    const btcColor=p.bitcoin.usd_24h_change>=0?'var(--green)':'#ef4444';
+    const ethColor=p.ethereum.usd_24h_change>=0?'var(--green)':'#ef4444';
+    ['bp1','bp2'].forEach(id=>setEl(id,btcP));
+    ['bc1','bc2'].forEach(id=>{setEl(id,btcC);setColor(id,btcColor);});
+    ['ep1','ep2'].forEach(id=>setEl(id,ethP));
+    ['ec1','ec2'].forEach(id=>{setEl(id,ethC);setColor(id,ethColor);});
+    setEl('liveP',btcP);
+    setEl('liveC',btcC);
+    setColor('liveC',btcColor);
+    // BTC Dominance + Market Cap
+    const r2=await fetch('https://api.coingecko.com/api/v3/global');
+    const g=await r2.json();
+    const dom=g.data.market_cap_percentage.btc.toFixed(1)+'%';
+    const mcap=fmtMcap(g.data.total_market_cap.usd);
+    ['dom1','dom2'].forEach(id=>setEl(id,dom));
+    ['mcp1','mcp2'].forEach(id=>setEl(id,mcap));
+  }catch(e){console.warn('CoinGecko error:',e);}
+  try{
+    // Fear & Greed Index
+    const r3=await fetch('https://api.alternative.me/fng/');
+    const fg=await r3.json();
+    const fgText=fg.data[0].value+' — '+fg.data[0].value_classification.toUpperCase();
+    ['fg1','fg2'].forEach(id=>setEl(id,fgText));
+  }catch(e){console.warn('Fear & Greed error:',e);}
+}
+fetchCrypto();
+setInterval(fetchCrypto,60000);
 </script>
 </body>
 </html>
