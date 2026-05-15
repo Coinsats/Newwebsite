@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoinSats Pro – MSTR BULLS | Join Zubair's Bitcoin Treasury Community</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#D4AF37;--gold-dim:rgba(212,175,55,0.18);--gold-glow:rgba(212,175,55,0.08);
+  --green:#00C878;--red:#FF5252;--yellow:#F5C842;--orange:#F7931A;
+  --bg:#07080b;--surface:rgba(255,255,255,0.03);--surface2:rgba(255,255,255,0.05);
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.14);
+  --txt:#fff;--txt2:rgba(255,255,255,0.55);--txt3:rgba(255,255,255,0.25);
+  --btc:#F7931A;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* BG DECORATION */
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(212,175,55,0.022) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(212,175,55,0.022) 1px,transparent 1px);
+  background-size:64px 64px}
+.bg-g1{position:fixed;top:-300px;left:-200px;width:900px;height:900px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(212,175,55,0.06) 0%,transparent 65%);pointer-events:none;z-index:0}
+.bg-g2{position:fixed;bottom:-200px;right:-100px;width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(0,200,120,0.04) 0%,transparent 65%);pointer-events:none;z-index:0}
+.bg-g3{position:fixed;top:40%;left:50%;width:600px;height:600px;border-radius:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(ellipse,rgba(247,147,26,0.03) 0%,transparent 60%);pointer-events:none;z-index:0}
+
+/* TICKER BAR */
+.ticker-bar{position:sticky;top:0;z-index:100;background:rgba(7,8,11,0.96);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.ticker-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;color:var(--txt3);text-transform:uppercase;white-space:nowrap}
+.ticker-bar-wrap{flex:1;min-width:160px;background:rgba(255,255,255,0.06);border-radius:4px;height:7px;overflow:hidden}
+.ticker-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#00C878,#D4AF37);width:60.1%;transition:width 1s ease}
+.ticker-pct{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--gold);white-space:nowrap}
+.ticker-day{font-family:'DM Mono',monospace;font-size:10px;color:var(--txt2);white-space:nowrap;letter-spacing:0.06em}
+.ticker-sep{color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px}
+.ticker-end{font-family:'DM Mono',monospace;font-size:10px;color:var(--txt2);white-space:nowrap}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
+.ticker-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.yt-pill{display:flex;align-items:center;gap:7px;background:rgba(255,0,0,0.15);border:1px solid rgba(255,0,0,0.25);
+  border-radius:20px;padding:5px 14px;font-family:'DM Mono',monospace;font-size:10px;color:#ff6b6b;letter-spacing:0.08em;
+  text-decoration:none;transition:all 0.2s;white-space:nowrap}
+.yt-pill:hover{background:rgba(255,0,0,0.25);border-color:rgba(255,0,0,0.5)}
+.yt-pill svg{flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
+
+/* PAGE WRAPPER */
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:56px 28px 100px}
+
+/* ── HERO ── */
+.hero{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;margin-bottom:56px;padding-bottom:44px;
+  border-bottom:1px solid var(--border);position:relative}
+.hero::after{content:'';position:absolute;bottom:-1px;left:0;width:320px;height:1px;
+  background:linear-gradient(90deg,var(--gold),transparent)}
+.hero-accent{position:absolute;left:-28px;top:0;width:3px;height:100%;
+  background:linear-gradient(180deg,var(--gold),transparent)}
+
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:0.16em;color:var(--gold);text-transform:uppercase;
+  border:1px solid var(--gold-dim);padding:5px 12px;border-radius:3px;margin-bottom:16px}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,5.5vw,70px);
+  line-height:0.92;color:#fff;letter-spacing:0.01em;margin-bottom:10px}
+.hero-title .gold{color:var(--gold)}
+.hero-title .btc{color:var(--btc)}
+
+.hero-tagline{font-size:16px;color:var(--txt2);font-weight:300;line-height:1.65;max-width:540px;margin-top:14px}
+.hero-tagline strong{color:var(--green);font-weight:500}
+.hero-tagline em{color:var(--gold);font-style:normal;font-weight:500}
+
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn-primary{display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:#07080b;
+  font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;padding:13px 24px;
+  border-radius:6px;text-decoration:none;transition:all 0.2s;border:none;cursor:pointer;white-space:nowrap}
+.btn-primary:hover{background:#e8c94a;transform:translateY(-1px);box-shadow:0 8px 24px rgba(212,175,55,0.3)}
+.btn-secondary{display:inline-flex;align-items:center;gap:9px;background:transparent;
+  color:var(--txt);font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;
+  padding:13px 22px;border-radius:6px;text-decoration:none;border:1px solid var(--border2);
+  transition:all 0.2s;white-space:nowrap}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px)}
+
+/* PROFILE */
+.profile-block{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0}
+.profile-img{width:175px;height:215px;object-fit:cover;object-position:top center;
+  border-radius:10px;border:1px solid var(--border2);display:block;filter:brightness(0.95)}
+.profile-name{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:0.06em;color:#fff;
+  text-align:right;line-height:1.1}
+.profile-role{font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.12em;
+  text-transform:uppercase;margin-top:4px;text-align:right}
+.profile-socials{display:flex;flex-direction:column;align-items:flex-end;gap:4px;margin-top:6px}
+.social-link{display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:9px;
+  color:var(--txt3);letter-spacing:0.06em;text-decoration:none;transition:color 0.2s}
+.social-link:hover{color:var(--gold)}
+.social-link svg{width:11px;height:11px;opacity:0.5}
+
+/* ── CONVICTION STATEMENT ── */
+.conviction-band{background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(247,147,26,0.06));
+  border:1px solid var(--gold-dim);border-radius:14px;padding:28px 32px;margin-bottom:52px;
+  display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;position:relative;overflow:hidden}
+.conviction-band::before{content:'₿';position:absolute;right:-10px;top:50%;transform:translateY(-50%);
+  font-size:180px;color:rgba(247,147,26,0.05);line-height:1;pointer-events:none;font-family:'Bebas Neue',sans-serif}
+.conviction-text h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,3vw,34px);color:var(--gold);line-height:1.1;margin-bottom:8px}
+.conviction-text p{font-size:14px;color:var(--txt2);line-height:1.7;max-width:580px}
+.conviction-text p strong{color:#fff}
+.conviction-numbers{display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.conviction-stat{text-align:right}
+.conviction-stat .big{font-family:'Bebas Neue',sans-serif;font-size:38px;line-height:1;color:#fff}
+.conviction-stat .big.gold{color:var(--gold)}
+.conviction-stat .big.green{color:var(--green)}
+.conviction-stat .sm{font-family:'DM Mono',monospace;font-size:9px;color:var(--txt3);
+  letter-spacing:0.12em;text-transform:uppercase;margin-top:2px}
+.conviction-arrow{font-family:'DM Mono',monospace;font-size:11px;color:var(--txt3);text-align:right;padding:4px 0}
+
+/* ── BEAR MARKET STATUS ── */
+.bear-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:26px 28px;margin-bottom:52px;display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:24px;position:relative;overflow:hidden}
+.bear-card::before{content:'BEAR MARKET';position:absolute;right:20px;top:50%;
+  transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:96px;
+  color:rgba(255,255,255,0.018);white-space:nowrap;pointer-events:none}
+.bear-stat .val{font-family:'Bebas Neue',sans-serif;font-size:44px;line-height:1;color:var(--gold)}
+.bear-stat .val.green{color:var(--green)}
+.bear-stat .lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--txt3);
+  letter-spacing:0.13em;text-transform:uppercase;margin-top:4px}
+.bear-stat .note{font-size:12px;color:var(--txt2);margin-top:5px;line-height:1.5}
+.bear-stat .note strong{color:var(--gold)}
+.bear-bar-row{grid-column:1/-1;margin-top:4px}
+.bear-bar-outer{background:rgba(255,255,255,0.06);border-radius:4px;height:8px;overflow:hidden;margin-top:8px}
+.bear-bar-inner{height:100%;border-radius:4px;background:linear-gradient(90deg,#00C878,#D4AF37);width:60.1%;transition:width 1s ease}
+.bear-bar-labels{display:flex;justify-content:space-between;margin-top:6px}
+.bear-bar-labels span{font-family:'DM Mono',monospace;font-size:9px;color:var(--txt3)}
+.bear-bar-labels span.now{color:var(--gold)}
+.bear-note{grid-column:1/-1;background:rgba(212,175,55,0.06);border:1px solid var(--gold-dim);
+  border-radius:8px;padding:14px 18px;font-size:13px;color:var(--txt2);line-height:1.65}
+.bear-note strong{color:var(--gold)}
+
+/* ── SECTION HEADERS ── */
+.section-tag{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;
+  font-size:9.5px;letter-spacing:0.16em;color:var(--txt3);text-transform:uppercase;margin-bottom:8px}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,3.5vw,46px);
+  color:#fff;letter-spacing:0.02em;margin-bottom:6px}
+.section-sub{font-size:14px;color:var(--txt2);margin-bottom:30px;font-weight:300;line-height:1.6;max-width:600px}
+
+/* ── TRACK RECORD ── */
+.track-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:52px}
+.track-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:22px;position:relative;overflow:hidden;transition:border-color 0.2s,transform 0.2s}
+.track-card:hover{border-color:var(--gold-dim);transform:translateY(-2px)}
+.track-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);border-radius:12px 12px 0 0}
+.track-ticker{font-family:'Bebas Neue',sans-serif;font-size:32px;color:#fff;letter-spacing:0.04em;line-height:1}
+.track-name{font-size:11px;color:var(--txt3);margin-top:3px;font-weight:300;letter-spacing:0.03em}
+.track-prices{display:flex;align-items:baseline;gap:8px;margin:14px 0 10px;
+  padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:6px}
+.track-entry{font-family:'DM Mono',monospace;font-size:14px;color:var(--txt2)}
+.track-arrow{font-family:'DM Mono',monospace;font-size:11px;color:var(--txt3)}
+.track-exit{font-family:'DM Mono',monospace;font-size:14px;color:var(--green)}
+.track-return{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--gold);line-height:1;margin-top:4px}
+.track-return-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--txt3);
+  letter-spacing:0.12em;text-transform:uppercase;margin-top:2px}
+.track-cycle-badge{display:inline-flex;align-items:center;gap:5px;margin-top:12px;
+  font-family:'DM Mono',monospace;font-size:9px;color:var(--txt3);letter-spacing:0.08em;
+  padding:4px 9px;border:1px solid var(--border);border-radius:3px}
+
+/* ── PORTFOLIO TARGET ── */
+.portfolio-section{margin-bottom:52px}
+.portfolio-visual{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:28px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;position:relative;overflow:hidden}
+.portfolio-visual::before{content:'10X';position:absolute;right:-10px;top:50%;transform:translateY(-50%);
+  font-family:'Bebas Neue',sans-serif;font-size:200px;color:rgba(0,200,120,0.03);line-height:1;pointer-events:none}
+.ptarget-block{}
+.ptarget-from{font-family:'DM Mono',monospace;font-size:12px;color:var(--txt3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
+.ptarget-amount{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,5vw,64px);color:#fff;line-height:1}
+.ptarget-arrow{font-family:'DM Mono',monospace;font-size:22px;color:var(--txt3);margin:6px 0;letter-spacing:0.1em}
+.ptarget-to{font-family:'DM Mono',monospace;font-size:12px;color:var(--green);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px}
+.ptarget-goal{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,5vw,64px);color:var(--green);line-height:1}
+.ptarget-sub{font-size:12px;color:var(--txt3);margin-top:6px;line-height:1.5}
+
+.portfolio-stocks{}
+.stock-hold-title{font-family:'DM Mono',monospace;font-size:9px;color:var(--txt3);
+  letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px}
+.stock-list{display:flex;flex-direction:column;gap:10px}
+.stock-row{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;background:rgba(255,255,255,0.04);border-radius:7px;
+  border:1px solid var(--border)}
+.stock-row-left{display:flex;flex-direction:column;gap:2px}
+.stock-row-ticker{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;letter-spacing:0.04em;line-height:1}
+.stock-row-name{font-size:10px;color:var(--txt3)}
+.stock-row-right{}
+.focus-badge{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:0.09em;
+  text-transform:uppercase;padding:3px 8px;border-radius:3px;border:1px solid}
+.focus-badge.core{color:var(--gold);border-color:var(--gold-dim);background:var(--gold-glow)}
+.focus-badge.high{color:var(--green);border-color:rgba(0,200,120,0.2);background:rgba(0,200,120,0.06)}
+.focus-badge.watch{color:var(--txt3);border-color:var(--border)}
+
+/* LOCKED STOCKS */
+.stock-locked-wrap{position:relative}
+.stock-row-blurred{filter:blur(4px);opacity:0.45;pointer-events:none;user-select:none}
+.stock-lock-overlay{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(180deg,rgba(7,8,11,0.2) 0%,rgba(7,8,11,0.75) 40%,rgba(7,8,11,0.9) 100%);
+  border-radius:8px}
+.stock-lock-icon{font-size:22px}
+.stock-lock-text{font-family:'DM Mono',monospace;font-size:10px;color:var(--txt3);
+  letter-spacing:0.12em;text-transform:uppercase}
+.stock-lock-btn{display:inline-flex;align-items:center;gap:7px;background:var(--gold);
+  color:#07080b;font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;
+  padding:8px 18px;border-radius:5px;text-decoration:none;transition:all 0.2s;margin-top:2px}
+.stock-lock-btn:hover{background:#e8c94a;transform:translateY(-1px)}
+
+/* ── HOLD TIMELINE ── */
+.timeline-bar{margin-top:20px;padding:18px 20px;background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);border-radius:10px}
+.tl-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--txt3);
+  letter-spacing:0.13em;text-transform:uppercase;margin-bottom:10px}
+.tl-track{display:flex;height:6px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.06);margin-bottom:8px}
+.tl-past{background:rgba(255,255,255,0.12);width:30%}
+.tl-now{background:var(--green);width:5%;animation:pulse 2s infinite}
+.tl-accumulate{background:linear-gradient(90deg,rgba(212,175,55,0.4),rgba(212,175,55,0.6));width:20%}
+.tl-hold{background:rgba(255,255,255,0.05);width:25%}
+.tl-bull{background:linear-gradient(90deg,rgba(0,200,120,0.5),var(--green));width:20%}
+.tl-years{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;
+  font-size:8.5px;color:var(--txt3);padding:0 2px}
+
+/* ── WHAT YOU GET ── */
+.perks-section{margin-bottom:52px}
+.perks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.perk-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:22px;transition:border-color 0.2s}
+.perk-card:hover{border-color:var(--border2)}
+.perk-icon{width:36px;height:36px;border-radius:8px;background:var(--gold-glow);
+  border:1px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;
+  margin-bottom:14px;font-size:18px}
+.perk-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.04em;
+  color:#fff;margin-bottom:6px}
+.perk-desc{font-size:13px;color:var(--txt2);line-height:1.65}
+.perk-desc strong{color:var(--gold)}
+
+/* ── MISSED SECTION ── */
+.missed-band{background:linear-gradient(135deg,rgba(255,82,82,0.06),rgba(212,175,55,0.06));
+  border:1px solid rgba(255,82,82,0.15);border-radius:14px;padding:36px 32px;
+  margin-bottom:52px;text-align:center;position:relative;overflow:hidden}
+.missed-band::before{content:'NOW OR NEVER';position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);font-family:'Bebas Neue',sans-serif;font-size:120px;
+  color:rgba(255,255,255,0.015);white-space:nowrap;pointer-events:none}
+.missed-kicker{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.18em;
+  color:var(--red);text-transform:uppercase;margin-bottom:14px}
+.missed-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,4vw,52px);
+  line-height:0.95;color:#fff;margin-bottom:16px}
+.missed-title .gold{color:var(--gold)}
+.missed-body{font-size:15px;color:var(--txt2);line-height:1.75;max-width:640px;margin:0 auto 24px}
+.missed-body strong{color:#fff}
+.missed-body em{color:var(--green);font-style:normal}
+.missed-counter{display:flex;justify-content:center;gap:32px;margin-top:20px;flex-wrap:wrap}
+.mc-item{text-align:center}
+.mc-item .val{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--gold);line-height:1}
+.mc-item .lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--txt3);
+  letter-spacing:0.12em;text-transform:uppercase;margin-top:2px}
+
+/* ── CTA SECTION ── */
+.cta-section{text-align:center;margin-bottom:52px}
+.cta-inner{background:linear-gradient(135deg,rgba(212,175,55,0.07),rgba(0,200,120,0.04));
+  border:1px solid var(--gold-dim);border-radius:16px;padding:48px 40px;position:relative;overflow:hidden}
+.cta-inner::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(212,175,55,0.03) 0%,transparent 60%);pointer-events:none}
+.cta-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.18em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:16px}
+.cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,62px);
+  line-height:0.95;color:#fff;margin-bottom:8px}
+.cta-title .gold{color:var(--gold)}
+.cta-sub{font-size:15px;color:var(--txt2);max-width:520px;margin:0 auto 32px;line-height:1.65}
+.cta-sub strong{color:var(--green)}
+.cta-buttons{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:24px}
+.btn-gold{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#07080b;
+  font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;padding:15px 30px;
+  border-radius:7px;text-decoration:none;transition:all 0.2s;letter-spacing:0.01em}
+.btn-gold:hover{background:#e8c94a;transform:translateY(-2px);box-shadow:0 10px 30px rgba(212,175,55,0.3)}
+.btn-wa{display:inline-flex;align-items:center;gap:10px;background:rgba(37,211,102,0.12);
+  color:#25d366;border:1px solid rgba(37,211,102,0.25);font-family:'DM Sans',sans-serif;
+  font-weight:600;font-size:15px;padding:15px 28px;border-radius:7px;text-decoration:none;
+  transition:all 0.2s}
+.btn-wa:hover{background:rgba(37,211,102,0.2);transform:translateY(-2px)}
+.cta-note{font-family:'DM Mono',monospace;font-size:10px;color:var(--txt3);letter-spacing:0.08em}
+.cta-price{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold)}
+
+/* ── SOCIAL ROW ── */
+.socials-row{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:52px}
+.social-card{display:flex;align-items:center;gap:10px;padding:12px 20px;
+  background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  text-decoration:none;transition:all 0.2s}
+.social-card:hover{border-color:var(--gold-dim);transform:translateY(-1px)}
+.social-card .icon{font-size:18px}
+.social-card .handle{font-family:'DM Mono',monospace;font-size:11px;color:var(--txt2);letter-spacing:0.06em}
+.social-card .platform{font-family:'DM Mono',monospace;font-size:8.5px;color:var(--txt3);
+  letter-spacing:0.1em;text-transform:uppercase}
+
+/* ── DISCLAIMER ── */
+.disclaimer{font-family:'DM Mono',monospace;font-size:9.5px;color:var(--txt3);
+  line-height:1.7;text-align:center;max-width:700px;margin:0 auto 24px;letter-spacing:0.04em}
+.disclaimer strong{color:rgba(255,255,255,0.25)}
+
+/* ── FOOTER ── */
+.footer{text-align:center;padding-top:24px;border-top:1px solid var(--border)}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:0.1em;margin-bottom:6px}
+.footer-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--txt3);letter-spacing:0.12em}
+
+/* RESPONSIVE */
+@media(max-width:720px){
+  .hero{grid-template-columns:1fr;gap:32px}
+  .profile-block{align-items:flex-start;flex-direction:row;flex-wrap:wrap}
+  .profile-img{width:100px;height:125px}
+  .profile-name,.profile-role,.profile-socials{text-align:left;align-items:flex-start}
+  .bear-card{grid-template-columns:1fr 1fr}
+  .portfolio-visual{grid-template-columns:1fr}
+  .conviction-band{grid-template-columns:1fr}
+  .missed-counter{gap:20px}
+  .hero-title{font-size:clamp(36px,10vw,55px)}
+  .page{padding:36px 18px 80px}
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-g1"></div>
+<div class="bg-g2"></div>
+<div class="bg-g3"></div>
+
+<!-- TICKER BAR -->
+<div class="ticker-bar">
+  <div class="live-dot"></div>
+  <span class="ticker-label">Bear Market Progress</span>
+  <div class="ticker-bar-wrap">
+    <div class="ticker-bar-fill" id="bearFill"></div>
+  </div>
+  <span class="ticker-pct" id="bearPct">60.1%</span>
+  <span class="ticker-sep">·</span>
+  <span class="ticker-day" id="bearDay">Day 222 of 368</span>
+  <span class="ticker-sep">·</span>
+  <span class="ticker-end" id="bearDaysLeft">147 days left</span>
+  <div class="ticker-right">
+    <a href="https://www.youtube.com/@IamZubair" target="_blank" class="yt-pill">
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.03 0 12 0 12s0 3.97.5 5.81a3.02 3.02 0 0 0 2.12 2.14C4.46 20.5 12 20.5 12 20.5s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.97 24 12 24 12s0-3.97-.5-5.81zM9.75 15.52V8.48L15.5 12l-5.75 3.52z"/></svg>
+      @IamZubair
+    </a>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-accent"></div>
+    <div class="hero-left">
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        Exclusive Community · Bitcoin Treasury Stocks
+      </div>
+      <h1 class="hero-title">
+        JOIN THE<br>
+        <span class="gold">MSTR BULLS</span><br>
+        COMMUNITY
+      </h1>
+      <p class="hero-tagline">
+        The bear market is <strong>60% over</strong>. The window to accumulate at bear market prices
+        is closing. I'm positioning <em>$21,000</em> into Bitcoin treasury stocks for a
+        <em>10X return</em> in the 2027–2029 bull run. Join me — and make 10X together.
+      </p>
+      <div class="hero-ctas">
+        <a href="https://www.youtube.com/@IamZubair/join" target="_blank" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.03 0 12 0 12s0 3.97.5 5.81a3.02 3.02 0 0 0 2.12 2.14C4.46 20.5 12 20.5 12 20.5s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.97 24 12 24 12s0-3.97-.5-5.81zM9.75 15.52V8.48L15.5 12l-5.75 3.52z"/></svg>
+          Join YouTube Premium
+        </a>
+        <a href="https://wa.me/971582213303" target="_blank" class="btn-secondary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="color:#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          DM on WhatsApp
+        </a>
+      </div>
+    </div>
+    <div class="profile-block">
+      <img src="zubair-photo.jpg"
+           alt="Zubair Abdul Jabbar"
+           class="profile-img"
+           id="profileImg"
+           onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22175%22 height=%22215%22 viewBox=%220 0 175 215%22%3E%3Crect width=%22175%22 height=%22215%22 fill=%22%23111316%22 rx=%2210%22/%3E%3Ctext x=%2287%22 y=%22115%22 text-anchor=%22middle%22 font-size=%2264%22 fill=%22%23D4AF37%22 font-family=%22sans-serif%22%3EZ%3C/text%3E%3C/svg%3E'">
+      <div>
+        <div class="profile-name">Zubair Abdul Jabbar</div>
+        <div class="profile-role">SCA Authorized Finfluencer · UAE</div>
+        <div class="profile-socials">
+          <a href="https://www.youtube.com/@IamZubair" target="_blank" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.03 0 12 0 12s0 3.97.5 5.81a3.02 3.02 0 0 0 2.12 2.14C4.46 20.5 12 20.5 12 20.5s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.97 24 12 24 12s0-3.97-.5-5.81zM9.75 15.52V8.48L15.5 12l-5.75 3.52z"/></svg>
+            youtube.com/@IamZubair
+          </a>
+          <a href="https://instagram.com/Zubair0910" target="_blank" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            @Zubair0910
+          </a>
+          <a href="https://x.com/Zubair0910" target="_blank" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.262 5.636 5.902-5.636zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            @Zubair0910
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MY CONVICTION ── -->
+  <div class="conviction-band">
+    <div class="conviction-text">
+      <h2>MY PERSONAL 10X COMMITMENT</h2>
+      <p>
+        I'm not just talking — I'm <strong>deploying $21,000 of my own money</strong> weekly into
+        Bitcoin treasury stocks from now until the bear market ends (~October 2026).
+        My target: turn that into <strong>$210,000</strong> by 2028–2029.
+        I made the most amount of my profit from MSTR in the last cycle and I'm doing it again —
+        but this time it's not just MSTR but a few more stocks. This is a pure conviction play. No altcoins, no memecoins, no trading.
+        <strong>Laser-eye focused on Bitcoin treasury stocks only.</strong>
+      </p>
+    </div>
+    <div class="conviction-numbers">
+      <div class="conviction-stat">
+        <div class="big">$21K</div>
+        <div class="sm">My Capital</div>
+      </div>
+      <div class="conviction-arrow">— — — — 10X ——→</div>
+      <div class="conviction-stat">
+        <div class="big green">$210K</div>
+        <div class="sm">Target 2028–29</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BEAR MARKET STATUS ── -->
+  <section>
+    <div class="section-tag">📊 Market Context</div>
+    <h2 class="section-title">THE ACCUMULATION WINDOW</h2>
+    <p class="section-sub">The 4-year Bitcoin cycle is repeating exactly as history dictates. We are in the final phase of the bear market — and the best time to accumulate is right now, before the masses return.</p>
+    <div class="bear-card">
+      <div class="bear-stat">
+        <div class="val">60.1%</div>
+        <div class="lbl">Bear Market Complete</div>
+        <div class="note">We are past the halfway mark. <strong>The pain is mostly over.</strong></div>
+      </div>
+      <div class="bear-stat">
+        <div class="val green">Oct 9</div>
+        <div class="lbl">Bear Market End Date</div>
+        <div class="note">Estimated end: <strong>October 9, 2026</strong> — based on historical 4-year cycle data</div>
+      </div>
+      <div class="bear-stat">
+        <div class="val">2027–29</div>
+        <div class="lbl">Next Bull Market</div>
+        <div class="note">Peak expected between <strong>late 2027 and 2029</strong> — our hold &amp; sell window</div>
+      </div>
+      <div class="bear-bar-row">
+        <div class="bear-bar-outer">
+          <div class="bear-bar-inner"></div>
+        </div>
+        <div class="bear-bar-labels">
+          <span>Oct 2025 (Top)</span>
+          <span class="now">◆ Today · 60.1%</span>
+          <span>Oct 2026 (End)</span>
+        </div>
+      </div>
+      <div class="bear-note">
+        <strong>Strategy:</strong> Deploy capital weekly during the remaining bear market. Every dip is a gift.
+        Bitcoin treasury companies like MSTR, Metaplanet, and others are accumulating Bitcoin at these prices too.
+        When the bull market ignites, these stocks move <strong>5–20x faster than Bitcoin itself.</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TRACK RECORD ── -->
+  <section>
+    <div class="section-tag">📈 Verified Track Record</div>
+    <h2 class="section-title">LAST BULL RUN · MY CALLS</h2>
+    <p class="section-sub">I called these stocks publicly before they ran. Same playbook, better entry this cycle.</p>
+    <div class="track-grid">
+      <div class="track-card">
+        <div class="track-ticker">MSTR</div>
+        <div class="track-name">MicroStrategy / Strategy Inc.</div>
+        <div class="track-prices">
+          <span class="track-entry">$30</span>
+          <span class="track-arrow">→</span>
+          <span class="track-exit">$540</span>
+        </div>
+        <div class="track-return">18X</div>
+        <div class="track-return-lbl">Return · Last Bull Run</div>
+        <div class="track-cycle-badge">⭐ My Biggest Winner</div>
+      </div>
+      <div class="track-card">
+        <div class="track-ticker">IREN</div>
+        <div class="track-name">Iris Energy Ltd.</div>
+        <div class="track-prices">
+          <span class="track-entry">$6</span>
+          <span class="track-arrow">→</span>
+          <span class="track-exit">$77</span>
+        </div>
+        <div class="track-return">10X</div>
+        <div class="track-return-lbl">Return · Last Bull Run</div>
+        <div class="track-cycle-badge">🎯 Called at $6</div>
+      </div>
+      <div class="track-card">
+        <div class="track-ticker">HUT</div>
+        <div class="track-name">Hut 8 Corp.</div>
+        <div class="track-prices">
+          <span class="track-entry">$9</span>
+          <span class="track-arrow">→</span>
+          <span class="track-exit">$112</span>
+        </div>
+        <div class="track-return">10X</div>
+        <div class="track-return-lbl">Return · Last Bull Run</div>
+        <div class="track-cycle-badge">🎯 Called at $9</div>
+      </div>
+      <div class="track-card">
+        <div class="track-ticker">CIFR</div>
+        <div class="track-name">Cipher Mining Inc.</div>
+        <div class="track-prices">
+          <span class="track-entry">$3.80</span>
+          <span class="track-arrow">→</span>
+          <span class="track-exit">$23</span>
+        </div>
+        <div class="track-return">6X</div>
+        <div class="track-return-lbl">Return · Last Bull Run</div>
+        <div class="track-cycle-badge">📢 Public Call</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PORTFOLIO ── -->
+  <section class="portfolio-section">
+    <div class="section-tag">💼 This Cycle Portfolio</div>
+    <h2 class="section-title">THE STOCKS I'M BUYING NOW</h2>
+    <p class="section-sub">Fully-pivoted, Bitcoin-first companies only. No noise, no distractions.</p>
+    <div class="portfolio-visual">
+      <div class="ptarget-block">
+        <div class="ptarget-from">Deploying Capital</div>
+        <div class="ptarget-amount">$21,000</div>
+        <div class="ptarget-arrow">↓  10X  ↓</div>
+        <div class="ptarget-to">Target Return</div>
+        <div class="ptarget-goal">$210,000</div>
+        <div class="ptarget-sub">Weekly DCA · Bear Market Accumulation<br>Hold window: 2027 – 2029</div>
+        <div style="margin-top:18px">
+          <div class="timeline-bar">
+            <div class="tl-label">Investment Timeline</div>
+            <div class="tl-track">
+              <div class="tl-past"></div>
+              <div class="tl-now"></div>
+              <div class="tl-accumulate"></div>
+              <div class="tl-hold"></div>
+              <div class="tl-bull"></div>
+            </div>
+            <div class="tl-years">
+              <span>2024</span>
+              <span style="color:var(--green)">Now</span>
+              <span>Oct'26</span>
+              <span>2027</span>
+              <span>2028–29</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-stocks">
+        <div class="stock-hold-title">Holdings — This Cycle</div>
+        <div class="stock-list">
+          <!-- MSTR visible -->
+          <div class="stock-row">
+            <div class="stock-row-left">
+              <div class="stock-row-ticker">MSTR</div>
+              <div class="stock-row-name">Strategy Inc. (MicroStrategy)</div>
+            </div>
+            <div class="stock-row-right"><span class="focus-badge core">Core Position</span></div>
+          </div>
+          <!-- 4 locked stocks -->
+          <div class="stock-locked-wrap">
+            <div class="stock-row stock-row-blurred">
+              <div class="stock-row-left">
+                <div class="stock-row-ticker">████</div>
+                <div class="stock-row-name">██████████ ████</div>
+              </div>
+              <div class="stock-row-right"><span class="focus-badge core">Core Position</span></div>
+            </div>
+            <div class="stock-row stock-row-blurred">
+              <div class="stock-row-left">
+                <div class="stock-row-ticker">████</div>
+                <div class="stock-row-name">██████████ ████</div>
+              </div>
+              <div class="stock-row-right"><span class="focus-badge high">High Conviction</span></div>
+            </div>
+            <div class="stock-row stock-row-blurred">
+              <div class="stock-row-left">
+                <div class="stock-row-ticker">████</div>
+                <div class="stock-row-name">██████████ ████</div>
+              </div>
+              <div class="stock-row-right"><span class="focus-badge high">High Conviction</span></div>
+            </div>
+            <div class="stock-row stock-row-blurred">
+              <div class="stock-row-left">
+                <div class="stock-row-ticker">████</div>
+                <div class="stock-row-name">██████████ ████</div>
+              </div>
+              <div class="stock-row-right"><span class="focus-badge watch">Tracking</span></div>
+            </div>
+            <div class="stock-lock-overlay">
+              <div class="stock-lock-icon">🔐</div>
+              <div class="stock-lock-text">4 more stocks hidden</div>
+              <a href="https://www.youtube.com/@IamZubair/join" target="_blank" class="stock-lock-btn">Join Premium to See</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHAT YOU GET ── -->
+  <section class="perks-section">
+    <div class="section-tag">🔐 Membership Includes</div>
+    <h2 class="section-title">WHAT'S INSIDE THE COMMUNITY</h2>
+    <p class="section-sub">Everything you need to follow my exact strategy and invest with full confidence alongside me.</p>
+    <div class="perks-grid">
+      <div class="perk-card">
+        <div class="perk-icon">🎬</div>
+        <div class="perk-title">Members-Only Videos</div>
+        <div class="perk-desc">Deep-dive analysis videos on <strong>MSTR, Metaplanet, Coinbase, Circle</strong> and all Bitcoin treasury stocks. Price models, entry/exit strategies, and my full reasoning — exclusively for members.</div>
+      </div>
+      <div class="perk-card">
+        <div class="perk-icon">📊</div>
+        <div class="perk-title">My Live Portfolio</div>
+        <div class="perk-desc">Full transparency — you see exactly what I'm buying, when I'm buying, and how much. <strong>My portfolio is your portfolio.</strong> No secrets, no delayed signals.</div>
+      </div>
+      <div class="perk-card">
+        <div class="perk-icon">🚨</div>
+        <div class="perk-title">Buy & Sell Signals</div>
+        <div class="perk-desc">Real-time alerts when I'm adding to positions or trimming. <strong>Exit criteria shared in advance</strong>, so you're never caught off guard when the bull market peaks.</div>
+      </div>
+      <div class="perk-card">
+        <div class="perk-icon">🏦</div>
+        <div class="perk-title">Recommended Platforms</div>
+        <div class="perk-desc">I'll guide you on the <strong>best brokers and platforms</strong> to buy these stocks — especially tailored for investors in the UAE and GCC region.</div>
+      </div>
+      <div class="perk-card">
+        <div class="perk-icon">💬</div>
+        <div class="perk-title">Private Group Access</div>
+        <div class="perk-desc">Join a <strong>members-only private group</strong> of like-minded Bitcoin treasury investors. Ask questions, share updates, and stay accountable to the strategy together.</div>
+      </div>
+      <div class="perk-card">
+        <div class="perk-icon">🎙️</div>
+        <div class="perk-title">Weekly Live Meetups</div>
+        <div class="perk-desc">Join weekly online sessions where I review <strong>market conditions, portfolio updates, and answer your questions live</strong>. Ask me anything, get direct answers.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MISSED LAST BULL RUN ── -->
+  <div class="missed-band">
+    <div class="missed-kicker">⚡ The Window Is Open Right Now</div>
+    <h2 class="missed-title">
+      IF YOU MISSED THE LAST<br>
+      <span class="gold">BULL RUN — THIS IS YOUR MOMENT</span>
+    </h2>
+    <p class="missed-body">
+      Last cycle, I called <strong>MSTR at $30</strong>. It went to $540. That was an 18X return.
+      I made the most amount of my profit from that single conviction.<br><br>
+      This cycle, I'm positioning <em>even earlier</em>, with a clearer strategy, and a community
+      of people doing it together. Bitcoin treasury companies are now a proven model.
+      <strong>The institutional money is just getting started.</strong><br><br>
+      I will make 10X — and <em>let's make it together.</em>
+    </p>
+    <div class="missed-counter">
+      <div class="mc-item"><div class="val" id="missedDays">147</div><div class="lbl">Days Left to Accumulate</div></div>
+      <div class="mc-item"><div class="val">$21K</div><div class="lbl">My Skin in the Game</div></div>
+      <div class="mc-item"><div class="val">10X</div><div class="lbl">The Target</div></div>
+      <div class="mc-item"><div class="val">2028</div><div class="lbl">Target Exit Window</div></div>
+    </div>
+  </div>
+
+  <!-- ── CTA ── -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <div class="cta-eyebrow">🔐 Join the MSTR Bulls Community</div>
+      <h2 class="cta-title">
+        READY TO MAKE<br>
+        <span class="gold">10X TOGETHER?</span>
+      </h2>
+      <p class="cta-sub">
+        Get instant access to members-only videos, my live portfolio, buy/sell signals,
+        the private group &amp; weekly meetups. <strong>Cancel anytime.</strong>
+      </p>
+      <div class="cta-buttons">
+        <a href="https://www.youtube.com/@IamZubair/join" target="_blank" class="btn-gold">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.03 0 12 0 12s0 3.97.5 5.81a3.02 3.02 0 0 0 2.12 2.14C4.46 20.5 12 20.5 12 20.5s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.97 24 12 24 12s0-3.97-.5-5.81zM9.75 15.52V8.48L15.5 12l-5.75 3.52z"/></svg>
+          Join YouTube Premium
+        </a>
+        <a href="https://wa.me/971582213303" target="_blank" class="btn-wa">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          Ask on WhatsApp
+        </a>
+      </div>
+      <div class="cta-note">
+        Recurring · Cancel anytime &nbsp;·&nbsp; Members-only YouTube + Private Group
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SOCIAL LINKS ── -->
+  <div class="socials-row">
+    <a href="https://www.youtube.com/@IamZubair" target="_blank" class="social-card">
+      <span class="icon">▶️</span>
+      <div>
+        <div class="handle">@IamZubair</div>
+        <div class="platform">YouTube</div>
+      </div>
+    </a>
+    <a href="https://instagram.com/Zubair0910" target="_blank" class="social-card">
+      <span class="icon">📸</span>
+      <div>
+        <div class="handle">@Zubair0910</div>
+        <div class="platform">Instagram</div>
+      </div>
+    </a>
+    <a href="https://x.com/Zubair0910" target="_blank" class="social-card">
+      <span class="icon">𝕏</span>
+      <div>
+        <div class="handle">@Zubair0910</div>
+        <div class="platform">X (Twitter)</div>
+      </div>
+    </a>
+    <a href="https://wa.me/971582213303" target="_blank" class="social-card">
+      <span class="icon">💬</span>
+      <div>
+        <div class="handle">+971 58 221 3303</div>
+        <div class="platform">WhatsApp</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- ── DISCLAIMER ── -->
+  <div class="disclaimer">
+    <strong>DISCLAIMER:</strong> Zubair Abdul Jabbar is an SCA-Authorized Financial Influencer in the UAE. All content is educational and informational only. Past performance does not guarantee future results. Stock prices mentioned reflect historical data from the previous market cycle. Investing in stocks and digital asset-related companies involves significant risk, including the potential loss of capital. This is not personalized financial advice. Always do your own research and consult a licensed financial advisor before making investment decisions. The 10X target is a personal goal based on historical cycle analysis and is not a guaranteed return.
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer">
+    <div class="footer-logo">COINSATS PRO · MSTR BULLS 🐂</div>
+    <div class="footer-sub">© 2026 Zubair Abdul Jabbar · SCA Authorized Finfluencer · UAE · All rights reserved</div>
+  </div>
+
+</div>
+
+<script>
+// Bear market timeline
+// Start: Oct 6, 2025 | End: Oct 9, 2026 | Total: 368 days
+const BEAR_START = new Date('2025-10-06T00:00:00');
+const BEAR_END   = new Date('2026-10-09T00:00:00');
+const TOTAL_DAYS = Math.round((BEAR_END - BEAR_START) / 86400000); // 368
+
+function updateBearStats() {
+  const now = new Date();
+
+  // today at midnight for clean day arithmetic
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startDay = new Date(BEAR_START.getFullYear(), BEAR_START.getMonth(), BEAR_START.getDate());
+  const endDay   = new Date(BEAR_END.getFullYear(),   BEAR_END.getMonth(),   BEAR_END.getDate());
+
+  const dayNum     = Math.floor((today - startDay) / 86400000) + 1; // Day 1 = Oct 6
+  const daysLeft   = Math.floor((endDay - today) / 86400000);       // includes today, excludes Oct 9
+  const pct        = Math.min(100, Math.max(0, ((dayNum - 1) / TOTAL_DAYS) * 100));
+
+  // Ticker bar
+  const fillEl   = document.getElementById('bearFill');
+  const pctEl    = document.getElementById('bearPct');
+  const dayEl    = document.getElementById('bearDay');
+  const leftEl   = document.getElementById('bearDaysLeft');
+
+  if (fillEl)  fillEl.style.width = pct.toFixed(1) + '%';
+  if (pctEl)   pctEl.textContent  = pct.toFixed(1) + '%';
+  if (dayEl)   dayEl.textContent  = 'Day ' + dayNum + ' of ' + TOTAL_DAYS;
+  if (leftEl)  leftEl.textContent = daysLeft + ' days left';
+
+  // Missed section counter
+  const missedEl = document.getElementById('missedDays');
+  if (missedEl) missedEl.textContent = daysLeft;
+}
+
+updateBearStats();
+</script>
+</body>
+</html>
