@@ -119,26 +119,93 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
 .conv-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
 .conv-dot.filled{background:var(--gold)}
 
-/* PORTFOLIOS */
-.portfolios-section{margin-bottom:56px}
-.portfolio-list{display:flex;flex-direction:column;gap:16px}
-.portfolio-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.portfolio-header{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid var(--border)}
-.portfolio-risk{display:flex;align-items:center;gap:12px}
-.risk-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:rgba(255,255,255,0.15);width:32px}
-.risk-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.03em}
-.risk-badge{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:3px}
-.rb-vlow{background:rgba(0,200,120,0.1);color:var(--green);border:1px solid rgba(0,200,120,0.2)}
-.rb-low{background:rgba(0,200,120,0.07);color:#7EDDB0;border:1px solid rgba(0,200,120,0.15)}
-.rb-med{background:rgba(212,175,55,0.1);color:var(--gold);border:1px solid var(--gold-dim)}
-.rb-high{background:rgba(245,150,50,0.1);color:#F5963C;border:1px solid rgba(245,150,50,0.2)}
-.rb-degen{background:rgba(255,82,82,0.1);color:var(--red);border:1px solid rgba(255,82,82,0.2)}
-.portfolio-body{padding:14px 22px 18px}
-.alloc-bar{display:flex;height:36px;border-radius:6px;overflow:hidden;gap:2px;margin-bottom:12px}
-.alloc-seg{display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:rgba(0,0,0,0.75);transition:flex 0.4s ease;min-width:0;overflow:hidden;white-space:nowrap}
-.alloc-legend{display:flex;flex-wrap:wrap;gap:10px 20px}
-.leg-item{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:10px;color:var(--txt2)}
-.leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+/* CYCLE WINDOW */
+.window-section{margin-bottom:56px}
+.cycle-track{position:relative;display:flex;height:70px;border-radius:10px;overflow:visible;margin-bottom:20px;gap:3px}
+.cycle-seg{border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8px;overflow:hidden}
+.cycle-seg.bear{background:linear-gradient(135deg,rgba(255,82,82,0.12),rgba(245,150,50,0.10));border:1px solid rgba(255,82,82,0.25)}
+.cycle-seg.bull{background:linear-gradient(135deg,rgba(0,200,120,0.14),rgba(212,175,55,0.10));border:1px solid rgba(0,200,120,0.3)}
+.cycle-seg-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;color:#fff;font-weight:500}
+.cycle-seg-dates{font-family:'DM Mono',monospace;font-size:10px;color:var(--txt2);margin-top:3px}
+.cycle-marker{position:absolute;top:-26px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;transition:left 1s ease;z-index:2}
+.cycle-marker-dot{width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(212,175,55,0.25),0 0 12px rgba(212,175,55,0.6);margin-top:26px;position:relative}
+.cycle-marker-dot::after{content:'';position:absolute;left:50%;top:-44px;width:2px;height:44px;background:var(--gold);transform:translateX(-50%);opacity:0.6}
+.cycle-marker-label{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:0.1em;color:var(--gold);white-space:nowrap;background:rgba(7,8,11,0.9);padding:2px 6px;border-radius:3px;border:1px solid var(--gold-dim);margin-bottom:2px}
+.cycle-legend{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cycle-legend-item{display:flex;gap:10px;font-size:12.5px;color:var(--txt2);line-height:1.6;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.cycle-legend-item strong{color:#fff;font-weight:500}
+.cycle-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.bear-dot{background:var(--red)}
+.bull-dot{background:var(--green)}
+
+/* FILTER BAR */
+.filter-bar{display:flex;flex-wrap:wrap;align-items:center;gap:16px 20px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:28px}
+.filter-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.filter-label{font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--txt3);margin-right:2px}
+.chip{font-family:'DM Mono',monospace;font-size:11px;padding:6px 13px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--txt2);cursor:pointer;transition:all 0.15s}
+.chip:hover{border-color:var(--gold-dim);color:#fff}
+.chip.active{background:var(--gold);border-color:var(--gold);color:#07080b;font-weight:600}
+.chip-reset{margin-left:auto;color:var(--txt3);border-style:dashed}
+
+/* BITCOIN CORE CARD */
+.btc-core-card{background:linear-gradient(135deg,rgba(247,147,26,0.1),rgba(212,175,55,0.05));border:1px solid rgba(247,147,26,0.3);border-radius:14px;padding:28px;display:grid;grid-template-columns:1.4fr 1fr;gap:28px;margin-bottom:44px;align-items:center}
+.btc-core-badge{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;color:var(--btc);border:1px solid rgba(247,147,26,0.35);display:inline-block;padding:4px 10px;border-radius:4px;margin-bottom:10px}
+.btc-core-name{font-family:'Bebas Neue',sans-serif;font-size:38px;color:#fff;letter-spacing:0.03em;margin-bottom:10px}
+.btc-core-desc{font-size:13.5px;color:var(--txt2);line-height:1.65;font-weight:300}
+.btc-core-right{background:rgba(0,0,0,0.2);border-radius:10px;padding:18px}
+
+/* NARRATIVE BLOCKS */
+.narrative-block{margin-bottom:44px}
+.narrative-block.hidden-by-filter{display:none}
+.narrative-head{display:flex;gap:16px;margin-bottom:18px;align-items:flex-start}
+.narrative-num{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--gold-dim);line-height:1;flex-shrink:0}
+.narrative-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.03em;color:#fff;margin-bottom:5px}
+.narrative-desc{font-size:13px;color:var(--txt2);line-height:1.6;max-width:760px;font-weight:300}
+
+/* TAG ROW (conviction / risk chips on cards) */
+.tag-row{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.tag-chip{font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:0.03em;padding:4px 9px;border-radius:20px;border:1px solid;white-space:nowrap}
+.conv-highest{color:var(--gold);border-color:var(--gold-dim);background:rgba(212,175,55,0.1)}
+.conv-high{color:#E8C766;border-color:rgba(232,199,102,0.25);background:rgba(232,199,102,0.06)}
+.conv-moderate{color:var(--txt2);border-color:var(--border2);background:var(--surface2)}
+.risk-lowest{color:var(--green);border-color:rgba(0,200,120,0.25);background:rgba(0,200,120,0.08)}
+.risk-low{color:#7EDDB0;border-color:rgba(126,221,176,0.2);background:rgba(126,221,176,0.06)}
+.risk-moderate{color:var(--yellow);border-color:rgba(245,200,66,0.25);background:rgba(245,200,66,0.08)}
+.risk-highest{color:var(--red);border-color:rgba(255,82,82,0.25);background:rgba(255,82,82,0.08)}
+
+/* ASSET CARD FILTER + NEW CATEGORIES */
+.asset-card.hidden-by-filter{display:none}
+.asset-card.cat-token::before{background:#38BDF8}
+.asset-card.cat-meme::before{background:#FF8A5C}
+
+/* PROMO BANNER (narrative CTA) */
+.promo-banner{margin-top:18px;background:linear-gradient(135deg,rgba(212,175,55,0.08),rgba(0,200,120,0.05));border:1px solid var(--gold-dim);border-radius:12px;padding:22px 24px}
+.promo-badge{display:inline-block;font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:var(--gold);border:1px solid var(--gold-dim);padding:3px 10px;border-radius:3px;margin-bottom:10px}
+.promo-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.01em;color:#fff;margin-bottom:8px;line-height:1.2}
+.promo-text{font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:16px;max-width:640px;font-weight:300}
+.promo-btns{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.promo-btn{display:inline-flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:11px 20px;border-radius:8px;text-decoration:none;transition:opacity 0.2s,transform 0.15s}
+.promo-btn:hover{opacity:0.9;transform:scale(1.02)}
+.promo-btn-yt{background:#FF0000;color:#fff}
+.promo-btn-wa{background:#25D366;color:#07080b}
+.promo-note{font-family:'DM Mono',monospace;font-size:10.5px;color:var(--txt3);letter-spacing:0.02em}
+
+/* LOCKED / BLURRED CARDS (memecoins teaser) */
+.locked-card{position:relative;overflow:hidden}
+.locked-card .blurred{filter:blur(6px);user-select:none}
+.lock-overlay{position:absolute;inset:0;background:rgba(7,8,11,0.6);backdrop-filter:blur(1px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:8px}
+.lock-icon{font-size:26px}
+.lock-text{font-size:12px;color:#fff;line-height:1.5;max-width:200px;font-weight:500}
+.lock-btn{margin-top:6px;display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#07080b;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;padding:9px 16px;border-radius:7px;text-decoration:none}
+
+@media(max-width:700px){
+  .cycle-legend{grid-template-columns:1fr}
+  .cycle-track{height:auto;flex-direction:column;gap:8px}
+  .cycle-seg{padding:12px 8px}
+  .cycle-marker{display:none}
+  .btc-core-card{grid-template-columns:1fr}
+  .filter-bar{padding:12px 14px}
+}
 
 /* CTA */
 .cta-section{background:linear-gradient(135deg,rgba(0,200,120,0.06),rgba(212,175,55,0.04));border:1px solid rgba(0,200,120,0.15);border-radius:16px;padding:40px;text-align:center;margin-bottom:48px}
@@ -199,9 +266,9 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
       <div class="badge">📘 Bull Market Blueprint · 2026–2029</div>
       <h1 class="hero-title">MAXIMIZE YOUR RETURNS<br><span>IN THE NEXT BULL RUN</span></h1>
       <p class="hero-sub">
-        A complete strategy guide for the <strong>2026–2029 crypto bull market</strong>.
-        Recommended assets, buy zones, model portfolios, and accumulation timeline —
-        curated for Coinsats paid community members.
+        A complete, one-page thesis for the <strong>2026–2029 Bitcoin bull market</strong>.
+        The exact accumulation window, and the 12 assets across 6 narratives I'm building my own
+        portfolio around — built for anyone who believes Bitcoin is heading higher and wants to copy the playbook.
       </p>
     </div>
     <div class="profile-block">
@@ -241,22 +308,75 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
     </div>
   </div>
 
-  <!-- ASSETS SECTION -->
-  <div class="section-tag">💎 Recommended Assets</div>
-  <h2 class="section-title">BUY LIST · PRIORITY ORDER</h2>
-  <p class="section-sub">Ranked by conviction. Live prices update every 2 minutes.</p>
+  <!-- FULL CYCLE WINDOW -->
+  <div class="window-section">
+    <div class="section-tag">🗓️ The Full Window</div>
+    <h2 class="section-title">ACCUMULATE NOW · HARVEST LATER</h2>
+    <p class="section-sub">The entire cycle in one line — know exactly where we are and what to do next.</p>
 
-  <div class="assets-grid" id="assetsGrid">
-
-    <!-- 1. BTC -->
-    <div class="asset-card cat-btc">
-      <div class="card-top">
-        <span class="priority-badge">1</span>
-        <span class="cat-badge" style="color:#F7931A;border-color:rgba(247,147,26,0.3);background:rgba(247,147,26,0.08)">Store of Value</span>
+    <div class="cycle-track">
+      <div class="cycle-seg bear" style="flex:12">
+        <div class="cycle-seg-label">BEAR MARKET · ACCUMULATION</div>
+        <div class="cycle-seg-dates">6 Oct 2025 → 9 Oct 2026</div>
       </div>
-      <div class="asset-name">BTC</div>
-      <div class="asset-fullname">Bitcoin</div>
-      <div class="price-row">
+      <div class="cycle-seg bull" style="flex:35">
+        <div class="cycle-seg-label">BULL MARKET · DISTRIBUTION</div>
+        <div class="cycle-seg-dates">10 Oct 2026 → Aug–Sept 2029</div>
+      </div>
+      <div class="cycle-marker" id="cycleMarker" style="left:0%">
+        <div class="cycle-marker-dot"></div>
+        <div class="cycle-marker-label">YOU ARE HERE</div>
+      </div>
+    </div>
+
+    <div class="cycle-legend">
+      <div class="cycle-legend-item">
+        <span class="cycle-dot bear-dot"></span>
+        <div><strong>Bear Market — The Buy Window</strong><br>6 Oct 2025 to 9 Oct 2026. This is the accumulation phase. Every dip in this window is a gift — a wise investor builds their full position here, before the crowd returns.</div>
+      </div>
+      <div class="cycle-legend-item">
+        <span class="cycle-dot bull-dot"></span>
+        <div><strong>Bull Market — Hold &amp; Harvest</strong><br>10 Oct 2026 to Aug–Sept 2029 (likely next cycle top). Hold what you accumulated. Book profits in tranches as market euphoria builds toward the top.</div>
+      </div>
+    </div>
+
+    <div class="acc-note" style="margin-top:16px">
+      <strong>💡 The playbook:</strong> Invest aggressively <strong>before 9th October 2026</strong> — this is the perfect entry window. Then hold through the bull run and book profit between <strong>10th October 2026 and Aug–Sept 2029</strong>, as Bitcoin and everything correlated to it repeats the cycle.
+    </div>
+  </div>
+
+  <!-- ASSETS SECTION -->
+  <div class="section-tag">💎 Recommended Portfolio</div>
+  <h2 class="section-title">12 ASSETS · 6 NARRATIVES</h2>
+  <p class="section-sub">My complete thesis for this cycle. Put at least <strong style="color:#fff">50% of your portfolio in Bitcoin</strong> — the rest split across the 6 narratives below.</p>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">Conviction</span>
+      <button type="button" class="chip chip-conv" data-conv="highest">Highest</button>
+      <button type="button" class="chip chip-conv" data-conv="high">High</button>
+      <button type="button" class="chip chip-conv" data-conv="moderate">Moderate</button>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Risk</span>
+      <button type="button" class="chip chip-risk" data-risk="lowest">Lowest</button>
+      <button type="button" class="chip chip-risk" data-risk="low">Low</button>
+      <button type="button" class="chip chip-risk" data-risk="moderate">Moderate</button>
+      <button type="button" class="chip chip-risk" data-risk="highest">Highest</button>
+    </div>
+    <button type="button" class="chip chip-reset" id="filterReset">Reset filters</button>
+  </div>
+
+  <!-- BITCOIN — THE CORE HOLDING -->
+  <div class="btc-core-card">
+    <div class="btc-core-left">
+      <div class="btc-core-badge">CORE HOLDING · MIN 50% OF PORTFOLIO</div>
+      <div class="btc-core-name">₿ BITCOIN</div>
+      <div class="btc-core-desc">The primary asset. Every other asset on this page is a bet <em>on top of</em> Bitcoin — all directly or indirectly correlated to BTC's price. Put a minimum of 50% of your portfolio here before touching anything else, and DCA through the entire accumulation window below.</div>
+    </div>
+    <div class="btc-core-right">
+      <div class="price-row" style="margin:0 0 10px">
         <span class="live-price" id="price-btc">Loading…</span>
         <span class="price-change" id="chg-btc">—</span>
       </div>
@@ -265,442 +385,428 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
         <div class="buy-zone-val">$58,000 – $70,000 (DCA)</div>
       </div>
       <div class="status-badge" id="status-btc">—</div>
-      <div class="conviction-row">
-        <span class="conv-label">Conviction</span>
-        <div class="conv-dots">
-          <div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div>
-        </div>
+    </div>
+  </div>
+
+  <!-- NARRATIVE 1: BITCOIN TREASURY COMPANIES -->
+  <div class="narrative-block">
+    <div class="narrative-head">
+      <div class="narrative-num">01</div>
+      <div>
+        <div class="narrative-name">Bitcoin Treasury Companies</div>
+        <div class="narrative-desc">My highest-conviction narrative for this cycle. These companies raise capital to buy and hold Bitcoin on their balance sheet — accumulating even through the bear market — and are becoming leaders in the emerging digital credit market. MSTR, ASST and MTPLF are my three high-conviction picks.</div>
       </div>
-      <div class="asset-desc">Primary portfolio asset. Always recommend <strong style="color:#fff">50–70% of your crypto portfolio in BTC</strong>. DCA method strongly recommended. Aggressive buy between $58K–$70K.</div>
     </div>
 
-    <!-- 2. MSTR -->
-    <div class="asset-card cat-btc-stock">
-      <div class="card-top">
-        <span class="priority-badge">2</span>
-        <span class="cat-badge" style="color:var(--gold);border-color:var(--gold-dim);background:rgba(212,175,55,0.08)">BTC Treasury</span>
-      </div>
-      <div class="asset-name">MSTR</div>
-      <div class="asset-fullname">MicroStrategy / Strategy</div>
-      <div class="price-row">
-        <span class="live-price" id="price-mstr">Loading…</span>
-        <span class="price-change" id="chg-mstr">—</span>
-      </div>
-      <div class="buy-zone-wrap">
-        <div class="buy-zone-label">Buy Zone</div>
-        <div class="buy-zone-val">$100 – $140 (Aggressive)</div>
-      </div>
-      <div class="status-badge" id="status-mstr">—</div>
-      <div class="conviction-row">
-        <span class="conv-label">Conviction</span>
-        <div class="conv-dots">
-          <div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div>
+    <div class="assets-grid">
+
+      <!-- MSTR -->
+      <div class="asset-card cat-btc-stock" data-conv="highest" data-risk="low">
+        <div class="card-top">
+          <span class="priority-badge">🏦</span>
+          <span class="cat-badge" style="color:var(--gold);border-color:var(--gold-dim);background:rgba(212,175,55,0.08)">BTC Treasury</span>
         </div>
+        <div class="asset-name">MSTR</div>
+        <div class="asset-fullname">MicroStrategy / Strategy</div>
+        <div class="price-row">
+          <span class="live-price" id="price-mstr">Loading…</span>
+          <span class="price-change" id="chg-mstr">—</span>
+        </div>
+        <div class="buy-zone-wrap">
+          <div class="buy-zone-label">Buy Zone</div>
+          <div class="buy-zone-val">$100 – $140 (Aggressive)</div>
+        </div>
+        <div class="status-badge" id="status-mstr">—</div>
+        <div class="tag-row">
+          <span class="tag-chip conv-highest">⭐ Highest Conviction</span>
+          <span class="tag-chip risk-low">Low Risk</span>
+        </div>
+        <div class="asset-desc">Strongest Bitcoin treasury company in the market — <strong style="color:#fff">760,000+ BTC</strong> on the balance sheet and still accumulating through the bear market. Becoming a leader in digital credit. Buy on every dip.</div>
       </div>
-      <div class="asset-desc">High conviction Bitcoin treasury company holding <strong style="color:#fff">760,000 BTC</strong>. Buy on every dip. $100–$140 is aggressive buy zone.</div>
+
+      <!-- ASST -->
+      <div class="asset-card cat-btc-stock" data-conv="highest" data-risk="low">
+        <div class="card-top">
+          <span class="priority-badge">🏦</span>
+          <span class="cat-badge" style="color:var(--gold);border-color:var(--gold-dim);background:rgba(212,175,55,0.08)">BTC Treasury</span>
+        </div>
+        <div class="asset-name">ASST</div>
+        <div class="asset-fullname">Strive Inc</div>
+        <div class="price-row">
+          <span class="live-price" id="price-asst">Loading…</span>
+          <span class="price-change" id="chg-asst">—</span>
+        </div>
+        <div class="buy-zone-wrap">
+          <div class="buy-zone-label">Buy Zone</div>
+          <div class="buy-zone-val">Below $11 — very attractive now</div>
+        </div>
+        <div class="status-badge" id="status-asst">—</div>
+        <div class="tag-row">
+          <span class="tag-chip conv-highest">⭐ Highest Conviction</span>
+          <span class="tag-chip risk-low">Low Risk</span>
+        </div>
+        <div class="asset-desc">Strive Inc — <strong style="color:#fff">13,311 BTC</strong> on balance sheet, trading around 0.7× NAV. Micro-smallcap BTC treasury also expanding into digital credit issuance.</div>
+      </div>
+
+      <!-- MTPLF / Metaplanet -->
+      <div class="asset-card cat-btc-stock" data-conv="high" data-risk="moderate">
+        <div class="card-top">
+          <span class="priority-badge">🏦</span>
+          <span class="cat-badge" style="color:var(--gold);border-color:var(--gold-dim);background:rgba(212,175,55,0.08)">BTC Treasury</span>
+        </div>
+        <div class="asset-name">3350.T</div>
+        <div class="asset-fullname">Metaplanet (MTPLF · Tokyo)</div>
+        <div class="price-row">
+          <span class="live-price" id="price-meta">Loading…</span>
+          <span class="price-change" id="chg-meta">—</span>
+        </div>
+        <div class="buy-zone-wrap">
+          <div class="buy-zone-label">Buy Zone (¥ JPY)</div>
+          <div class="buy-zone-val">¥200 – ¥300 (Aggressive)</div>
+        </div>
+        <div class="status-badge" id="status-meta">—</div>
+        <div class="tag-row">
+          <span class="tag-chip conv-high">High Conviction</span>
+          <span class="tag-chip risk-moderate">Moderate Risk</span>
+        </div>
+        <div class="asset-desc">Best midcap alternative to MicroStrategy — <strong style="color:#fff">accumulating BTC aggressively</strong> through the bear market. Listed on the Tokyo Stock Exchange. Buy on every dip.</div>
+      </div>
+
     </div>
 
-    <!-- 3. Metaplanet -->
-    <div class="asset-card cat-btc-stock">
-      <div class="card-top">
-        <span class="priority-badge">3</span>
-        <span class="cat-badge" style="color:var(--gold);border-color:var(--gold-dim);background:rgba(212,175,55,0.08)">BTC Treasury</span>
+    <div class="promo-banner">
+      <div class="promo-badge">🎓 FREE TRAINING</div>
+      <div class="promo-title">Build a 1000% Portfolio With BTC Treasury Companies + Call Options</div>
+      <div class="promo-text">I made a full video series on exactly how I structure a Bitcoin-treasury-company portfolio — including call options — to target a 1000% return next cycle. Watch it in my YouTube members-only section.</div>
+      <div class="promo-btns">
+        <a class="promo-btn promo-btn-yt" href="https://www.youtube.com/@IamZubair/join" target="_blank" rel="noopener">▶ Join YouTube Members</a>
+        <a class="promo-btn promo-btn-wa" href="https://wa.me/971582213303?text=Hi%20Zubair%2C%20I%20want%20to%20subscribe%20yearly%20and%20get%20the%2020%25%20discount" target="_blank" rel="noopener">💬 Get 20% Off (Yearly)</a>
       </div>
-      <div class="asset-name">3350.T</div>
-      <div class="asset-fullname">Metaplanet (Tokyo)</div>
-      <div class="price-row">
-        <span class="live-price" id="price-meta">Loading…</span>
-        <span class="price-change" id="chg-meta">—</span>
+      <div class="promo-note">Contact +971 58 221 3303 to get a 20% discount and join the exclusive WhatsApp community when you subscribe yearly.</div>
+    </div>
+  </div>
+
+  <!-- NARRATIVE 2: STABLECOINS -->
+  <div class="narrative-block">
+    <div class="narrative-head">
+      <div class="narrative-num">02</div>
+      <div>
+        <div class="narrative-name">Stablecoins</div>
+        <div class="narrative-desc">The US passed the Genius Act in 2025 — stablecoins are becoming a core payment rail for the next cycle. CRCL and COIN are the two companies I'm most bullish on to benefit from this.</div>
       </div>
-      <div class="buy-zone-wrap">
-        <div class="buy-zone-label">Buy Zone (¥ JPY)</div>
-        <div class="buy-zone-val">¥200 – ¥300 (Aggressive)</div>
-      </div>
-      <div class="status-badge" id="status-meta">—</div>
-      <div class="conviction-row">
-        <span class="conv-label">Conviction</span>
-        <div class="conv-dots">
-          <div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot"></div>
-        </div>
-      </div>
-      <div class="asset-desc">Midcap alternative to MicroStrategy. <strong style="color:#fff">Listed on Tokyo Stock Exchange</strong>. Best midcap BTC treasury play. Buy on every dip.</div>
     </div>
 
-    <!-- 4. CRCL -->
-    <div class="asset-card cat-exchange">
-      <div class="card-top">
-        <span class="priority-badge">4</span>
-        <span class="cat-badge" style="color:#7ED6A8;border-color:rgba(126,214,168,0.3);background:rgba(126,214,168,0.07)">Stablecoin</span>
-      </div>
-      <div class="asset-name">CRCL</div>
-      <div class="asset-fullname">Circle Internet Group</div>
-      <div class="price-row">
-        <span class="live-price" id="price-crcl">Loading…</span>
-        <span class="price-change" id="chg-crcl">—</span>
-      </div>
-      <div class="buy-zone-wrap">
-        <div class="buy-zone-label">Buy Zone</div>
-        <div class="buy-zone-val">Below $100 — Recommended</div>
-      </div>
-      <div class="status-badge" id="status-crcl">—</div>
-      <div class="conviction-row">
-        <span class="conv-label">Conviction</span>
-        <div class="conv-dots">
-          <div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot"></div>
+    <div class="assets-grid">
+
+      <!-- CRCL -->
+      <div class="asset-card cat-exchange" data-conv="highest" data-risk="low">
+        <div class="card-top">
+          <span class="priority-badge">💵</span>
+          <span class="cat-badge" style="color:#7ED6A8;border-color:rgba(126,214,168,0.3);background:rgba(126,214,168,0.07)">Stablecoin</span>
         </div>
+        <div class="asset-name">CRCL</div>
+        <div class="asset-fullname">Circle Internet Group</div>
+        <div class="price-row">
+          <span class="live-price" id="price-crcl">Loading…</span>
+          <span class="price-change" id="chg-crcl">—</span>
+        </div>
+        <div class="buy-zone-wrap">
+          <div class="buy-zone-label">Buy Zone</div>
+          <div class="buy-zone-val">Below $100 — Recommended</div>
+        </div>
+        <div class="status-badge" id="status-crcl">—</div>
+        <div class="tag-row">
+          <span class="tag-chip conv-highest">⭐ Highest Conviction</span>
+          <span class="tag-chip risk-low">Low Risk</span>
+        </div>
+        <div class="asset-desc">Issuer of USDC. The Genius Act cements stablecoins as core US payment infrastructure next cycle — CRCL is a direct beneficiary. Buy dips, aggressive below $100.</div>
       </div>
-      <div class="asset-desc">Issuer of USDC — regulated USD stablecoin. <strong style="color:#fff">Recommended at $50, now ~$128</strong>. Buy dips, aggressive below $100.</div>
+
+      <!-- COIN -->
+      <div class="asset-card cat-exchange" data-conv="highest" data-risk="low">
+        <div class="card-top">
+          <span class="priority-badge">💵</span>
+          <span class="cat-badge" style="color:#7ED6A8;border-color:rgba(126,214,168,0.3);background:rgba(126,214,168,0.07)">Stablecoin</span>
+        </div>
+        <div class="asset-name">COIN</div>
+        <div class="asset-fullname">Coinbase Global</div>
+        <div class="price-row">
+          <span class="live-price" id="price-coin">Loading…</span>
+          <span class="price-change" id="chg-coin">—</span>
+        </div>
+        <div class="buy-zone-wrap">
+          <div class="buy-zone-label">Buy Zone</div>
+          <div class="buy-zone-val">$100 – $200 — Recommended</div>
+        </div>
+        <div class="status-badge" id="status-coin">—</div>
+        <div class="tag-row">
+          <span class="tag-chip conv-highest">⭐ Highest Conviction</span>
+          <span class="tag-chip risk-low">Low Risk</span>
+        </div>
+        <div class="asset-desc">Largest regulated US crypto exchange and a direct beneficiary of USDC profits under the Genius Act. Highly sensitive to BTC price. Buy dips below $200.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NARRATIVE 3: TOKENIZATION -->
+  <div class="narrative-block">
+    <div class="narrative-head">
+      <div class="narrative-num">03</div>
+      <div>
+        <div class="narrative-name">Tokenization</div>
+        <div class="narrative-desc">Real-world assets moving on-chain is one of the clearest structural trends this cycle. ONDO is my pick in this narrative.</div>
+      </div>
     </div>
 
-    <!-- 5. COIN -->
-    <div class="asset-card cat-exchange">
-      <div class="card-top">
-        <span class="priority-badge">5</span>
-        <span class="cat-badge" style="color:#7ED6A8;border-color:rgba(126,214,168,0.3);background:rgba(126,214,168,0.07)">Exchange</span>
-      </div>
-      <div class="asset-name">COIN</div>
-      <div class="asset-fullname">Coinbase Global</div>
-      <div class="price-row">
-        <span class="live-price" id="price-coin">Loading…</span>
-        <span class="price-change" id="chg-coin">—</span>
-      </div>
-      <div class="buy-zone-wrap">
-        <div class="buy-zone-label">Buy Zone</div>
-        <div class="buy-zone-val">$100 – $200 — Recommended</div>
-      </div>
-      <div class="status-badge" id="status-coin">—</div>
-      <div class="conviction-row">
-        <span class="conv-label">Conviction</span>
-        <div class="conv-dots">
-          <div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot"></div>
+    <div class="assets-grid">
+
+      <!-- ONDO -->
+      <div class="asset-card cat-token" data-conv="moderate" data-risk="moderate">
+        <div class="card-top">
+          <span class="priority-badge">🔗</span>
+          <span class="cat-badge" style="color:#38BDF8;border-color:rgba(56,189,248,0.3);background:rgba(56,189,248,0.08)">Tokenization</span>
         </div>
+        <div class="asset-name">ONDO</div>
+        <div class="asset-fullname">Ondo Finance</div>
+        <div class="price-row">
+          <span class="live-price" id="price-ondo">Loading…</span>
+          <span class="price-change" id="chg-ondo">—</span>
+        </div>
+        <div class="buy-zone-wrap">
+          <div class="buy-zone-label">Buy Zone</div>
+          <div class="buy-zone-val">Below $0.45 (DCA)</div>
+        </div>
+        <div class="status-badge" id="status-ondo">—</div>
+        <div class="tag-row">
+          <span class="tag-chip conv-moderate">Moderate Conviction</span>
+          <span class="tag-chip risk-moderate">Moderate Risk</span>
+        </div>
+        <div class="asset-desc">Leading real-world-asset tokenization protocol — a bet that tokenized treasuries and RWAs become a core on-chain use case next cycle. Accumulate on dips below $0.45.</div>
       </div>
-      <div class="asset-desc">Largest regulated US crypto exchange. <strong style="color:#fff">Direct beneficiary of USDC profits</strong>. Highly sensitive to BTC price. Buy dips below $200.</div>
+
+    </div>
+  </div>
+
+  <!-- NARRATIVE 4: PERP DEXES -->
+  <div class="narrative-block">
+    <div class="narrative-head">
+      <div class="narrative-num">04</div>
+      <div>
+        <div class="narrative-name">Perp DEXes</div>
+        <div class="narrative-desc">On-chain derivatives trading keeps taking share from centralized exchanges. I'm bullish on HYPE and ASTER leading this narrative next cycle.</div>
+      </div>
     </div>
 
-    <!-- 6. ASST -->
-    <div class="asset-card cat-btc-stock">
-      <div class="card-top">
-        <span class="priority-badge">6</span>
-        <span class="cat-badge" style="color:var(--gold);border-color:var(--gold-dim);background:rgba(212,175,55,0.08)">BTC Treasury</span>
-      </div>
-      <div class="asset-name">ASST</div>
-      <div class="asset-fullname">Strive Inc</div>
-      <div class="price-row">
-        <span class="live-price" id="price-asst">Loading…</span>
-        <span class="price-change" id="chg-asst">—</span>
-      </div>
-      <div class="buy-zone-wrap">
-        <div class="buy-zone-label">Buy Zone</div>
-        <div class="buy-zone-val">Below $11 — very attractive now</div>
-      </div>
-      <div class="status-badge" id="status-asst">—</div>
-      <div class="conviction-row">
-        <span class="conv-label">Conviction</span>
-        <div class="conv-dots">
-          <div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot"></div><div class="conv-dot"></div>
+    <div class="assets-grid">
+
+      <!-- HYPE -->
+      <div class="asset-card cat-defi" data-conv="highest" data-risk="moderate">
+        <div class="card-top">
+          <span class="priority-badge">⚡</span>
+          <span class="cat-badge" style="color:#E6007A;border-color:rgba(230,0,122,0.3);background:rgba(230,0,122,0.07)">Perp DEX</span>
         </div>
+        <div class="asset-name">HYPE</div>
+        <div class="asset-fullname">Hyperliquid</div>
+        <div class="price-row">
+          <span class="live-price" id="price-hype">Loading…</span>
+          <span class="price-change" id="chg-hype">—</span>
+        </div>
+        <div class="buy-zone-wrap">
+          <div class="buy-zone-label">Buy Zone</div>
+          <div class="buy-zone-val">Below $25 (Aggressive)</div>
+        </div>
+        <div class="status-badge" id="status-hype">—</div>
+        <div class="tag-row">
+          <span class="tag-chip conv-highest">⭐ Highest Conviction</span>
+          <span class="tag-chip risk-moderate">Moderate Risk</span>
+        </div>
+        <div class="asset-desc"><strong style="color:#fff">Largest decentralized perp DEX</strong> by volume — dominant player in on-chain derivatives. Below $25 is the aggressive buy zone.</div>
       </div>
-      <div class="asset-desc">Strive Inc — <strong style="color:#fff">13,311 BTC</strong> on balance sheet. $700M Mcap, trading at 0.7× NAV. Micro smallcap BTC treasury. Also issuing digital credit.</div>
+
+      <!-- ASTER -->
+      <div class="asset-card cat-defi" data-conv="highest" data-risk="moderate">
+        <div class="card-top">
+          <span class="priority-badge">⚡</span>
+          <span class="cat-badge" style="color:#E6007A;border-color:rgba(230,0,122,0.3);background:rgba(230,0,122,0.07)">Perp DEX</span>
+        </div>
+        <div class="asset-name">ASTER</div>
+        <div class="asset-fullname">Aster DEX — Binance Backed</div>
+        <div class="price-row">
+          <span class="live-price" id="price-astr">Loading…</span>
+          <span class="price-change" id="chg-astr">—</span>
+        </div>
+        <div class="buy-zone-wrap">
+          <div class="buy-zone-label">Buy Zone</div>
+          <div class="buy-zone-val">Below $0.50 (Aggressive)</div>
+        </div>
+        <div class="status-badge" id="status-astr">—</div>
+        <div class="tag-row">
+          <span class="tag-chip conv-highest">⭐ Highest Conviction</span>
+          <span class="tag-chip risk-moderate">Moderate Risk</span>
+        </div>
+        <div class="asset-desc">Binance-backed decentralized perp DEX with <strong style="color:#fff">privacy features</strong> and its own L1 mainnet. Below $0.50 is highly recommended.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NARRATIVE 5: L1 BLOCKCHAINS -->
+  <div class="narrative-block">
+    <div class="narrative-head">
+      <div class="narrative-num">05</div>
+      <div>
+        <div class="narrative-name">Layer 1 Blockchains</div>
+        <div class="narrative-desc">I believe ETH, BNB and SOL continue to be the dominant L1 blockchains next cycle — diversifying across all three rather than picking one winner.</div>
+      </div>
     </div>
 
-    <!-- 7. BMNR -->
-    <div class="asset-card cat-eth">
-      <div class="card-top">
-        <span class="priority-badge">7</span>
-        <span class="cat-badge" style="color:#627EEA;border-color:rgba(98,126,234,0.3);background:rgba(98,126,234,0.08)">ETH Treasury</span>
-      </div>
-      <div class="asset-name">BMNR</div>
-      <div class="asset-fullname">Bitmine Immersion Technologies</div>
-      <div class="price-row">
-        <span class="live-price" id="price-bmnr">Loading…</span>
-        <span class="price-change" id="chg-bmnr">—</span>
-      </div>
-      <div class="buy-zone-wrap">
-        <div class="buy-zone-label">Buy Zone</div>
-        <div class="buy-zone-val">$10 – $15 only</div>
-      </div>
-      <div class="status-badge" id="status-bmnr">—</div>
-      <div class="conviction-row">
-        <span class="conv-label">Conviction</span>
-        <div class="conv-dots">
-          <div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot"></div><div class="conv-dot"></div>
+    <div class="assets-grid">
+
+      <!-- ETH -->
+      <div class="asset-card cat-eth" data-conv="moderate" data-risk="moderate">
+        <div class="card-top">
+          <span class="priority-badge">⛓️</span>
+          <span class="cat-badge" style="color:#627EEA;border-color:rgba(98,126,234,0.3);background:rgba(98,126,234,0.08)">Layer 1</span>
         </div>
+        <div class="asset-name">ETH</div>
+        <div class="asset-fullname">Ethereum</div>
+        <div class="price-row">
+          <span class="live-price" id="price-eth">Loading…</span>
+          <span class="price-change" id="chg-eth">—</span>
+        </div>
+        <div class="buy-zone-wrap">
+          <div class="buy-zone-label">Buy Zone</div>
+          <div class="buy-zone-val">$1,000 – $1,500 only</div>
+        </div>
+        <div class="status-badge" id="status-eth">—</div>
+        <div class="tag-row">
+          <span class="tag-chip conv-moderate">Moderate Conviction</span>
+          <span class="tag-chip risk-moderate">Moderate Risk</span>
+        </div>
+        <div class="asset-desc">Largest regulated public blockchain with <strong style="color:#fff">ETF support</strong> and institutional-grade infrastructure. Strict buy zone: $1,000–$1,500.</div>
       </div>
-      <div class="asset-desc">MicroStrategy-style <strong style="color:#fff">Ethereum treasury</strong> with 4.53M ETH. Best choice if you want altcoin treasury exposure. Strict buy zone: $10–$15 only.</div>
+
+      <!-- BNB -->
+      <div class="asset-card cat-bnb" data-conv="highest" data-risk="moderate">
+        <div class="card-top">
+          <span class="priority-badge">⛓️</span>
+          <span class="cat-badge" style="color:#F3BA2F;border-color:rgba(243,186,47,0.3);background:rgba(243,186,47,0.07)">Layer 1</span>
+        </div>
+        <div class="asset-name">BNB</div>
+        <div class="asset-fullname">BNB Chain / Binance</div>
+        <div class="price-row">
+          <span class="live-price" id="price-bnb">Loading…</span>
+          <span class="price-change" id="chg-bnb">—</span>
+        </div>
+        <div class="buy-zone-wrap">
+          <div class="buy-zone-label">Buy Zone</div>
+          <div class="buy-zone-val">Below $500</div>
+        </div>
+        <div class="status-badge" id="status-bnb">—</div>
+        <div class="tag-row">
+          <span class="tag-chip conv-highest">⭐ Highest Conviction</span>
+          <span class="tag-chip risk-moderate">Moderate Risk</span>
+        </div>
+        <div class="asset-desc">Backed by <strong style="color:#fff">Binance</strong>, the largest exchange token with strong utility and an active buy-back mechanism. Accumulate below $500.</div>
+      </div>
+
+      <!-- SOL -->
+      <div class="asset-card cat-sol" data-conv="moderate" data-risk="moderate">
+        <div class="card-top">
+          <span class="priority-badge">⛓️</span>
+          <span class="cat-badge" style="color:#9945FF;border-color:rgba(153,69,255,0.3);background:rgba(153,69,255,0.08)">Layer 1</span>
+        </div>
+        <div class="asset-name">SOL</div>
+        <div class="asset-fullname">Solana</div>
+        <div class="price-row">
+          <span class="live-price" id="price-sol">Loading…</span>
+          <span class="price-change" id="chg-sol">—</span>
+        </div>
+        <div class="buy-zone-wrap">
+          <div class="buy-zone-label">Buy Zone</div>
+          <div class="buy-zone-val">Below $60</div>
+        </div>
+        <div class="status-badge" id="status-sol">—</div>
+        <div class="tag-row">
+          <span class="tag-chip conv-moderate">Moderate Conviction</span>
+          <span class="tag-chip risk-moderate">Moderate Risk</span>
+        </div>
+        <div class="asset-desc">Most retail-friendly major L1 — <strong style="color:#fff">massive memecoin volume</strong> keeps fees and activity high. Target zone: below $60.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NARRATIVE 6: MEMECOINS (teaser — unlock via WhatsApp broadcast) -->
+  <div class="narrative-block">
+    <div class="narrative-head">
+      <div class="narrative-num">06</div>
+      <div>
+        <div class="narrative-name">Memecoins</div>
+        <div class="narrative-desc">I strongly believe memecoins will be the #1 retail narrative next cycle, again. The next 100x opportunity is almost always found in memecoins — high risk, high return. I share my live short-term buy/sell calls only inside my WhatsApp broadcast group.</div>
+      </div>
     </div>
 
-    <!-- 8. ETH -->
-    <div class="asset-card cat-eth">
-      <div class="card-top">
-        <span class="priority-badge">8</span>
-        <span class="cat-badge" style="color:#627EEA;border-color:rgba(98,126,234,0.3);background:rgba(98,126,234,0.08)">Layer 1</span>
-      </div>
-      <div class="asset-name">ETH</div>
-      <div class="asset-fullname">Ethereum</div>
-      <div class="price-row">
-        <span class="live-price" id="price-eth">Loading…</span>
-        <span class="price-change" id="chg-eth">—</span>
-      </div>
-      <div class="buy-zone-wrap">
-        <div class="buy-zone-label">Buy Zone</div>
-        <div class="buy-zone-val">$1,000 – $1,500 only</div>
-      </div>
-      <div class="status-badge" id="status-eth">—</div>
-      <div class="conviction-row">
-        <span class="conv-label">Conviction</span>
-        <div class="conv-dots">
-          <div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot"></div><div class="conv-dot"></div>
+    <div class="assets-grid">
+
+      <div class="asset-card cat-meme locked-card" data-conv="highest" data-risk="highest">
+        <div class="card-top">
+          <span class="priority-badge">🐸</span>
+          <span class="cat-badge" style="color:#FF8A5C;border-color:rgba(255,138,92,0.3);background:rgba(255,138,92,0.08)">Memecoin</span>
         </div>
-      </div>
-      <div class="asset-desc">Largest regulated public blockchain. <strong style="color:#fff">ETF support</strong>, institutional grade. Strict buy zone: $1,000–$1,500. Do not chase above zone.</div>
-    </div>
-
-    <!-- 9. BNB -->
-    <div class="asset-card cat-bnb">
-      <div class="card-top">
-        <span class="priority-badge">9</span>
-        <span class="cat-badge" style="color:#F3BA2F;border-color:rgba(243,186,47,0.3);background:rgba(243,186,47,0.07)">Exchange Token</span>
-      </div>
-      <div class="asset-name">BNB</div>
-      <div class="asset-fullname">BNB Chain / Binance</div>
-      <div class="price-row">
-        <span class="live-price" id="price-bnb">Loading…</span>
-        <span class="price-change" id="chg-bnb">—</span>
-      </div>
-      <div class="buy-zone-wrap">
-        <div class="buy-zone-label">Buy Zone</div>
-        <div class="buy-zone-val">Below $500</div>
-      </div>
-      <div class="status-badge" id="status-bnb">—</div>
-      <div class="conviction-row">
-        <span class="conv-label">Conviction</span>
-        <div class="conv-dots">
-          <div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot"></div><div class="conv-dot"></div>
+        <div class="asset-name blurred">••••</div>
+        <div class="asset-fullname blurred">Locked pick #1</div>
+        <div class="price-row blurred">
+          <span class="live-price">$0.00000••</span>
+          <span class="price-change up">+••%</span>
         </div>
-      </div>
-      <div class="asset-desc">Largest crypto exchange token backed by <strong style="color:#fff">Binance</strong>. Strong utility and buy-back mechanism. Accumulate below $500.</div>
-    </div>
-
-    <!-- 10. SOL -->
-    <div class="asset-card cat-sol">
-      <div class="card-top">
-        <span class="priority-badge">10</span>
-        <span class="cat-badge" style="color:#9945FF;border-color:rgba(153,69,255,0.3);background:rgba(153,69,255,0.08)">Layer 1</span>
-      </div>
-      <div class="asset-name">SOL</div>
-      <div class="asset-fullname">Solana</div>
-      <div class="price-row">
-        <span class="live-price" id="price-sol">Loading…</span>
-        <span class="price-change" id="chg-sol">—</span>
-      </div>
-      <div class="buy-zone-wrap">
-        <div class="buy-zone-label">Buy Zone</div>
-        <div class="buy-zone-val">Below $60</div>
-      </div>
-      <div class="status-badge" id="status-sol">—</div>
-      <div class="conviction-row">
-        <span class="conv-label">Conviction</span>
-        <div class="conv-dots">
-          <div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot"></div><div class="conv-dot"></div>
+        <div class="buy-zone-wrap blurred">
+          <div class="buy-zone-label">Buy Zone</div>
+          <div class="buy-zone-val">•••••••</div>
         </div>
-      </div>
-      <div class="asset-desc">Most retail-friendly blockchain. <strong style="color:#fff">Massive memecoin volume</strong> drives fees and activity. Below $60 is the target accumulation zone.</div>
-    </div>
-
-    <!-- 11. ASTR -->
-    <div class="asset-card cat-defi">
-      <div class="card-top">
-        <span class="priority-badge">11</span>
-        <span class="cat-badge" style="color:#E6007A;border-color:rgba(230,0,122,0.3);background:rgba(230,0,122,0.07)">DeFi / Perp DEX</span>
-      </div>
-      <div class="asset-name">ASTER</div>
-      <div class="asset-fullname">Aster DEX — Binance Backed</div>
-      <div class="price-row">
-        <span class="live-price" id="price-astr">Loading…</span>
-        <span class="price-change" id="chg-astr">—</span>
-      </div>
-      <div class="buy-zone-wrap">
-        <div class="buy-zone-label">Buy Zone</div>
-        <div class="buy-zone-val">Below $0.50 (Aggressive)</div>
-      </div>
-      <div class="status-badge" id="status-astr">—</div>
-      <div class="conviction-row">
-        <span class="conv-label">Conviction</span>
-        <div class="conv-dots">
-          <div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot"></div><div class="conv-dot"></div>
+        <div class="tag-row blurred">
+          <span class="tag-chip conv-highest">⭐ Highest Conviction</span>
+          <span class="tag-chip risk-highest">Highest Risk</span>
         </div>
-      </div>
-      <div class="asset-desc">Binance-backed decentralized perp DEX with <strong style="color:#fff">privacy features</strong>. Own L1 mainnet launched. Below $0.50 highly recommended.</div>
-    </div>
-
-    <!-- 12. HYPE -->
-    <div class="asset-card cat-defi">
-      <div class="card-top">
-        <span class="priority-badge">12</span>
-        <span class="cat-badge" style="color:#E6007A;border-color:rgba(230,0,122,0.3);background:rgba(230,0,122,0.07)">DeFi / Perp DEX</span>
-      </div>
-      <div class="asset-name">HYPE</div>
-      <div class="asset-fullname">Hyperliquid</div>
-      <div class="price-row">
-        <span class="live-price" id="price-hype">Loading…</span>
-        <span class="price-change" id="chg-hype">—</span>
-      </div>
-      <div class="buy-zone-wrap">
-        <div class="buy-zone-label">Buy Zone</div>
-        <div class="buy-zone-val">Below $25 (Aggressive)</div>
-      </div>
-      <div class="status-badge" id="status-hype">—</div>
-      <div class="conviction-row">
-        <span class="conv-label">Conviction</span>
-        <div class="conv-dots">
-          <div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot filled"></div><div class="conv-dot"></div><div class="conv-dot"></div>
-        </div>
-      </div>
-      <div class="asset-desc"><strong style="color:#fff">Largest decentralized perp DEX</strong> by volume. Dominant player in on-chain derivatives. Below $25 is aggressive buy zone.</div>
-    </div>
-
-  </div><!-- /assets-grid -->
-
-  <!-- MODEL PORTFOLIOS -->
-  <div class="portfolios-section">
-    <div class="section-tag">📊 Model Portfolios</div>
-    <h2 class="section-title">ALLOCATIONS BY RISK LEVEL</h2>
-    <p class="section-sub">Choose the portfolio that matches your risk tolerance. All allocations are % of total crypto portfolio.</p>
-
-    <div class="portfolio-list">
-
-      <!-- 1 Bitcoin Maxi -->
-      <div class="portfolio-card">
-        <div class="portfolio-header">
-          <div class="portfolio-risk">
-            <span class="risk-num">1</span>
-            <span class="risk-name">Bitcoin Maxi</span>
-            <span class="risk-badge rb-vlow">Very Low Risk</span>
-          </div>
-        </div>
-        <div class="portfolio-body">
-          <div class="alloc-bar">
-            <div class="alloc-seg" style="flex:75;background:#F7931A">75% BTC</div>
-            <div class="alloc-seg" style="flex:25;background:#D4AF37">25% MSTR</div>
-          </div>
-          <div class="alloc-legend">
-            <div class="leg-item"><div class="leg-dot" style="background:#F7931A"></div>BTC 75%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#D4AF37"></div>MSTR 25%</div>
-          </div>
+        <div class="asset-desc blurred">This is a short-term momentum pick shared with my broadcast group, with entry and exit levels updated live as the trade develops.</div>
+        <div class="lock-overlay">
+          <div class="lock-icon">🔒</div>
+          <div class="lock-text">Unlock live memecoin picks + short-term buy/sell calls</div>
+          <a class="lock-btn" href="https://chat.whatsapp.com/GtDO76JmpCOGd6djN2Yd7G?s=cl&amp;p=i&amp;mlu=4&amp;amv=1" target="_blank" rel="noopener">Join Broadcast Group</a>
         </div>
       </div>
 
-      <!-- 2 Bitcoin & BTC Treasury -->
-      <div class="portfolio-card">
-        <div class="portfolio-header">
-          <div class="portfolio-risk">
-            <span class="risk-num">2</span>
-            <span class="risk-name">Bitcoin &amp; BTC Treasury</span>
-            <span class="risk-badge rb-low">Low Risk</span>
-          </div>
+      <div class="asset-card cat-meme locked-card" data-conv="highest" data-risk="highest">
+        <div class="card-top">
+          <span class="priority-badge">🐸</span>
+          <span class="cat-badge" style="color:#FF8A5C;border-color:rgba(255,138,92,0.3);background:rgba(255,138,92,0.08)">Memecoin</span>
         </div>
-        <div class="portfolio-body">
-          <div class="alloc-bar">
-            <div class="alloc-seg" style="flex:60;background:#F7931A">60% BTC</div>
-            <div class="alloc-seg" style="flex:25;background:#D4AF37">25%</div>
-            <div class="alloc-seg" style="flex:10;background:#7F77DD">10%</div>
-            <div class="alloc-seg" style="flex:5;background:#1D9E75">5%</div>
-          </div>
-          <div class="alloc-legend">
-            <div class="leg-item"><div class="leg-dot" style="background:#F7931A"></div>BTC 60%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#D4AF37"></div>MSTR 25%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#7F77DD"></div>Metaplanet 10%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#1D9E75"></div>ASST 5%</div>
-          </div>
+        <div class="asset-name blurred">••••</div>
+        <div class="asset-fullname blurred">Locked pick #2</div>
+        <div class="price-row blurred">
+          <span class="live-price">$0.00000••</span>
+          <span class="price-change up">+••%</span>
         </div>
-      </div>
-
-      <!-- 3 Bitcoin & Crypto Stocks -->
-      <div class="portfolio-card">
-        <div class="portfolio-header">
-          <div class="portfolio-risk">
-            <span class="risk-num">3</span>
-            <span class="risk-name">Bitcoin &amp; Crypto Stocks</span>
-            <span class="risk-badge rb-med">Medium Risk</span>
-          </div>
+        <div class="buy-zone-wrap blurred">
+          <div class="buy-zone-label">Buy Zone</div>
+          <div class="buy-zone-val">•••••••</div>
         </div>
-        <div class="portfolio-body">
-          <div class="alloc-bar">
-            <div class="alloc-seg" style="flex:50;background:#F7931A">50% BTC</div>
-            <div class="alloc-seg" style="flex:20;background:#D4AF37">20%</div>
-            <div class="alloc-seg" style="flex:10;background:#00A651;color:rgba(0,0,0,0.7)">10%</div>
-            <div class="alloc-seg" style="flex:10;background:#0052FF">10%</div>
-            <div class="alloc-seg" style="flex:5;background:#627EEA">5%</div>
-            <div class="alloc-seg" style="flex:5;background:#1D9E75">5%</div>
-          </div>
-          <div class="alloc-legend">
-            <div class="leg-item"><div class="leg-dot" style="background:#F7931A"></div>BTC 50%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#D4AF37"></div>MSTR 20%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#00A651"></div>CRCL 10%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#0052FF"></div>COIN 10%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#627EEA"></div>BMNR 5%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#1D9E75"></div>ASST 5%</div>
-          </div>
+        <div class="tag-row blurred">
+          <span class="tag-chip conv-highest">⭐ Highest Conviction</span>
+          <span class="tag-chip risk-highest">Highest Risk</span>
         </div>
-      </div>
-
-      <!-- 4 High Risk -->
-      <div class="portfolio-card">
-        <div class="portfolio-header">
-          <div class="portfolio-risk">
-            <span class="risk-num">4</span>
-            <span class="risk-name">Bitcoin &amp; Crypto Stocks</span>
-            <span class="risk-badge rb-high">High Risk</span>
-          </div>
-        </div>
-        <div class="portfolio-body">
-          <div class="alloc-bar">
-            <div class="alloc-seg" style="flex:50;background:#F7931A">50% BTC</div>
-            <div class="alloc-seg" style="flex:25;background:#627EEA">25%</div>
-            <div class="alloc-seg" style="flex:15;background:#7F77DD">15%</div>
-            <div class="alloc-seg" style="flex:10;background:#1D9E75">10%</div>
-          </div>
-          <div class="alloc-legend">
-            <div class="leg-item"><div class="leg-dot" style="background:#F7931A"></div>BTC 50%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#627EEA"></div>BMNR 25%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#7F77DD"></div>Metaplanet 15%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#1D9E75"></div>ASST 10%</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 5 Degen -->
-      <div class="portfolio-card">
-        <div class="portfolio-header">
-          <div class="portfolio-risk">
-            <span class="risk-num">5</span>
-            <span class="risk-name">Bitcoin &amp; Crypto</span>
-            <span class="risk-badge rb-degen">Degen Risk</span>
-          </div>
-        </div>
-        <div class="portfolio-body">
-          <div class="alloc-bar">
-            <div class="alloc-seg" style="flex:25;background:#F7931A">25%</div>
-            <div class="alloc-seg" style="flex:25;background:#627EEA">25%</div>
-            <div class="alloc-seg" style="flex:15;background:#F3BA2F;color:rgba(0,0,0,0.7)">15%</div>
-            <div class="alloc-seg" style="flex:15;background:#9945FF">15%</div>
-            <div class="alloc-seg" style="flex:10;background:#E6007A">10%</div>
-            <div class="alloc-seg" style="flex:10;background:#1DA462">10%</div>
-          </div>
-          <div class="alloc-legend">
-            <div class="leg-item"><div class="leg-dot" style="background:#F7931A"></div>BTC 25%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#627EEA"></div>ETH 25%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#F3BA2F"></div>BNB 15%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#9945FF"></div>SOL 15%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#E6007A"></div>ASTR 10%</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#1DA462"></div>HYPE 10%</div>
-          </div>
+        <div class="asset-desc blurred">This is a short-term momentum pick shared with my broadcast group, with entry and exit levels updated live as the trade develops.</div>
+        <div class="lock-overlay">
+          <div class="lock-icon">🔒</div>
+          <div class="lock-text">Unlock live memecoin picks + short-term buy/sell calls</div>
+          <a class="lock-btn" href="https://chat.whatsapp.com/GtDO76JmpCOGd6djN2Yd7G?s=cl&amp;p=i&amp;mlu=4&amp;amv=1" target="_blank" rel="noopener">Join Broadcast Group</a>
         </div>
       </div>
 
     </div>
-  </div><!-- /portfolios-section -->
+  </div>
+
 
   <!-- CTA -->
   <div class="cta-section">
@@ -714,11 +820,12 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
 
   <!-- DISCLAIMER -->
   <div class="disclaimer">
-    <strong>Important Disclaimer:</strong> This page is for educational and informational purposes only and is intended exclusively for Coinsats paid community members.
+    <strong>Important Disclaimer:</strong> This is not investment advice and is for educational and informational purposes only.
     Nothing on this page constitutes financial advice, investment recommendations, or solicitation to buy or sell any asset.
-    All buy zones and allocations are personal views and strategies. Past performance does not guarantee future results.
+    All buy zones, conviction levels, risk ratings and narratives are personal views and strategies. Past performance does not guarantee future results.
     Cryptocurrency and equity investments carry significant risk including the risk of total loss.
-    Please conduct your own research (DYOR) before making any investment decisions.
+    I may or may not hold positions in some or all of the assets mentioned on this page.
+    Always do your own extra research (DYOR) and invest at your own risk before making any investment decisions.
     <br><br>
     Zubair Abdul Jabbar is an <strong>SCA (Securities and Commodities Authority) Authorized Financial Influencer</strong> in the UAE.
     License details available at <a href="https://www.coinsats.io" style="color:var(--gold);text-decoration:none">www.coinsats.io</a> · +971 58 221 3303
@@ -748,14 +855,68 @@ function updateBearProgress() {
 }
 updateBearProgress();
 
+// ── CYCLE WINDOW MARKER ──
+function updateCycleMarker() {
+  const start = new Date('2025-10-06T00:00:00');
+  const end   = new Date('2029-09-01T00:00:00');
+  const now   = new Date();
+  const pct = Math.min(100, Math.max(0, ((now - start) / (end - start)) * 100));
+  const marker = document.getElementById('cycleMarker');
+  if (marker) marker.style.left = pct.toFixed(2) + '%';
+}
+updateCycleMarker();
+
+// ── CONVICTION / RISK FILTER ──
+function initFilters() {
+  const convChips = Array.from(document.querySelectorAll('.chip-conv'));
+  const riskChips = Array.from(document.querySelectorAll('.chip-risk'));
+  const resetBtn  = document.getElementById('filterReset');
+  if (!convChips.length && !riskChips.length) return;
+
+  function activeValues(chips, attr) {
+    return chips.filter(c => c.classList.contains('active')).map(c => c.dataset[attr]);
+  }
+
+  function applyFilters() {
+    const activeConv = activeValues(convChips, 'conv');
+    const activeRisk = activeValues(riskChips, 'risk');
+    document.querySelectorAll('.asset-card[data-conv]').forEach(card => {
+      const convOk = activeConv.length === 0 || activeConv.includes(card.dataset.conv);
+      const riskOk = activeRisk.length === 0 || activeRisk.includes(card.dataset.risk);
+      card.classList.toggle('hidden-by-filter', !(convOk && riskOk));
+    });
+    document.querySelectorAll('.narrative-block').forEach(block => {
+      const cards = Array.from(block.querySelectorAll('.asset-card[data-conv]'));
+      const anyVisible = cards.some(c => !c.classList.contains('hidden-by-filter'));
+      block.classList.toggle('hidden-by-filter', cards.length > 0 && !anyVisible);
+    });
+  }
+
+  [...convChips, ...riskChips].forEach(chip => {
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('active');
+      applyFilters();
+    });
+  });
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      [...convChips, ...riskChips].forEach(c => c.classList.remove('active'));
+      applyFilters();
+    });
+  }
+}
+initFilters();
+
 // ── PRICE DATA CONFIG ──
 const cryptoMap = {
   btc:  { id:'bitcoin',       buyLow:58000,   buyHigh:70000   },
   eth:  { id:'ethereum',      buyLow:1000,    buyHigh:1500    },
   bnb:  { id:'binancecoin',   buyLow:0,       buyHigh:500     },
   sol:  { id:'solana',        buyLow:0,       buyHigh:60      },
-  astr: { id:'aster-2',         buyLow:0,       buyHigh:0.5     },
+  astr: { id:'aster-2',       buyLow:0,       buyHigh:0.5     },
   hype: { id:'hyperliquid',   buyLow:0,       buyHigh:25      },
+  ondo: { id:'ondo-finance',  buyLow:0,       buyHigh:0.45    },
 };
 
 const stockMap = {
@@ -764,7 +925,6 @@ const stockMap = {
   crcl: { sym:'CRCL',   buyLow:0,    buyHigh:100, prefix:'$' },
   coin: { sym:'COIN',   buyLow:100,  buyHigh:200, prefix:'$' },
   asst: { sym:'ASST',   buyLow:0,    buyHigh:11,  prefix:'$' },
-  bmnr: { sym:'BMNR',   buyLow:10,   buyHigh:15,  prefix:'$' },
 };
 
 // ── STATUS HELPER ──
