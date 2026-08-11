@@ -701,8 +701,8 @@ section{scroll-margin-top:74px}
   <!-- ═══ SUPPORT / MAIN CTA ═══ -->
   <section id="support">
     <div class="sec-tag">🤝 Need More Support?</div>
-    <h2 class="sec-title">GO DEEPER WITH ME</h2>
-    <p class="sec-sub">Two ways to get the full research, position sizing and ongoing updates on these five stocks.</p>
+    <h2 class="sec-title">JOIN MY <span>PRIVATE COMMUNITY</span></h2>
+    <p class="sec-sub">Two ways to get the full stock research, position sizing and ongoing updates on these five stocks — as well as future recommendations.</p>
 
     <div class="cta">
       <div class="cta-in">
@@ -806,7 +806,7 @@ updateCycle();
 const stockMap = {
   mstr : { sym:'MSTR',  buyHigh:120, prefix:'$' },
   asst : { sym:'ASST',  buyHigh:15,  prefix:'$' },
-  mtplf: { sym:'MTPLF', buyHigh:2,   prefix:'$', alt:'3350.T' },
+  mtplf: { sym:'MTPLF', buyHigh:2,   prefix:'$' },
   crcl : { sym:'CRCL',  buyHigh:75,  prefix:'$' },
   coin : { sym:'COIN',  buyHigh:175, prefix:'$' },
 };
@@ -851,7 +851,7 @@ function applyPrice(key, price, change, prefix){
 }
 
 // ─────────── FINNHUB KEY (free key from https://finnhub.io) ───────────
-const FINNHUB_KEY = 'd73d2chr01qjjol2ju30d73d2chr01qjjol2ju3g';
+const FINNHUB_KEY = 'd9tkt71r01qujo6l61s0d9tkt71r01qujo6l61sg';
 
 async function fetchSingleStock(key, cfg, symOverride){
   const sym = symOverride || cfg.sym;
