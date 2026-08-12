@@ -218,6 +218,33 @@ section{scroll-margin-top:74px}
 .cta-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
 .cta-note{font-family:'DM Mono',monospace;font-size:11.5px;color:rgba(255,255,255,0.5);margin-top:16px;line-height:1.7}
 
+/* members preview */
+.cta-split{display:grid;grid-template-columns:1.02fr .98fr;gap:38px;align-items:center}
+.cta-split .cta-in{max-width:none}
+.yt-frame{position:relative;z-index:2;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.16);
+  box-shadow:0 20px 50px rgba(0,0,0,0.42);background:#0F1116}
+.yt-frame img{display:block;width:100%;height:auto}
+.yt-bar{display:flex;align-items:center;gap:7px;padding:9px 13px;background:#15171D;border-bottom:1px solid rgba(255,255,255,0.09)}
+.yt-bar i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.18);display:block}
+.yt-bar i:first-child{background:#FF5F57}.yt-bar i:nth-child(2){background:#FEBC2E}.yt-bar i:nth-child(3){background:#28C840}
+.yt-bar span{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.45);margin-left:8px;letter-spacing:0.05em}
+.yt-tag{position:absolute;top:52px;left:14px;z-index:3;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.11em;
+  text-transform:uppercase;background:#E5322D;color:#fff;padding:6px 11px;border-radius:7px;box-shadow:0 6px 16px rgba(229,50,45,0.4)}
+.yt-cap{font-family:'DM Mono',monospace;font-size:10.5px;color:rgba(255,255,255,0.45);text-align:center;margin-top:11px;position:relative;z-index:2}
+.cta-facts{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.fact{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:11px;color:#E6C965;
+  background:rgba(212,175,55,0.13);border:1px solid rgba(212,175,55,0.3);padding:6px 12px;border-radius:99px}
+/* episode list */
+.eps{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin-bottom:22px}
+.eps-h{font-family:'Bebas Neue',sans-serif;font-size:25px;letter-spacing:0.02em;color:var(--ink);margin-bottom:4px}
+.eps-s{font-size:13.5px;color:var(--ink2);margin-bottom:18px}
+.eps-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px}
+.ep{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)}
+.ep-n{width:26px;height:26px;flex-shrink:0;border-radius:8px;background:var(--surface2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);font-weight:500}
+.ep-t{flex:1;font-size:13.5px;color:var(--ink);line-height:1.45;min-width:0}
+.ep-d{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink3);flex-shrink:0}
+@media (max-width:900px){.cta-split{grid-template-columns:1fr;gap:26px}.eps-grid{grid-template-columns:1fr}}
 .mid-cta{background:var(--surface);border:1px solid var(--gold-line);border-radius:var(--radius);padding:26px 28px;
   box-shadow:var(--shadow);margin-bottom:46px;display:flex;gap:22px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .mid-cta-t{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:0.02em;color:var(--ink);line-height:1.1}
@@ -704,17 +731,50 @@ section{scroll-margin-top:74px}
     <h2 class="sec-title">JOIN MY <span>PRIVATE COMMUNITY</span></h2>
     <p class="sec-sub">Two ways to get the full stock research, position sizing and ongoing updates on these five stocks — as well as future recommendations.</p>
 
-    <div class="cta">
+    <div class="cta cta-split">
       <div class="cta-in">
         <div class="cta-pill">▶ YouTube Members Only</div>
         <h3 class="cta-title">A FULL VIDEO SERIES ON <span>ALL 5 STOCKS</span></h3>
         <p class="cta-text">
-          I made a detailed video series breaking down each of these companies — the business model, the Bitcoin holdings,
-          the risks and my exit plan. <strong>Watch the videos, study them, and build your own portfolio</strong> with confidence.
+          I made a detailed <strong>10-part video series</strong> breaking down each of these companies — the business model,
+          the Bitcoin holdings, the risks and my exit plan. <strong>Watch the videos, study them, and build your own
+          portfolio</strong> with confidence.
         </p>
+        <div class="cta-facts">
+          <span class="fact">▶ 10 videos</span>
+          <span class="fact">⏱ ~4h 53m total</span>
+          <span class="fact">🔒 Members only</span>
+        </div>
         <div class="cta-btns">
           <a class="btn btn-yt" href="https://www.youtube.com/@IamZubair/join" target="_blank" rel="noopener">▶ Join YouTube Members</a>
         </div>
+      </div>
+      <div>
+        <div class="yt-frame">
+          <div class="yt-bar"><i></i><i></i><i></i><span>youtube.com/@IamZubair · Members only</span></div>
+          <div class="yt-tag">🔒 Members Only</div>
+          <img src="members.jpg"
+               onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Coinsats/Newwebsite/main/members.jpg'"
+               alt="Preview of the members-only video series on YouTube" loading="lazy">
+        </div>
+        <div class="yt-cap">↑ This is what you unlock inside the members section</div>
+      </div>
+    </div>
+
+    <div class="eps">
+      <div class="eps-h">WHAT'S INSIDE — THE 10 VIDEOS</div>
+      <div class="eps-s">The complete 10X Blueprint series, in order.</div>
+      <div class="eps-grid">
+        <div class="ep"><div class="ep-n">1</div><div class="ep-t">Bear Market Is Almost Over — When the Next Bull Run Starts</div><div class="ep-d">19:58</div></div>
+        <div class="ep"><div class="ep-n">2</div><div class="ep-t">How to Outperform Bitcoin — Why I'm Betting on BTC Treasuries</div><div class="ep-d">21:36</div></div>
+        <div class="ep"><div class="ep-n">3</div><div class="ep-t">Top 5 Bitcoin Treasury Companies to Buy Now</div><div class="ep-d">12:23</div></div>
+        <div class="ep"><div class="ep-n">4</div><div class="ep-t">Everything You Need to Know About Strategy (MSTR)</div><div class="ep-d">51:04</div></div>
+        <div class="ep"><div class="ep-n">5</div><div class="ep-t">Everything You Need to Know About Strive Inc (ASST)</div><div class="ep-d">25:10</div></div>
+        <div class="ep"><div class="ep-n">6</div><div class="ep-t">Everything You Need to Know About Metaplanet</div><div class="ep-d">29:26</div></div>
+        <div class="ep"><div class="ep-n">7</div><div class="ep-t">MSTR LEAPS — Supercharge Your Portfolio With Call Options</div><div class="ep-d">41:14</div></div>
+        <div class="ep"><div class="ep-n">8</div><div class="ep-t">Deep Dive on Strategy's Preferred Shares</div><div class="ep-d">56:22</div></div>
+        <div class="ep"><div class="ep-n">9</div><div class="ep-t">Where to Buy MSTR &amp; US Stocks — Recommended Platforms</div><div class="ep-d">15:57</div></div>
+        <div class="ep"><div class="ep-n">10</div><div class="ep-t">My 2026–2028 Bitcoin Stock Portfolio Revealed</div><div class="ep-d">20:48</div></div>
       </div>
     </div>
 
