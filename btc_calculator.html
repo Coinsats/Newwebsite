@@ -1,0 +1,553 @@
+<title>BTC Position Size Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F6F9; --surface:#FFFFFF; --surface-2:#EEF1F6; --surface-3:#E4E8F0;
+    --border:#D8DEE9; --text:#131A2B; --text-muted:#5B6472;
+    --accent:#B9791F; --accent-soft:#FBEFD9;
+    --bull:#0E8C7F; --bull-soft:#E3F5F1;
+    --bear:#D64541; --bear-soft:#FCE9E8;
+    --focus:#B9791F;
+    --shadow: 0 1px 2px rgba(20,26,43,.04), 0 8px 24px -12px rgba(20,26,43,.18);
+    --radius:14px;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0B0F1A; --surface:#121826; --surface-2:#1A2233; --surface-3:#232D42;
+      --border:#2A3550; --text:#EAEFF5; --text-muted:#8B96AC;
+      --accent:#F2A93B; --accent-soft:#332411;
+      --bull:#2FBBA8; --bull-soft:#12332E;
+      --bear:#EF5A56; --bear-soft:#38191A;
+      --focus:#F2A93B;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px -16px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B0F1A; --surface:#121826; --surface-2:#1A2233; --surface-3:#232D42;
+    --border:#2A3550; --text:#EAEFF5; --text-muted:#8B96AC;
+    --accent:#F2A93B; --accent-soft:#332411;
+    --bull:#2FBBA8; --bull-soft:#12332E;
+    --bear:#EF5A56; --bear-soft:#38191A;
+    --focus:#F2A93B;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px -16px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    padding-left:16px; padding-right:16px;
+    padding-block:28px;
+    min-height:100%;
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .num{ font-family:'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace; font-variant-numeric: tabular-nums; }
+
+  .page{ width:100%; max-width:1080px; display:flex; flex-direction:column; gap:22px; }
+
+  /* ---------- header ---------- */
+  .brandbar{
+    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand-mark{
+    width:38px; height:38px; border-radius:10px; background:var(--text); color:var(--bg);
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:17px;
+    font-family:'JetBrains Mono', monospace; flex:none;
+  }
+  .brand-name{ font-weight:600; font-size:15px; letter-spacing:.2px; }
+  .brand-name span{ color:var(--text-muted); font-weight:500; }
+  .powered{
+    font-size:11.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;
+    border:1px solid var(--border); border-radius:999px; padding:6px 12px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .powered b{ color:var(--text); font-weight:700; letter-spacing:.5px; }
+
+  .hero{ display:flex; flex-direction:column; gap:8px; }
+  h1{
+    font-family:'Cambria','Source Serif Pro', Georgia, serif;
+    font-size: clamp(26px, 4vw, 36px); line-height:1.15; margin:0; font-weight:700;
+    text-wrap:balance;
+  }
+  .hero p{ margin:0; color:var(--text-muted); font-size:15px; max-width:640px; line-height:1.55; }
+  .hero-tag{
+    display:inline-flex; align-self:flex-start; align-items:center; gap:6px;
+    background:var(--accent-soft); color:var(--accent); font-weight:600; font-size:12px;
+    padding:5px 11px; border-radius:999px; letter-spacing:.3px; text-transform:uppercase;
+  }
+
+  /* ---------- layout ---------- */
+  .layout{ display:grid; grid-template-columns: 1.15fr 1fr; gap:20px; align-items:start; }
+  @media (max-width:760px){ .layout{ grid-template-columns: 1fr; } }
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:22px;
+  }
+  .card + .card{ margin-top:16px; }
+
+  .card h2{
+    font-family:'Cambria', Georgia, serif; font-size:17px; margin:0 0 3px; font-weight:700;
+  }
+  .card .subhead{ color:var(--text-muted); font-size:12.5px; margin:0 0 18px; line-height:1.5; }
+
+  .field{ display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+  .field:last-child{ margin-bottom:0; }
+  .field label{ font-size:12.5px; font-weight:600; color:var(--text-muted); letter-spacing:.2px; }
+  .field .hint{ font-size:11px; color:var(--text-muted); margin-top:1px; }
+
+  .inputwrap{
+    display:flex; align-items:center; background:var(--surface-2); border:1px solid var(--border);
+    border-radius:10px; overflow:hidden; transition:border-color .15s;
+  }
+  .inputwrap:focus-within{ border-color:var(--focus); box-shadow:0 0 0 3px color-mix(in srgb, var(--focus) 22%, transparent); }
+  .inputwrap .prefix, .inputwrap .suffix{
+    padding:0 12px; font-size:13.5px; color:var(--text-muted); font-family:'JetBrains Mono',monospace; flex:none;
+  }
+  .inputwrap input, .inputwrap select{
+    flex:1; min-width:0; border:none; outline:none; background:transparent; color:var(--text);
+    font-family:'JetBrains Mono', monospace; font-size:15px; font-weight:600; padding:11px 4px;
+    -webkit-appearance:none; appearance:none;
+  }
+  .inputwrap select{ font-family:'IBM Plex Sans', sans-serif; font-weight:500; font-size:14px; padding-right:8px; cursor:pointer; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:420px){ .row2{ grid-template-columns:1fr; } }
+
+  .segmented{
+    display:grid; grid-template-columns:1fr 1fr; background:var(--surface-2); border:1px solid var(--border);
+    border-radius:10px; padding:3px; gap:3px;
+  }
+  .segmented button{
+    border:none; background:transparent; color:var(--text-muted); font-family:'IBM Plex Sans',sans-serif;
+    font-size:13px; font-weight:600; padding:9px 6px; border-radius:8px; cursor:pointer; transition:.15s;
+  }
+  .segmented button.active{ background:var(--surface); color:var(--text); box-shadow:var(--shadow); }
+
+  .dirtoggle{ display:flex; gap:8px; }
+  .dirtoggle button{
+    flex:1; padding:9px; border-radius:9px; border:1px solid var(--border); background:var(--surface-2);
+    color:var(--text-muted); font-weight:700; font-size:13px; cursor:pointer; font-family:'IBM Plex Sans',sans-serif;
+    display:flex; align-items:center; justify-content:center; gap:6px; transition:.15s;
+  }
+  .dirtoggle button.active.buy{ background:var(--bull-soft); color:var(--bull); border-color:var(--bull); }
+  .dirtoggle button.active.sell{ background:var(--bear-soft); color:var(--bear); border-color:var(--bear); }
+
+  /* ---------- results ---------- */
+  .sticky{ position:sticky; top:16px; }
+
+  .hero-result{
+    background:linear-gradient(155deg, var(--surface) 0%, var(--surface-2) 100%);
+    border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:24px; text-align:center;
+  }
+  .hero-result .label{ font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:600; }
+  .hero-result .value{
+    font-family:'JetBrains Mono',monospace; font-weight:700; font-size:44px; color:var(--accent);
+    margin:6px 0 2px; line-height:1;
+  }
+  .hero-result .sub{ font-size:13px; color:var(--text-muted); }
+
+  .rows{ display:flex; flex-direction:column; }
+  .rowline{
+    display:flex; align-items:baseline; justify-content:space-between; gap:10px;
+    padding:11px 0; border-bottom:1px solid var(--border);
+  }
+  .rowline:last-child{ border-bottom:none; }
+  .rowline .k{ font-size:13px; color:var(--text-muted); }
+  .rowline .v{ font-family:'JetBrains Mono',monospace; font-weight:600; font-size:14.5px; text-align:right; }
+  .rowline .v.big{ font-size:16px; }
+  .rowline .v.bear{ color:var(--bear); }
+  .rowline .v.bull{ color:var(--bull); }
+  .rowline .v.accent{ color:var(--accent); }
+
+  .divider{ height:1px; background:var(--border); margin:14px 0; }
+
+  .badge{
+    display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600;
+    padding:4px 10px; border-radius:999px;
+  }
+  .badge.ok{ background:var(--bull-soft); color:var(--bull); }
+  .badge.warn{ background:var(--accent-soft); color:var(--accent); }
+  .badge.bad{ background:var(--bear-soft); color:var(--bear); }
+
+  .notice{
+    display:flex; gap:10px; align-items:flex-start; padding:12px 14px; border-radius:10px;
+    font-size:12.5px; line-height:1.5; margin-top:14px;
+  }
+  .notice.warn{ background:var(--accent-soft); color:var(--text); border:1px solid color-mix(in srgb, var(--accent) 35%, transparent); }
+  .notice.bad{ background:var(--bear-soft); color:var(--text); border:1px solid color-mix(in srgb, var(--bear) 35%, transparent); }
+  .notice .dot{ flex:none; width:6px; height:6px; border-radius:50%; margin-top:6px; }
+  .notice.warn .dot{ background:var(--accent); }
+  .notice.bad .dot{ background:var(--bear); }
+
+  .steps{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .steps li{ display:flex; gap:10px; font-size:12.5px; color:var(--text-muted); line-height:1.55; }
+  .steps .n{
+    flex:none; width:19px; height:19px; border-radius:50%; background:var(--surface-3); color:var(--text);
+    display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .steps code{ font-family:'JetBrains Mono',monospace; color:var(--text); background:var(--surface-2); padding:1px 5px; border-radius:5px; }
+
+  footer{ text-align:center; color:var(--text-muted); font-size:11.5px; line-height:1.7; padding-top:6px; }
+  footer a{ color:var(--text-muted); }
+
+  .livebtn{
+    flex:none; border:none; background:var(--accent); color:var(--surface); font-weight:700; font-size:11.5px;
+    padding:7px 12px; border-radius:8px; cursor:pointer; font-family:'IBM Plex Sans',sans-serif; letter-spacing:.2px;
+    white-space:nowrap; transition:opacity .15s;
+  }
+  .livebtn:disabled{ background:var(--surface-3); color:var(--text-muted); cursor:not-allowed; }
+  .live-dot{ display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--bull); margin-right:5px; }
+  .live-dot.stale{ background:var(--text-muted); }
+</style>
+
+<div class="page">
+
+  <div class="brandbar">
+    <div class="brand">
+      <div class="brand-mark">₿</div>
+      <div class="brand-name">CoinSats <span>Academy</span></div>
+    </div>
+    <div class="powered">Powered by <b>XM</b> &amp; <b>CoinSats</b></div>
+  </div>
+
+  <div class="hero">
+    <span class="hero-tag">Companion tool · Risk Management Blueprint</span>
+    <h1>BTC Position Size Calculator</h1>
+    <p>Built exclusively for trading Bitcoin (BTCUSD) CFDs on XM. Enter your account and trade setup once — get the exact lot size, margin, and risk in seconds, with zero mental math.</p>
+  </div>
+
+  <div class="layout">
+    <!-- LEFT: inputs -->
+    <div>
+      <div class="card">
+        <h2>Your Account</h2>
+        <p class="subhead">This never leaves your browser — nothing here is sent or stored anywhere.</p>
+
+        <div class="field">
+          <label for="balance">Account balance</label>
+          <div class="inputwrap">
+            <span class="prefix">$</span>
+            <input id="balance" type="number" inputmode="decimal" value="10000" min="0" step="100">
+            <span class="suffix">USD</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Risk per trade</label>
+          <div class="segmented" role="tablist">
+            <button type="button" id="modePct" class="active">% of balance</button>
+            <button type="button" id="modeFixed">Fixed $ amount</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="riskValue" id="riskValueLabel">Risk percentage</label>
+          <div class="inputwrap">
+            <input id="riskValue" type="number" inputmode="decimal" value="1" min="0" step="0.1">
+            <span class="suffix" id="riskValueSuffix">%</span>
+          </div>
+          <div class="hint" id="riskValueHint">1% is a commonly used, sustainable guideline — most traders should stay between 0.5% and 2%.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Trade Setup</h2>
+        <p class="subhead">Set your stop-loss from chart structure first — never the other way around.</p>
+
+        <div class="field">
+          <label>Live BTC / USD</label>
+          <div class="inputwrap" style="padding-right:6px;">
+            <span class="prefix">$</span>
+            <span id="livePriceValue" class="num" style="flex:1;font-weight:600;font-size:15px;color:var(--text);">—</span>
+            <button type="button" id="useLivePrice" class="livebtn" disabled>Use as entry</button>
+          </div>
+          <div class="hint" id="livePriceHint">Fetching live price…</div>
+        </div>
+
+        <div class="field">
+          <label>Direction</label>
+          <div class="dirtoggle">
+            <button type="button" id="dirBuy" class="active buy">▲ Buy / Long</button>
+            <button type="button" id="dirSell" class="sell">▼ Sell / Short</button>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="entry">Entry price</label>
+            <div class="inputwrap">
+              <span class="prefix">$</span>
+              <input id="entry" type="number" inputmode="decimal" value="76650" min="0" step="1">
+            </div>
+          </div>
+          <div class="field">
+            <label for="stop">Stop-loss price</label>
+            <div class="inputwrap">
+              <span class="prefix">$</span>
+              <input id="stop" type="number" inputmode="decimal" value="76350" min="0" step="1">
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="tp">Take-profit price <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional — adds your Risk:Reward Ratio)</span></label>
+          <div class="inputwrap">
+            <span class="prefix">$</span>
+            <input id="tp" type="number" inputmode="decimal" value="77250" min="0" step="1">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Leverage</h2>
+        <p class="subhead">Actual leverage depends on your specific XM entity, account type, and instrument — it is not one universal number. Confirm your own exact cap in XM's contract specifications.</p>
+        <div class="field">
+          <label for="leverage">Leverage tier</label>
+          <div class="inputwrap">
+            <select id="leverage">
+              <option value="2">1 : 2</option>
+              <option value="5">1 : 5</option>
+              <option value="10" selected>1 : 10 (this example's assumption)</option>
+              <option value="20">1 : 20</option>
+              <option value="50">1 : 50</option>
+              <option value="100">1 : 100</option>
+              <option value="500">1 : 500 (some entities, small size only)</option>
+            </select>
+          </div>
+          <div class="hint" id="minLotHint">Reference: at XM's 0.01 BTC minimum lot size and this entry price, this leverage needs ≈ $76.65 margin — compare against your own platform.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: results -->
+    <div class="sticky">
+      <div class="hero-result">
+        <div class="label">Position size</div>
+        <div class="value num" id="outLots">0.33 lots</div>
+        <div class="sub" id="outBtc">≈ 0.33 BTC notional per lot</div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <h2>Breakdown</h2>
+        <p class="subhead">Every number below follows directly from what you entered on the left.</p>
+        <div class="rows">
+          <div class="rowline"><span class="k">Stop distance</span><span class="v" id="outStopDist">$300.00</span></div>
+          <div class="rowline"><span class="k">Actual $ risk (rounded to 0.01 lot)</span><span class="v bear" id="outRiskAmt">$99.00</span></div>
+          <div class="rowline"><span class="k">Risk as % of balance</span><span class="v" id="outRiskPct">0.99%</span></div>
+          <div class="divider"></div>
+          <div class="rowline"><span class="k">Notional value</span><span class="v big" id="outNotional">$20,295.00</span></div>
+          <div class="rowline"><span class="k">Required margin</span><span class="v accent big" id="outMargin">$1,014.75</span></div>
+          <div class="rowline"><span class="k">Margin as % of balance</span><span class="v" id="outMarginPct">10.15%</span></div>
+          <div class="rowline"><span class="k">Free margin remaining</span><span class="v bull" id="outFreeMargin">$8,985.25</span></div>
+          <div class="divider" id="rrrDivider"></div>
+          <div class="rowline" id="rrrRow1"><span class="k">Risk : Reward Ratio</span><span class="v big" id="outRRR">2.0 : 1</span></div>
+          <div class="rowline" id="rrrRow2"><span class="k">Potential reward if TP hits</span><span class="v bull" id="outReward">$198.00</span></div>
+        </div>
+
+        <div id="notices"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <h2>How this is calculated</h2>
+        <ol class="steps" style="list-style:none;">
+          <li><span class="n">1</span><span>Stop distance = |Entry − Stop| → <code id="stepStop">|61,500 − 61,200| = $300</code></span></li>
+          <li><span class="n">2</span><span>Lots = Risk ($) ÷ Stop distance, rounded down to the 0.01 lot step → <code id="stepLots">$100 ÷ $300 = 0.33</code></span></li>
+          <li><span class="n">3</span><span>Margin = (Lots × Contract size 1 BTC × Entry price) ÷ Leverage → <code id="stepMargin">(0.33 × $61,500) ÷ 20 = $1,014.75</code></span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Educational tool only — not investment advice. Leverage, minimum lot size, and margin call / stop-out levels vary by XM entity and account type; always confirm your own account's exact specifications before trading. CFDs are leveraged products and most retail accounts lose money.<br>
+    CoinSats Academy · Free Trading Series, in partnership with XM
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+
+  var state = { riskMode: 'pct', direction: 'buy' };
+
+  var els = {
+    balance: $('balance'), riskValue: $('riskValue'), riskValueSuffix: $('riskValueSuffix'),
+    riskValueLabel: $('riskValueLabel'), riskValueHint: $('riskValueHint'),
+    entry: $('entry'), stop: $('stop'), tp: $('tp'), leverage: $('leverage'),
+    modePct: $('modePct'), modeFixed: $('modeFixed'),
+    dirBuy: $('dirBuy'), dirSell: $('dirSell'),
+    outLots: $('outLots'), outBtc: $('outBtc'), outStopDist: $('outStopDist'),
+    outRiskAmt: $('outRiskAmt'), outRiskPct: $('outRiskPct'), outNotional: $('outNotional'),
+    outMargin: $('outMargin'), outMarginPct: $('outMarginPct'), outFreeMargin: $('outFreeMargin'),
+    outRRR: $('outRRR'), outReward: $('outReward'),
+    rrrRow1: $('rrrRow1'), rrrRow2: $('rrrRow2'), rrrDivider: $('rrrDivider'),
+    stepStop: $('stepStop'), stepLots: $('stepLots'), stepMargin: $('stepMargin'),
+    minLotHint: $('minLotHint'),
+    livePriceValue: $('livePriceValue'), livePriceHint: $('livePriceHint'), useLivePrice: $('useLivePrice'),
+    notices: $('notices')
+  };
+
+  // ---------- live BTC price ----------
+  var livePrice = null;
+  function fetchLivePrice(){
+    fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd', { cache: 'no-store' })
+      .then(function(r){ if (!r.ok) throw new Error('bad response'); return r.json(); })
+      .then(function(data){
+        var p = data && data.bitcoin && data.bitcoin.usd;
+        if (typeof p !== 'number' || !isFinite(p)) throw new Error('bad payload');
+        livePrice = p;
+        els.livePriceValue.textContent = fmtNum(p, 2);
+        var t = new Date();
+        els.livePriceHint.innerHTML = '<span class="live-dot"></span>Live via CoinGecko · updated ' + t.toLocaleTimeString();
+        els.useLivePrice.disabled = false;
+      })
+      .catch(function(){
+        els.livePriceValue.textContent = '—';
+        els.livePriceHint.innerHTML = '<span class="live-dot stale"></span>Live price unavailable here — enter your entry price manually below.';
+        els.useLivePrice.disabled = true;
+      });
+  }
+  els.useLivePrice.addEventListener('click', function(){
+    if (livePrice != null) {
+      els.entry.value = Math.round(livePrice);
+      recalc();
+    }
+  });
+  fetchLivePrice();
+  setInterval(fetchLivePrice, 60000);
+
+  function fmtUSD(n, dp){
+    dp = (dp === undefined) ? 2 : dp;
+    if (!isFinite(n)) n = 0;
+    var neg = n < 0;
+    n = Math.abs(n);
+    var s = n.toLocaleString('en-US', { minimumFractionDigits: dp, maximumFractionDigits: dp });
+    return (neg ? '-$' : '$') + s;
+  }
+  function fmtNum(n, dp){
+    if (!isFinite(n)) n = 0;
+    return n.toLocaleString('en-US', { minimumFractionDigits: dp, maximumFractionDigits: dp });
+  }
+
+  function setMode(mode){
+    state.riskMode = mode;
+    els.modePct.classList.toggle('active', mode === 'pct');
+    els.modeFixed.classList.toggle('active', mode === 'fixed');
+    if (mode === 'pct'){
+      els.riskValueLabel.textContent = 'Risk percentage';
+      els.riskValueSuffix.textContent = '%';
+      els.riskValueHint.textContent = '1% is a commonly used, sustainable guideline — most traders should stay between 0.5% and 2%.';
+      if (parseFloat(els.riskValue.value) > 50) els.riskValue.value = 1;
+    } else {
+      els.riskValueLabel.textContent = 'Risk amount';
+      els.riskValueSuffix.textContent = 'USD';
+      els.riskValueHint.textContent = 'The exact dollar amount you are willing to lose if this trade hits its stop-loss.';
+    }
+    recalc();
+  }
+
+  function setDir(dir){
+    state.direction = dir;
+    els.dirBuy.classList.toggle('active', dir === 'buy');
+    els.dirSell.classList.toggle('active', dir === 'sell');
+    recalc();
+  }
+
+  els.modePct.addEventListener('click', function(){ setMode('pct'); });
+  els.modeFixed.addEventListener('click', function(){ setMode('fixed'); });
+  els.dirBuy.addEventListener('click', function(){ setDir('buy'); });
+  els.dirSell.addEventListener('click', function(){ setDir('sell'); });
+  ['balance','riskValue','entry','stop','tp','leverage'].forEach(function(id){
+    $(id).addEventListener('input', recalc);
+    $(id).addEventListener('change', recalc);
+  });
+
+  function recalc(){
+    var balance = Math.max(0, parseFloat(els.balance.value) || 0);
+    var riskInput = Math.max(0, parseFloat(els.riskValue.value) || 0);
+    var entry = parseFloat(els.entry.value) || 0;
+    var stop = parseFloat(els.stop.value) || 0;
+    var tpRaw = els.tp.value;
+    var tp = tpRaw === '' ? null : parseFloat(tpRaw);
+    var leverage = parseFloat(els.leverage.value) || 1;
+
+    var stopDistance = Math.abs(entry - stop);
+    var riskAmountTarget = state.riskMode === 'pct' ? balance * (riskInput / 100) : riskInput;
+
+    var lotsRaw = stopDistance > 0 ? riskAmountTarget / stopDistance : 0;
+    var lots = Math.floor(lotsRaw * 100) / 100; // XM crypto lot step: 0.01
+    var lotsTooSmall = stopDistance > 0 && riskAmountTarget > 0 && lots < 0.01;
+
+    var actualRisk = lots * stopDistance;
+    var actualRiskPct = balance > 0 ? (actualRisk / balance) * 100 : 0;
+    var notional = lots * entry;
+    var margin = leverage > 0 ? notional / leverage : 0;
+    var marginPct = balance > 0 ? (margin / balance) * 100 : 0;
+    var freeMargin = balance - margin;
+
+    els.outLots.textContent = fmtNum(lots, 2) + ' lots';
+    els.outBtc.textContent = '≈ ' + fmtNum(lots, 2) + ' BTC (1 lot = 1 BTC on XM)';
+    els.outStopDist.textContent = fmtUSD(stopDistance);
+    els.outRiskAmt.textContent = fmtUSD(actualRisk);
+    els.outRiskPct.textContent = fmtNum(actualRiskPct, 2) + '%';
+    els.outNotional.textContent = fmtUSD(notional);
+    els.outMargin.textContent = fmtUSD(margin);
+    els.outMarginPct.textContent = fmtNum(marginPct, 2) + '%';
+    els.outFreeMargin.textContent = fmtUSD(freeMargin);
+
+    var minLotMargin = leverage > 0 ? (0.01 * entry) / leverage : 0;
+    els.minLotHint.textContent = 'Reference: at XM’s 0.01 BTC minimum lot size and this entry price, this leverage needs ≈ ' + fmtUSD(minLotMargin) + ' margin — compare against your own platform.';
+
+    els.stepStop.textContent = '|' + fmtUSD(entry, 0) + ' − ' + fmtUSD(stop, 0) + '| = ' + fmtUSD(stopDistance, 0);
+    els.stepLots.textContent = fmtUSD(riskAmountTarget, 0) + ' ÷ ' + fmtUSD(stopDistance, 0) + ' = ' + fmtNum(lots, 2);
+    els.stepMargin.textContent = '(' + fmtNum(lots, 2) + ' × ' + fmtUSD(entry, 0) + ') ÷ ' + fmtNum(leverage, 0) + ' = ' + fmtUSD(margin);
+
+    // RRR (optional)
+    if (tp !== null && !isNaN(tp) && tp > 0 && stopDistance > 0) {
+      var rewardDistance = Math.abs(tp - entry);
+      var rrr = rewardDistance / stopDistance;
+      var reward = lots * rewardDistance;
+      els.outRRR.textContent = fmtNum(rrr, 1) + ' : 1';
+      els.outReward.textContent = fmtUSD(reward);
+      els.rrrRow1.style.display = '';
+      els.rrrRow2.style.display = '';
+      els.rrrDivider.style.display = '';
+    } else {
+      els.rrrRow1.style.display = 'none';
+      els.rrrRow2.style.display = 'none';
+      els.rrrDivider.style.display = 'none';
+    }
+
+    // Notices
+    var notices = [];
+    if (stopDistance === 0) {
+      notices.push({ type: 'bad', text: 'Entry and stop-loss price cannot be the same — set a real stop distance first.' });
+    }
+    if (lotsTooSmall) {
+      notices.push({ type: 'bad', text: 'This risk amount and stop distance produce a position smaller than XM’s 0.01 lot minimum. Increase your risk amount or use a tighter stop.' });
+    }
+    if (actualRiskPct > 2 && !lotsTooSmall) {
+      notices.push({ type: 'warn', text: 'This risks ' + fmtNum(actualRiskPct, 2) + '% of your account on one trade — most risk management guidance caps this at 1–2%.' });
+    }
+    if (marginPct > 50) {
+      notices.push({ type: 'warn', text: 'Required margin is over half your account balance. That leaves little room before a margin call if other trades are open too.' });
+    }
+    if (leverage >= 100) {
+      notices.push({ type: 'warn', text: 'Confirm 1:' + fmtNum(leverage,0) + ' is genuinely available for BTC CFDs on your specific XM account — crypto leverage caps vary by entity, account type, and instrument, and are typically far lower than forex leverage.' });
+    }
+    els.notices.innerHTML = notices.map(function(n){
+      return '<div class="notice ' + n.type + '"><span class="dot"></span><span>' + n.text + '</span></div>';
+    }).join('');
+  }
+
+  recalc();
+})();
+</script>
