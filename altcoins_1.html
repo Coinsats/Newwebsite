@@ -33,6 +33,15 @@ h1 em{font-style:normal;color:var(--gold)}
 .byline b{font-size:15px}.byline span{font-size:13px;color:var(--muted)}
 .lic{display:inline-block;font:600 11px var(--mono);letter-spacing:.06em;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:2px 7px;margin-top:4px;align-self:flex-end}
 @media (max-width:640px){.byline{text-align:left;margin-left:0}.lic{align-self:flex-start}}
+.prevstep{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-block:4px 18px}
+.ps-lab{font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.ps-btn{display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--ink);background:var(--panel);border:1px solid var(--gold);border-radius:10px;padding:9px 14px;min-width:0}
+.ps-btn:hover{background:var(--gold-soft)}
+.ps-btn b{display:block;font-size:14px}
+.ps-btn small{display:block;font-size:12px;color:var(--muted)}
+.ps-ic{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:var(--gold);color:#1a1405;font-size:14px;flex:0 0 auto}
+.ps-btn.yt .ps-ic{background:#e5322d;color:#fff}
+@media (max-width:560px){.ps-btn{flex:1 1 100%}}
 .rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px}
 .rail-in{max-width:1180px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
 .rail button{flex:0 0 auto;display:flex;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:13px;font-weight:500}
@@ -170,6 +179,11 @@ th.pickcol,td.pickcol{box-shadow:inset 2px 0 0 var(--gold),inset -2px 0 0 var(--
     </div>
     <div class="byline"><b>Zubair Abdul Jabbar</b><span>coinsats.io</span><span class="lic">SCA AUTHORIZED FINFLUENCER</span></div>
   </header>
+  <nav class="prevstep" aria-label="Previous step">
+    <span class="ps-lab">Missed step 1?</span>
+    <a class="ps-btn" href="https://www.coinsats.io/altcoins_0" target="_blank" rel="noopener"><span class="ps-ic">◧</span><span><b>Step 1 · The framework &amp; database</b><small>coinsats.io/altcoins_0</small></span></a>
+    <a class="ps-btn yt" href="https://www.youtube.com/watch?v=XlPBbIKov70" target="_blank" rel="noopener"><span class="ps-ic">▶</span><span><b>Step 1 · Watch the breakdown video</b><small>YouTube</small></span></a>
+  </nav>
 </div>
 <nav class="rail" aria-label="Video stages"><div class="rail-in" role="tablist" id="rail"></div></nav>
 
