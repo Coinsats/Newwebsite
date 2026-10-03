@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="CoinSats Mission 10X Video 1: building a 20-token altcoin portfolio by Zubair Abdul Jabbar">
+<title>Mission 10X · Video 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one column "broadcast board" — sticky stage rail on top, each stage a full panel for screen-recording */
+:root{
+  color-scheme:dark;
+  --bg:#0b1324; --panel:#111c33; --panel2:#16233f; --line:#24345a; --ink:#eef1f7; --muted:#93a0bb;
+  --gold:#e8b44a; --gold-soft:rgba(232,180,74,.14); --btc:#f39a2b;
+  --good:#3fc184; --bad:#f06a5f; --warn:#e8b44a; --neutral:#7f8db0;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;margin:0;padding-inline:16px;padding-block:0 56px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+a{color:var(--gold)}
+button{font-family:var(--body)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* masthead */
+.mast{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;padding-block:28px 4px;border-bottom:1px solid var(--line);padding-bottom:20px}
+.brand{display:flex;flex-direction:column;gap:8px;min-width:0}
+.logo{font:700 13px var(--display);letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
+h1{font:700 clamp(26px,4.6vw,44px)/1.05 var(--display);margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1 em{font-style:normal;color:var(--gold)}
+.byline{display:flex;flex-direction:column;gap:2px;text-align:right;margin-left:auto}
+.byline b{font-size:15px}
+.byline span{font-size:13px;color:var(--muted)}
+.lic{display:inline-block;font:600 11px var(--mono);letter-spacing:.06em;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:2px 7px;margin-top:4px;align-self:flex-end}
+@media (max-width:640px){.byline{text-align:left;margin-left:0}.lic{align-self:flex-start}}
+
+/* stage rail */
+.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px}
+.rail-in{max-width:1120px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.rail button{flex:0 0 auto;display:flex;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:13px;font-weight:500}
+.rail button i{font:600 11px var(--mono);font-style:normal;color:var(--gold);opacity:.8}
+.rail button[aria-selected="true"]{background:var(--gold);color:#1a1405;border-color:var(--gold)}
+.rail button[aria-selected="true"] i{color:#1a1405}
+
+section.stage{display:flex;flex-direction:column;gap:22px}
+.eyebrow{font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+h2{font:700 clamp(20px,3vw,28px)/1.15 var(--display);margin:0;text-wrap:balance}
+h3{font-size:16px;margin:0;font-weight:700}
+.lede{color:var(--muted);max-width:70ch;margin:0}
+.head{display:flex;flex-direction:column;gap:8px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* KPI strip */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.kpi{background:var(--panel);padding:16px 18px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.kpi .l{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font:600 26px var(--mono);font-variant-numeric:tabular-nums}
+.kpi .n{font-size:13px;color:var(--muted)}
+.kpi.hl .v{color:var(--btc)}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}}
+
+/* bars */
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:120px 1fr 86px;gap:12px;align-items:center}
+.bar .nm{font-weight:600;font-size:14px}
+.bar .nm small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.track{position:relative;height:24px;background:var(--panel2);border-radius:4px}
+.fill{position:absolute;inset:0 auto 0 0;border-radius:4px;background:var(--neutral);transition:width .5s ease}
+.fill.btc{background:var(--btc)} .fill.win{background:var(--good)} .fill.basket{background:var(--gold)}
+.ref{position:absolute;top:-5px;bottom:-5px;border-left:2px dashed var(--btc)}
+.bar .v{text-align:right;font:600 14px var(--mono);font-variant-numeric:tabular-nums}
+.bar .v small{display:block;font-weight:400;font-size:11px}
+.pos{color:var(--good)} .neg{color:var(--bad)}
+.axisnote{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center}
+.axisnote b{width:16px;border-top:2px dashed var(--btc)}
+@media (max-width:560px){.bar{grid-template-columns:1fr 80px}.bar .track{grid-column:1/-1;grid-row:2}}
+
+.grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:20px}
+@media (max-width:880px){.grid2{grid-template-columns:1fr}}
+.points{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.points li{padding-left:14px;border-left:2px solid var(--gold);font-size:14px}
+
+/* top 10 cards */
+.picks{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:820px){.picks{grid-template-columns:1fr}}
+.pick{background:linear-gradient(180deg,var(--gold-soft),transparent 70%),var(--panel);border:1px solid var(--gold);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.pick .rk{font:700 12px var(--mono);color:var(--gold);letter-spacing:.1em}
+.pick .sym{font:700 24px var(--display)}
+.pick p{margin:0;font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:820px){.cards{grid-template-columns:1fr}}
+.coin{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.coin.top{border-color:var(--gold)}
+.coin-h{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.coin-h .id{display:flex;flex-direction:column;gap:2px}
+.coin-h .sym{font:700 20px var(--display)}
+.coin-h .full{font-size:13px;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:6px;font:600 11px var(--mono);letter-spacing:.04em;padding:4px 9px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.chip.top{color:var(--gold);background:var(--gold-soft)}
+.chip.bull{color:var(--good)} .chip.neu{color:var(--neutral)} .chip.risk{color:var(--bad)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{background:var(--panel2);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.stat .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font:600 14px var(--mono);font-variant-numeric:tabular-nums}
+@media (max-width:460px){.stats{grid-template-columns:repeat(2,1fr)}}
+.what{margin:0;font-size:14px}
+.lists{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:560px){.lists{grid-template-columns:1fr}}
+.lists h4{margin:0 0 6px;font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.lists h4.c{color:var(--good)} .lists h4.r{color:var(--bad)}
+.lists ul{margin:0;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:5px}
+.take{font-size:14px;border-top:1px solid var(--line);padding-top:10px;margin:0}
+.take b{color:var(--gold)}
+
+/* universe */
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.cat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;color:var(--ink)}
+.cat .cn{font-size:13px;font-weight:600}
+.cat .cc{font:700 30px var(--display);line-height:1}
+.cat .cm{font:500 12px var(--mono);color:var(--muted)}
+.cat .mini{height:4px;background:var(--panel2);border-radius:2px;overflow:hidden}
+.cat .mini span{display:block;height:100%;background:var(--gold)}
+.cat[aria-pressed="true"]{border-color:var(--gold);background:var(--panel2)}
+.cat.out{opacity:.55}
+.cat.out .mini span{background:var(--neutral)}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+input[type=search]{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 12px;font:14px var(--body);min-width:0;flex:1 1 220px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--panel);color:var(--muted);padding:8px 12px;font-size:13px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--gold);color:#1a1405}
+.tbl{overflow-x:auto;max-height:560px;overflow-y:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:13.5px}
+th{position:sticky;top:0;background:var(--panel2);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:right;padding:9px 10px;cursor:pointer;white-space:nowrap}
+th:nth-child(-n+3),td:nth-child(-n+3){text-align:left}
+td{padding:8px 10px;border-top:1px solid var(--line);text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td:nth-child(2),td:nth-child(3){font-family:var(--body)}
+.strip{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1 1 300px;min-width:0;padding-block:2px}
+.strip button{position:relative;flex:0 0 auto;display:flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:6px 10px 6px 6px;cursor:pointer;font:600 12px var(--mono)}
+.strip button img{border-radius:6px}
+.strip button.star{padding:6px 10px;color:var(--gold)}
+.strip button[aria-selected="true"]{border-color:var(--gold);color:var(--ink);background:var(--panel2)}
+.strip .dot{position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.coin.solo{padding:26px;gap:16px}
+.coin.solo .lists ul{font-size:14.5px}
+.coin.solo .what{font-size:16px}
+.idl{display:flex;gap:16px;align-items:center}
+.logo-lg{width:64px;height:64px;border-radius:16px;flex:0 0 auto}
+.coin.solo .sym{font-size:30px;line-height:1.1}
+.rkk{font-size:11px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+.pk-h{display:flex;gap:12px;align-items:center}
+.pk-h img{border-radius:12px}
+.t10nav{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.t10nav button{background:var(--gold);color:#1a1405;border:0;border-radius:8px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer}
+.t10nav button:disabled{opacity:.25;cursor:default}
+@media (max-width:560px){.coin-h{flex-direction:column}.logo-lg{width:48px;height:48px}}
+tr.moved td:nth-child(2)::after{content:"moved";margin-left:8px;font:600 10px var(--mono);color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:1px 5px}
+tr.excl{opacity:.5}
+.fixes{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.fix{background:var(--panel2);border-radius:8px;padding:10px 12px;font-size:13px;display:flex;flex-direction:column;gap:4px}
+.fix b{font-family:var(--mono)}
+.fix .arrow{font:600 12px var(--mono);color:var(--gold)}
+
+/* selection */
+.sel{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:820px){.sel{grid-template-columns:1fr}}
+.rowl{display:flex;flex-direction:column;gap:8px}
+.ri{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;background:var(--panel2);border-radius:8px;padding:12px}
+.ri .mk{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:700 12px var(--mono)}
+.ri.in .mk{background:var(--good);color:#06210f}
+.ri.out .mk{background:var(--bad);color:#2a0805}
+.ri .t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ri .t b{font-size:14px}
+.ri .t span{font-size:13px;color:var(--muted)}
+.ri .ct{font:600 13px var(--mono);color:var(--muted)}
+
+/* allocation */
+.alloc-ctl{display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+.alloc-ctl label{font-size:13px;color:var(--muted);display:flex;gap:10px;align-items:center}
+input[type=range]{accent-color:var(--gold);width:180px}
+.bigN{font:700 44px var(--display);color:var(--gold);line-height:1}
+.atab{display:flex;flex-direction:column;gap:8px}
+.arow{display:grid;grid-template-columns:110px 1fr 54px 112px;gap:12px;align-items:center}
+.arow .nm{font-weight:600;font-size:14px}
+.arow .nm small{display:block;color:var(--muted);font-weight:400;font-size:12px}
+.slots{display:flex;flex-wrap:wrap;gap:4px}
+.slot{width:22px;height:22px;border-radius:5px;background:var(--gold)}
+.arow .pct{font:500 12px var(--mono);color:var(--muted);text-align:right}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden;justify-self:end}
+.step button{background:var(--panel2);border:0;color:var(--ink);width:30px;height:30px;font-size:16px;cursor:pointer}
+.step span{width:36px;text-align:center;font:600 15px var(--mono)}
+@media (max-width:600px){.arow{grid-template-columns:1fr auto}.arow .slots{grid-column:1/-1;grid-row:2}.arow .pct{display:none}}
+.status{font-size:13px;padding:10px 12px;border-radius:8px;background:var(--panel2)}
+.status.ok{color:var(--good)} .status.off{color:var(--bad)}
+.foot{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:6px}
+.foot p{margin:0}
+.nav{display:flex;justify-content:space-between;gap:10px}
+.nav button{background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:10px 14px;cursor:pointer;font-size:14px}
+.nav button:disabled{opacity:.3;cursor:default}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="brand">
+      <div class="logo">CoinSats · Mission 10X</div>
+      <h1>Building a <em>20-token</em> altcoin portfolio</h1>
+      <div class="muted small">Video 1 · The framework · Data snapshot 28 Sep 2026 (CoinMarketCap)</div>
+    </div>
+    <div class="byline">
+      <b>Zubair Abdul Jabbar</b>
+      <span>coinsats.io</span>
+      <span class="lic">SCA AUTHORIZED FINFLUENCER</span>
+    </div>
+  </header>
+</div>
+
+<nav class="rail" aria-label="Video stages"><div class="rail-in" role="tablist" id="rail"></div></nav>
+
+<div class="wrap" style="margin-top:26px">
+
+<!-- STAGE 1 -->
+<section class="stage" id="s1" data-title="Why skip the Top 10">
+  <div class="head">
+    <div class="eyebrow">Step 1 · The case for skipping the Top 10</div>
+    <h2>Holding the big alts did not beat simply holding Bitcoin</h2>
+    <p class="lede">$10,000 invested on 12 Mar 2023 and held to the 5 Oct 2025 cycle peak. The basket holds the eight Top 10 altcoins that existed back then (ZEC and HYPE were not in the Top 10 in March 2023). Equal weight, no rebalancing.</p>
+  </div>
+  <div class="kpis" id="bt-kpis"></div>
+  <div class="grid2">
+    <div class="panel">
+      <h3>$10,000 in each coin, and in the basket</h3>
+      <div class="bars" id="bt-bars"></div>
+      <div class="axisnote"><b></b>Dashed line = 100% BTC. Green bars beat Bitcoin.</div>
+    </div>
+    <div class="panel">
+      <h3>What this tells us</h3>
+      <ul class="points" id="bt-points"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- STAGE 2 -->
+<section class="stage" id="s2" data-title="Top 10 verdicts" hidden>
+  <div class="head">
+    <div class="eyebrow">Step 2 · Excluded, but not ignored</div>
+    <h2>My view on each of the Top 10 altcoins</h2>
+    <p class="lede">These ten are all above $10B market cap. I am not buying them for this portfolio, but here is what each one is, what could push it higher, and what could hold it back.</p>
+  </div>
+  <div class="toolbar">
+    <div class="seg" role="group" aria-label="Filter coins" id="t10f">
+      <button aria-pressed="true" data-f="all">All 10</button>
+      <button aria-pressed="false" data-f="top">My Top 3</button>
+    </div>
+    <div class="strip" id="strip" role="tablist" aria-label="Jump to coin"></div>
+  </div>
+  <div id="t10view"></div>
+  <div class="t10nav">
+    <button id="t10prev" aria-label="Previous coin">← Prev coin</button>
+    <span class="num muted small" id="t10pos"></span>
+    <button id="t10next" aria-label="Next coin">Next coin →</button>
+  </div>
+</section>
+
+<!-- STAGE 3 -->
+<section class="stage" id="s3" data-title="The 160-token universe" hidden>
+  <div class="head">
+    <div class="eyebrow">Step 3 · The universe</div>
+    <h2>160 tokens above $100M, outside the Top 10</h2>
+    <p class="lede">Every token sits in one category. Tap a category to filter the table. Stablecoins, tokenized gold and tokenized stocks are already removed.</p>
+  </div>
+  <div class="kpis" id="u-kpis"></div>
+  <div class="cats" id="cats"></div>
+  <div class="panel">
+    <div class="toolbar">
+      <input type="search" id="q" placeholder="Search token or symbol" aria-label="Search tokens">
+      <div class="seg" role="group" aria-label="Scope" id="scope">
+        <button aria-pressed="true" data-s="all">All 160</button>
+        <button aria-pressed="false" data-s="in">Selected categories</button>
+      </div>
+      <span class="muted small num" id="cnt"></span>
+    </div>
+    <div class="tbl"><table id="ut"></table></div>
+  </div>
+</section>
+
+<!-- STAGE 4 -->
+<section class="stage" id="s4" data-title="Categories I pick" hidden>
+  <div class="head">
+    <div class="eyebrow">Step 4 · Choosing the narratives</div>
+    <h2>7 categories in, 4 out</h2>
+    <p class="lede">The selected categories hold <b class="num" id="selN"></b> of the 160 tokens. Everything after this point only looks at those.</p>
+  </div>
+  <div class="sel">
+    <div class="panel"><h3 class="pos">Selected</h3><div class="rowl" id="inl"></div></div>
+    <div class="panel"><h3 class="neg">Excluded</h3><div class="rowl" id="outl"></div></div>
+  </div>
+</section>
+
+<!-- STAGE 5 -->
+<section class="stage" id="s5" data-title="Portfolio split" hidden>
+  <div class="head">
+    <div class="eyebrow">Step 5 · How many tokens, and from where</div>
+    <h2>Slots follow the size of each universe</h2>
+    <p class="lede">Bigger categories get more slots, because there are more good projects to choose from. Every selected category gets at least one slot. Use the buttons to adjust by hand.</p>
+  </div>
+  <div class="panel">
+    <div class="alloc-ctl">
+      <div><div class="eyebrow">Portfolio size</div><div class="bigN num" id="nOut">20</div></div>
+      <label for="nSl">Total tokens <input type="range" id="nSl" min="7" max="30" value="20"></label>
+      <div class="seg" role="group" aria-label="Method" id="meth">
+        <button aria-pressed="true" data-m="prop">Proportional, min 1</button>
+        <button aria-pressed="false" data-m="floor">1 each, then proportional</button>
+      </div>
+      <button class="seg" style="padding:8px 12px;background:var(--panel);color:var(--muted);cursor:pointer" id="reset">Reset</button>
+    </div>
+    <div class="atab" id="atab"></div>
+    <div class="status" id="astat"></div>
+  </div>
+  <div class="panel">
+    <h3>What comes next</h3>
+    <ul class="points" id="next"></ul>
+  </div>
+</section>
+
+<div class="nav"><button id="prev">← Previous</button><button id="nxt">Next →</button></div>
+
+<footer class="foot">
+  <p><b>CoinSats</b> · Zubair Abdul Jabbar, SCA Authorized Financial Influencer. For education only. Not investment advice. Crypto assets are highly volatile and you can lose all of your capital. Do your own research.</p>
+  <p>Data: CoinMarketCap listings snapshot 28 Sep 2026. Backtest prices: CoinMarketCap historical snapshots of 12 Mar 2023 and 5 Oct 2025. Top 10 news: CoinMarketCap updates, crypto.news, bitcoin.com, 24/7 Wall St., Phemex, late Sep 2026.</p>
+</footer>
+</div>
+
+<script>
+const U=[{"s":"ADA","n":"Cardano","mc":8990.8,"fdv":11001.2,"ath":-92.1,"mf":0.817,"c":"Layer 1","sub":""},{"s":"LEO","n":"UNUS SED LEO","mc":8331.7,"fdv":8923.9,"ath":-12.8,"mf":0.934,"c":"Exchange Token","sub":""},{"s":"XLM","n":"Stellar","mc":7827.9,"fdv":11192.6,"ath":-76.1,"mf":0.699,"c":"Layer 1","sub":""},{"s":"NEAR","n":"NEAR Protocol","mc":6447.4,"fdv":6447.4,"ath":-75.9,"mf":1.0,"c":"Layer 1","sub":""},{"s":"BCH","n":"Bitcoin Cash","mc":6211.9,"fdv":6491.5,"ath":-92.9,"mf":0.957,"c":"Layer 1","sub":""},{"s":"UNI","n":"Uniswap","mc":5482.9,"fdv":7844.7,"ath":-80.3,"mf":0.699,"c":"DeFi","sub":"DEX"},{"s":"HBAR","n":"Hedera","mc":5483.3,"fdv":6254.9,"ath":-78.1,"mf":0.877,"c":"Layer 1","sub":""},{"s":"LTC","n":"Litecoin","mc":5350.4,"fdv":5787.2,"ath":-83.3,"mf":0.925,"c":"Layer 1","sub":""},{"s":"CC","n":"Canton","mc":5155.7,"fdv":5155.7,"ath":-33.2,"mf":1.0,"c":"Layer 1","sub":""},{"s":"SUI","n":"Sui","mc":4730.0,"fdv":11546.5,"ath":-78.4,"mf":0.41,"c":"Layer 1","sub":""},{"s":"GRAM","n":"Gram (prev. Toncoin)","mc":4660.0,"fdv":8702.0,"ath":-79.9,"mf":0.536,"c":"Layer 1","sub":""},{"s":"AVAX","n":"Avalanche","mc":4605.2,"fdv":7439.1,"ath":-92.9,"mf":0.619,"c":"Layer 1","sub":""},{"s":"TAO","n":"Bittensor","mc":3471.1,"fdv":6304.8,"ath":-60.9,"mf":0.551,"c":"AI","sub":""},{"s":"CRO","n":"Cronos","mc":3404.2,"fdv":6842.6,"ath":-92.9,"mf":0.497,"c":"Layer 1","sub":""},{"s":"SHIB","n":"Shiba Inu","mc":3333.3,"fdv":3335.0,"ath":-93.6,"mf":0.999,"c":"Meme","sub":""},{"s":"QNT","n":"Quant","mc":3002.8,"fdv":3701.4,"ath":-41.9,"mf":0.811,"c":"Layer 1","sub":""},{"s":"M","n":"MemeCore","mc":2623.2,"fdv":11506.6,"ath":-76.2,"mf":0.228,"c":"Meme","sub":""},{"s":"ENA","n":"Ethena","mc":2612.8,"fdv":3882.2,"ath":-82.9,"mf":0.673,"c":"DeFi","sub":""},{"s":"ONDO","n":"Ondo","mc":2499.5,"fdv":5133.1,"ath":-76.0,"mf":0.487,"c":"RWA","sub":""},{"s":"OKB","n":"OKB","mc":2476.5,"fdv":2476.5,"ath":-54.1,"mf":1.0,"c":"Exchange Token","sub":""},{"s":"PUMP","n":"Pump.fun","mc":2469.2,"fdv":5302.6,"ath":-56.3,"mf":0.466,"c":"Launchpad","sub":""},{"s":"AAVE","n":"Aave","mc":2268.6,"fdv":2352.4,"ath":-78.0,"mf":0.964,"c":"DeFi","sub":"Lending"},{"s":"MNT","n":"Mantle","mc":2189.7,"fdv":4123.9,"ath":-76.7,"mf":0.531,"c":"Layer 2","sub":""},{"s":"DOT","n":"Polkadot","mc":2003.3,"fdv":2467.6,"ath":-97.9,"mf":0.812,"c":"Layer 1","sub":""},{"s":"ASTER","n":"Aster","mc":1904.8,"fdv":5634.4,"ath":-70.9,"mf":0.338,"c":"DeFi","sub":"Derivatives/Perps"},{"s":"SKY","n":"Sky","mc":1849.3,"fdv":1852.1,"ath":-22.2,"mf":0.999,"c":"RWA","sub":""},{"s":"WLD","n":"Worldcoin","mc":1832.2,"fdv":4927.8,"ath":-95.8,"mf":0.372,"c":"AI","sub":""},{"s":"WLFI","n":"World Liberty Financial","mc":1802.8,"fdv":5673.0,"ath":-87.7,"mf":0.318,"c":"DeFi","sub":""},{"s":"PEPE","n":"Pepe","mc":1732.9,"fdv":1732.9,"ath":-85.2,"mf":1.0,"c":"Meme","sub":""},{"s":"ICP","n":"Internet Computer","mc":1667.4,"fdv":1667.4,"ath":-99.6,"mf":1.0,"c":"Layer 1","sub":""},{"s":"ETC","n":"Ethereum Classic","mc":1448.7,"fdv":1928.1,"ath":-94.8,"mf":0.751,"c":"Layer 1","sub":""},{"s":"BGB","n":"Bitget Token","mc":1402.5,"fdv":1843.3,"ath":-76.4,"mf":0.761,"c":"Exchange Token","sub":""},{"s":"ARB","n":"Arbitrum","mc":1381.8,"fdv":2036.4,"ath":-91.5,"mf":0.679,"c":"Layer 2","sub":""},{"s":"MORPHO","n":"Morpho","mc":1354.4,"fdv":2558.1,"ath":-38.7,"mf":0.529,"c":"DeFi","sub":"Lending"},{"s":"VVV","n":"Venice Token","mc":1313.9,"fdv":2195.6,"ath":-21.5,"mf":0.598,"c":"AI","sub":""},{"s":"KAS","n":"Kaspa","mc":1274.2,"fdv":1319.2,"ath":-77.9,"mf":0.966,"c":"Layer 1","sub":""},{"s":"POL","n":"Polygon (prev. MATIC)","mc":1226.6,"fdv":1226.6,"ath":-91.0,"mf":1.0,"c":"Layer 2","sub":""},{"s":"ALGO","n":"Algorand","mc":1203.6,"fdv":1328.8,"ath":-95.9,"mf":0.906,"c":"Layer 1","sub":""},{"s":"GT","n":"GateToken","mc":1159.7,"fdv":1551.0,"ath":-58.1,"mf":0.748,"c":"Exchange Token","sub":""},{"s":"LIT","n":"Lighter","mc":1089.8,"fdv":4359.1,"ath":-21.3,"mf":0.25,"c":"DeFi","sub":"Derivatives/Perps"},{"s":"JUP","n":"Jupiter","mc":1089.0,"fdv":2251.3,"ath":-83.9,"mf":0.484,"c":"DeFi","sub":"Derivatives/Perps"},{"s":"JST","n":"JUST","mc":1067.7,"fdv":1290.8,"ath":-37.4,"mf":0.827,"c":"DeFi","sub":""},{"s":"KCS","n":"KuCoin Token","mc":1015.1,"fdv":1480.2,"ath":-74.3,"mf":0.686,"c":"Exchange Token","sub":""},{"s":"RENDER","n":"Render","mc":996.5,"fdv":1237.3,"ath":-85.9,"mf":0.805,"c":"AI","sub":""},{"s":"ATOM","n":"Cosmos","mc":911.2,"fdv":911.2,"ath":-96.2,"mf":1.0,"c":"Layer 1","sub":""},{"s":"FIL","n":"Filecoin","mc":873.6,"fdv":2056.8,"ath":-99.6,"mf":0.425,"c":"Layer 1","sub":""},{"s":"CAKE","n":"PancakeSwap","mc":831.6,"fdv":1043.8,"ath":-94.1,"mf":0.797,"c":"DeFi","sub":"Derivatives/Perps"},{"s":"DASH","n":"Dash","mc":829.0,"fdv":1219.6,"ath":-96.1,"mf":0.68,"c":"Privacy","sub":""},{"s":"AERO","n":"Aerodrome Finance","mc":802.6,"fdv":1602.4,"ath":-65.4,"mf":0.501,"c":"DeFi","sub":"DEX"},{"s":"VET","n":"VeChain","mc":761.2,"fdv":767.7,"ath":-96.8,"mf":0.992,"c":"Layer 1","sub":""},{"s":"XDC","n":"XDC Network","mc":741.2,"fdv":1314.7,"ath":-82.2,"mf":0.564,"c":"Layer 1","sub":""},{"s":"INJ","n":"Injective","mc":730.1,"fdv":730.3,"ath":-86.2,"mf":1.0,"c":"Layer 1","sub":""},{"s":"STABLE","n":"Stable","mc":723.2,"fdv":2705.6,"ath":-40.7,"mf":0.267,"c":"Layer 1","sub":""},{"s":"APT","n":"Aptos","mc":708.2,"fdv":1707.6,"ath":-95.9,"mf":0.415,"c":"Layer 1","sub":""},{"s":"ETHFI","n":"ether.fi","mc":670.9,"fdv":695.0,"ath":-91.9,"mf":0.965,"c":"DeFi","sub":"Liquid Staking/Yield"},{"s":"PYTH","n":"Pyth Network","mc":620.4,"fdv":787.8,"ath":-93.2,"mf":0.787,"c":"Oracle","sub":""},{"s":"FLR","n":"Flare","mc":616.3,"fdv":755.9,"ath":-91.1,"mf":0.815,"c":"Layer 1","sub":""},{"s":"PENGU","n":"Pudgy Penguins","mc":596.1,"fdv":842.9,"ath":-83.5,"mf":0.707,"c":"Meme","sub":""},{"s":"SEI","n":"Sei","mc":593.4,"fdv":782.8,"ath":-93.1,"mf":0.758,"c":"Layer 1","sub":""},{"s":"ZRO","n":"LayerZero","mc":579.8,"fdv":1535.5,"ath":-79.6,"mf":0.378,"c":"Layer 2","sub":""},{"s":"STX","n":"Stacks","mc":575.4,"fdv":575.4,"ath":-91.7,"mf":1.0,"c":"Layer 1","sub":""},{"s":"TRUMP","n":"OFFICIAL TRUMP","mc":561.0,"fdv":1990.2,"ath":-97.4,"mf":0.282,"c":"Meme","sub":""},{"s":"NEXO","n":"Nexo","mc":556.4,"fdv":861.1,"ath":-81.4,"mf":0.646,"c":"Payments","sub":""},{"s":"VIRTUAL","n":"Virtuals Protocol","mc":535.0,"fdv":811.9,"ath":-84.0,"mf":0.659,"c":"AI","sub":""},{"s":"CRV","n":"Curve DAO Token","mc":527.2,"fdv":1018.7,"ath":-99.4,"mf":0.517,"c":"DeFi","sub":"DEX"},{"s":"FET","n":"Artificial Superintelligence Alliance","mc":524.5,"fdv":617.0,"ath":-93.5,"mf":0.85,"c":"AI","sub":""},{"s":"RAY","n":"Raydium","mc":524.1,"fdv":1078.4,"ath":-88.5,"mf":0.486,"c":"DeFi","sub":"Derivatives/Perps"},{"s":"币安人生","n":"币安人生","mc":491.2,"fdv":491.2,"ath":-45.2,"mf":1.0,"c":"Meme","sub":""},{"s":"NIGHT","n":"Midnight","mc":453.6,"fdv":655.6,"ath":-98.5,"mf":0.692,"c":"Privacy","sub":""},{"s":"XPL","n":"Plasma","mc":444.5,"fdv":980.6,"ath":-94.2,"mf":0.453,"c":"Layer 1","sub":""},{"s":"PIEVERSE","n":"Pieverse","mc":441.0,"fdv":1493.0,"ath":-24.8,"mf":0.295,"c":"Payments","sub":""},{"s":"PENDLE","n":"Pendle","mc":413.5,"fdv":670.5,"ath":-68.3,"mf":0.617,"c":"DeFi","sub":"Liquid Staking/Yield"},{"s":"TIA","n":"Celestia","mc":411.8,"fdv":523.1,"ath":-97.9,"mf":0.787,"c":"Layer 1","sub":""},{"s":"SPX","n":"SPX6900","mc":391.1,"fdv":420.1,"ath":-81.5,"mf":0.931,"c":"Meme","sub":""},{"s":"FF","n":"Falcon Finance","mc":386.3,"fdv":1230.3,"ath":-81.7,"mf":0.314,"c":"DeFi","sub":"Stablecoin Protocol"},{"s":"LDO","n":"Lido DAO","mc":370.6,"fdv":446.7,"ath":-97.6,"mf":0.83,"c":"DeFi","sub":"Liquid Staking/Yield"},{"s":"PONS","n":"Pons","mc":359.1,"fdv":359.1,"ath":-45.7,"mf":1.0,"c":"Launchpad","sub":""},{"s":"KITE","n":"Kite","mc":348.6,"fdv":1389.3,"ath":-56.8,"mf":0.251,"c":"Layer 1","sub":""},{"s":"IMX","n":"Immutable","mc":343.1,"fdv":343.1,"ath":-98.2,"mf":1.0,"c":"Layer 2","sub":""},{"s":"MON","n":"Monad","mc":343.9,"fdv":3319.9,"ath":-40.4,"mf":0.104,"c":"Layer 1","sub":""},{"s":"XTZ","n":"Tezos","mc":339.8,"fdv":346.0,"ath":-96.6,"mf":0.982,"c":"Layer 1","sub":""},{"s":"GRT","n":"The Graph","mc":340.7,"fdv":361.6,"ath":-98.9,"mf":0.942,"c":"AI","sub":""},{"s":"SUN","n":"Sun [New]","mc":329.9,"fdv":341.5,"ath":-68.4,"mf":0.966,"c":"DeFi","sub":""},{"s":"DCR","n":"Decred","mc":316.1,"fdv":376.6,"ath":-92.8,"mf":0.839,"c":"Layer 1","sub":""},{"s":"GNO","n":"Gnosis","mc":315.2,"fdv":358.3,"ath":-89.0,"mf":0.88,"c":"Layer 1","sub":""},{"s":"OP","n":"Optimism","mc":312.3,"fdv":583.2,"ath":-97.2,"mf":0.535,"c":"Layer 2","sub":""},{"s":"BONK","n":"Bonk","mc":305.0,"fdv":308.1,"ath":-94.1,"mf":0.99,"c":"Meme","sub":""},{"s":"STRK","n":"Starknet","mc":298.2,"fdv":412.4,"ath":-98.9,"mf":0.723,"c":"Layer 2","sub":""},{"s":"JTO","n":"Jito","mc":297.3,"fdv":557.2,"ath":-89.9,"mf":0.534,"c":"DeFi","sub":"Liquid Staking/Yield"},{"s":"CFX","n":"Conflux","mc":281.6,"fdv":281.6,"ath":-96.8,"mf":1.0,"c":"Layer 1","sub":""},{"s":"AR","n":"Arweave","mc":278.6,"fdv":280.1,"ath":-95.3,"mf":0.995,"c":"Layer 1","sub":""},{"s":"FLOKI","n":"FLOKI","mc":258.8,"fdv":271.7,"ath":-92.2,"mf":0.952,"c":"Meme","sub":""},{"s":"SYRUP","n":"Maple Finance","mc":255.5,"fdv":267.0,"ath":-67.4,"mf":0.957,"c":"RWA","sub":""},{"s":"KMNO","n":"Kamino","mc":250.4,"fdv":444.1,"ath":-82.1,"mf":0.564,"c":"DeFi","sub":"Lending"},{"s":"RUNE","n":"THORChain","mc":243.9,"fdv":262.9,"ath":-96.5,"mf":0.928,"c":"DeFi","sub":"DEX"},{"s":"USELESS","n":"Useless Coin","mc":242.0,"fdv":242.2,"ath":-44.6,"mf":0.999,"c":"Meme","sub":""},{"s":"COMP","n":"Compound","mc":235.7,"fdv":235.7,"ath":-97.4,"mf":1.0,"c":"DeFi","sub":"Lending"},{"s":"EIGEN","n":"EigenCloud","mc":231.4,"fdv":460.7,"ath":-95.6,"mf":0.502,"c":"DeFi","sub":"Liquid Staking/Yield"},{"s":"WIF","n":"dogwifhat","mc":227.7,"fdv":227.7,"ath":-95.3,"mf":1.0,"c":"Meme","sub":""},{"s":"THETA","n":"Theta Network","mc":224.4,"fdv":224.4,"ath":-98.6,"mf":1.0,"c":"Layer 1","sub":""},{"s":"KAIA","n":"Kaia","mc":215.2,"fdv":215.2,"ath":-91.9,"mf":1.0,"c":"Layer 1","sub":""},{"s":"CVX","n":"Convex Finance","mc":209.4,"fdv":210.1,"ath":-96.6,"mf":0.997,"c":"DeFi","sub":""},{"s":"SOON","n":"SOON","mc":199.0,"fdv":329.9,"ath":-93.4,"mf":0.603,"c":"Layer 2","sub":""},{"s":"ZAMA","n":"Zama","mc":198.8,"fdv":894.0,"ath":-26.0,"mf":0.222,"c":"Privacy","sub":""},{"s":"AKT","n":"Akash Network","mc":195.5,"fdv":254.7,"ath":-91.9,"mf":0.768,"c":"AI","sub":""},{"s":"EDGE","n":"edgeX","mc":194.8,"fdv":556.5,"ath":-63.9,"mf":0.35,"c":"DeFi","sub":"Derivatives/Perps"},{"s":"XCN","n":"Onyxcoin","mc":190.3,"fdv":333.3,"ath":-97.4,"mf":0.571,"c":"Layer 1","sub":""},{"s":"MINA","n":"Mina","mc":184.6,"fdv":184.6,"ath":-98.6,"mf":1.0,"c":"Privacy","sub":""},{"s":"TRAC","n":"OriginTrail","mc":183.4,"fdv":183.4,"ath":-90.5,"mf":1.0,"c":"AI","sub":""},{"s":"CASHCAT","n":"Cash Cat","mc":182.7,"fdv":182.7,"ath":-41.7,"mf":1.0,"c":"Meme","sub":""},{"s":"MET","n":"Meteora","mc":180.5,"fdv":327.6,"ath":-63.6,"mf":0.551,"c":"DeFi","sub":"DEX"},{"s":"TEL","n":"Telcoin","mc":179.5,"fdv":186.3,"ath":-97.1,"mf":0.963,"c":"Layer 1","sub":""},{"s":"B","n":"BUILDon","mc":176.6,"fdv":176.6,"ath":-76.8,"mf":1.0,"c":"Meme","sub":""},{"s":"NEO","n":"Neo","mc":175.8,"fdv":249.3,"ath":-98.7,"mf":0.705,"c":"Layer 1","sub":""},{"s":"MX","n":"MX Token","mc":171.9,"fdv":774.7,"ath":-68.0,"mf":0.222,"c":"Exchange Token","sub":""},{"s":"FARTCOIN","n":"Fartcoin","mc":167.9,"fdv":167.9,"ath":-93.6,"mf":1.0,"c":"Meme","sub":""},{"s":"A","n":"Vaulta","mc":159.0,"fdv":199.9,"ath":-87.8,"mf":0.795,"c":"Layer 1","sub":""},{"s":"MARSCOIN","n":"MarsCoin","mc":153.9,"fdv":153.9,"ath":-41.5,"mf":1.0,"c":"Meme","sub":""},{"s":"AIOZ","n":"AIOZ Network","mc":151.4,"fdv":151.4,"ath":-95.6,"mf":1.0,"c":"Layer 1","sub":""},{"s":"SENT","n":"Sentient","mc":147.8,"fdv":701.4,"ath":-57.6,"mf":0.211,"c":"AI","sub":""},{"s":"APE","n":"ApeCoin","mc":147.0,"fdv":147.0,"ath":-99.6,"mf":1.0,"c":"Meme","sub":""},{"s":"GRASS","n":"Grass","mc":142.8,"fdv":585.6,"ath":-85.0,"mf":0.244,"c":"AI","sub":""},{"s":"1INCH","n":"1inch","mc":141.3,"fdv":149.9,"ath":-98.7,"mf":0.943,"c":"DeFi","sub":"DEX"},{"s":"EGLD","n":"MultiversX","mc":138.9,"fdv":139.0,"ath":-99.2,"mf":1.0,"c":"Layer 1","sub":""},{"s":"H","n":"Humanity","mc":137.2,"fdv":684.4,"ath":-92.0,"mf":0.2,"c":"Privacy","sub":""},{"s":"ZK","n":"ZKsync","mc":134.2,"fdv":256.1,"ath":-96.3,"mf":0.524,"c":"Layer 2","sub":""},{"s":"ZEN","n":"Horizen","mc":128.2,"fdv":146.3,"ath":-95.9,"mf":0.876,"c":"Privacy","sub":""},{"s":"AWE","n":"AWE","mc":127.5,"fdv":127.5,"ath":-77.0,"mf":1.0,"c":"DeFi","sub":""},{"s":"GLM","n":"Golem","mc":125.9,"fdv":125.9,"ath":-90.0,"mf":1.0,"c":"AI","sub":""},{"s":"DEEP","n":"DeepBook Protocol","mc":125.9,"fdv":219.1,"ath":-93.6,"mf":0.575,"c":"DeFi","sub":"DEX"},{"s":"SUPER","n":"SuperVerse","mc":122.9,"fdv":191.9,"ath":-95.9,"mf":0.64,"c":"DeFi","sub":""},{"s":"ATH","n":"Aethir","mc":122.2,"fdv":255.0,"ath":-94.3,"mf":0.479,"c":"AI","sub":""},{"s":"FLUID","n":"Fluid","mc":117.8,"fdv":140.8,"ath":-95.2,"mf":0.837,"c":"DeFi","sub":""},{"s":"PLUME","n":"Plume","mc":115.9,"fdv":175.5,"ath":-92.9,"mf":0.661,"c":"RWA","sub":""},{"s":"S","n":"Sonic","mc":109.6,"fdv":122.7,"ath":-96.3,"mf":0.894,"c":"Layer 1","sub":""},{"s":"GALA","n":"Gala","mc":108.3,"fdv":108.3,"ath":-99.7,"mf":1.0,"c":"Layer 1","sub":""},{"s":"PEAQ","n":"peaq","mc":104.0,"fdv":231.7,"ath":-94.6,"mf":0.449,"c":"Layer 1","sub":""},{"s":"RSR","n":"Reserve Rights","mc":102.9,"fdv":164.6,"ath":-98.6,"mf":0.626,"c":"RWA","sub":""},{"s":"GENIUS","n":"Genius Terminal","mc":102.7,"fdv":306.3,"ath":-67.8,"mf":0.335,"c":"DeFi","sub":"Derivatives/Perps"},{"s":"ORCA","n":"Orca","mc":102.1,"fdv":125.9,"ath":-92.5,"mf":0.811,"c":"DeFi","sub":"DEX"},{"s":"MELANIA","n":"Official Melania Meme","mc":102.1,"fdv":102.1,"ath":-99.3,"mf":1.0,"c":"Meme","sub":""},{"s":"CHEEMS","n":"Cheems (cheems.pet)","mc":101.8,"fdv":110.6,"ath":-75.0,"mf":0.921,"c":"Meme","sub":""},{"s":"DEL","n":"Decimal","mc":4894.3,"fdv":40521.9,"ath":-57.6,"mf":0.121,"c":"DeFi","sub":"Liquid Staking/Yield"},{"s":"BTW","n":"Bitway","mc":2625.0,"fdv":9342.3,"ath":-34.8,"mf":0.281,"c":"DeFi","sub":""},{"s":"HTX","n":"HTX","mc":1540.8,"fdv":1715.3,"ath":-52.2,"mf":0.898,"c":"Exchange Token","sub":""},{"s":"AKE","n":"AKEDO","mc":729.9,"fdv":3201.8,"ath":-77.6,"mf":0.228,"c":"AI","sub":""},{"s":"UB","n":"Unibase","mc":362.3,"fdv":1449.0,"ath":-40.4,"mf":0.25,"c":"AI","sub":""},{"s":"BP","n":"Backpack","mc":306.2,"fdv":1224.9,"ath":-22.3,"mf":0.25,"c":"Exchange Token","sub":""},{"s":"TIBBIR","n":"Ribbita by Virtuals","mc":282.6,"fdv":282.6,"ath":-35.8,"mf":1.0,"c":"Meme","sub":""},{"s":"DRV","n":"Derive","mc":281.2,"fdv":571.9,"ath":-34.0,"mf":0.492,"c":"DeFi","sub":"Derivatives/Perps"},{"s":"APEPE","n":"Ape and Pepe","mc":276.4,"fdv":276.4,"ath":-81.0,"mf":1.0,"c":"Meme","sub":""},{"s":"BR","n":"Bedrock","mc":272.6,"fdv":903.7,"ath":-28.9,"mf":0.302,"c":"DeFi","sub":""},{"s":"AI","n":"Artificial Inu","mc":224.7,"fdv":224.7,"ath":-41.7,"mf":1.0,"c":"Meme","sub":""},{"s":"STONK","n":"STONK (stonkfun.xyz)","mc":202.4,"fdv":248.6,"ath":-38.0,"mf":0.814,"c":"Launchpad","sub":""},{"s":"BORG","n":"SwissBorg","mc":171.8,"fdv":171.9,"ath":-89.4,"mf":1.0,"c":"Exchange Token","sub":""},{"s":"NPC","n":"Non-Playable Coin","mc":165.5,"fdv":174.8,"ath":-67.5,"mf":0.947,"c":"Meme","sub":""},{"s":"DGAI","n":"DGrid AI","mc":151.8,"fdv":1012.1,"ath":-10.4,"mf":0.15,"c":"AI","sub":""},{"s":"SOSO","n":"SoSoValue","mc":108.6,"fdv":317.4,"ath":-66.5,"mf":0.342,"c":"AI","sub":""},{"s":"SN51","n":"lium","mc":105.9,"fdv":582.3,"ath":-25.2,"mf":0.182,"c":"AI","sub":""},{"s":"Q","n":"Quack AI","mc":104.5,"fdv":233.2,"ath":-58.0,"mf":0.448,"c":"AI","sub":""}];
+const SEL=["Layer 1","DeFi","Meme","AI","Privacy","RWA","Launchpad"];
+const OUT={"Exchange Token":"Value depends on one centralised company and its exchange business, not on an on-chain narrative.","Layer 2":"No conviction. Only Arbitrum shows real on-chain activity, and even that is weak.","Oracle":"The leader, LINK, is already in the Top 10. Only Pyth is left.","Payments":"Only two tokens, and not a big narrative this cycle."};
+const WHY={"Layer 1":"The biggest universe. New chains, old chains and real ecosystems.","DeFi":"Second-largest universe. Protocols with real fees and buybacks.","Meme":"Pure attention. Small slot, high beta.","AI":"The strongest new narrative, from compute to agents.","Privacy":"ZEC and XMR are in the Top 10, but new tech (FHE, ZK chains) gives smaller names a separate play.","RWA":"Tokenized treasuries and credit. Wall Street's on-ramp.","Launchpad":"The token factories behind meme seasons."};
+
+/* ---------- Stage 1: backtest ---------- */
+const BTC={p0:22163.95,p1:123513.47}, btcM=BTC.p1/BTC.p0;
+const BT=[["SOL","Solana",20.31,228.60],["XRP","XRP",0.3733,2.9706],["TRX","TRON",0.06471,0.3414],["BNB","BNB",289.68,1165.53],["DOGE","Dogecoin",0.071,0.253],["LINK","Chainlink",6.59,22.00],["ETH","Ethereum",1590.29,4515.42],["XMR","Monero",150.90,321.40]].map(([s,n,a,b])=>({s,n,m:b/a}));
+const bask=BT.reduce((t,x)=>t+x.m,0)/BT.length;
+const usd=n=>"$"+Math.round(n).toLocaleString("en-US");
+const pc=x=>(x>=0?"+":"−")+Math.abs(x*100).toFixed(0)+"%";
+(function(){
+  const beat=BT.filter(x=>x.m>btcM);
+  const exSol=(BT.reduce((t,x)=>t+x.m,0)-BT[0].m)/7;
+  document.getElementById("bt-kpis").innerHTML=[
+    ["100% Bitcoin",usd(1e4*btcM),btcM.toFixed(2)+"× · the benchmark","hl"],
+    ["8 alts, equal weight",usd(1e4*bask),bask.toFixed(2)+"× · "+pc(bask/btcM-1)+" vs BTC",""],
+    ["Alts that beat BTC",beat.length+" of 8",beat.map(x=>x.s).join(" and ")+" only",""],
+    ["Basket without SOL",usd(1e4*exSol),exSol.toFixed(2)+"× · "+pc(exSol/btcM-1)+" vs BTC",""]
+  ].map(([l,v,n,c])=>`<div class="kpi ${c}"><span class="l">${l}</span><span class="v">${v}</span><span class="n">${n}</span></div>`).join("");
+  const rows=[...BT.map(x=>({s:x.s,n:x.n,m:x.m,k:x.m>btcM?"win":""})),{s:"BTC",n:"Bitcoin",m:btcM,k:"btc"},{s:"Basket",n:"8 alts, equal",m:bask,k:"basket"}].sort((a,b)=>b.m-a.m);
+  const max=rows[0].m*1.03;
+  document.getElementById("bt-bars").innerHTML=rows.map(r=>{const d=r.m/btcM-1;
+    return `<div class="bar"><div class="nm">${r.s}<small>${r.n}</small></div><div class="track"><div class="fill ${r.k}" style="width:${r.m/max*100}%"></div><div class="ref" style="left:${btcM/max*100}%"></div></div><div class="v">${usd(1e4*r.m)}<small class="${r.k==='btc'?'muted':d>=0?'pos':'neg'}">${r.k==='btc'?r.m.toFixed(2)+'×':pc(d)+' vs BTC'}</small></div></div>`}).join("");
+  document.getElementById("bt-points").innerHTML=[
+    `<b>Bitcoin turned $10,000 into ${usd(1e4*btcM)}.</b> The equal-weight basket of eight big alts ended at ${usd(1e4*bask)}, with more risk and more work.`,
+    `<b>Only ${beat.length} of 8 beat BTC:</b> ${beat.map(x=>x.s+" ("+x.m.toFixed(1)+"×)").join(" and ")}. Six of the eight lagged.`,
+    `<b>The basket only came close because of SOL.</b> Without it, the other seven averaged ${exSol.toFixed(2)}×.`,
+    `<b>ETH, the "safest" alt, returned ${BT.find(x=>x.s==="ETH").m.toFixed(2)}×,</b> roughly half of Bitcoin.`,
+    `<b>So large-cap alts are not worth the extra risk.</b> If I take altcoin risk, I want the upside of smaller caps, and BTC stays my core.`
+  ].map(t=>`<li>${t}</li>`).join("");
+})();
+
+/* ---------- Stage 2: Top 10 ---------- */
+const T10=[
+ {s:"ETH",n:"Ethereum",p:"$2,682",mc:"$327B",ath:-46,mf:"1.00",v:["neu","Core holding, BTC-like upside"],
+  what:"The main smart-contract platform. Home of most DeFi, stablecoins and tokenized real-world assets.",
+  cat:["Glamsterdam hard fork due Q4 2026: parallel execution and a higher gas limit for more capacity","Spot ETFs and corporate treasuries keep absorbing supply. BitMine alone holds about 5M ETH (~4.9% of supply)","Largest chain for tokenized assets, about $16.6B in RWA value","About a third of all ETH is staked, which reduces liquid supply"],
+  risk:["Layer 2s capture much of the activity and fees","Returned only 2.84× in our backtest vs Bitcoin's 5.57×","Still 46% below its all-time high after a weak 2026"],
+  take:"The safest alt, but its upside from here looks closer to Bitcoin's than to a small cap's."},
+ {s:"BNB",n:"BNB",p:"$766",mc:"$102B",ath:-44,mf:"1.00",v:["neu","Steady, low upside"],
+  what:"The native token of BNB Chain and the Binance ecosystem. Used for fees, launchpools and exchange discounts.",
+  cat:["Pasteur hard fork (Aug 2026) nearly doubled throughput to ~2,300 TPS","Next-gen chain targeting 100,000+ TPS: testnet late 2026, mainnet early 2027","Most wallets holding tokenized assets (1.9M) and $1.1B in tokenized stocks","Quarterly token burns keep reducing supply"],
+  risk:["Tied to a single company, Binance, and its regulatory fate","Validator set is far more centralised than Ethereum or Solana","At $100B, a 10× is very unlikely"],
+  take:"A well-run cash machine. Good to hold, but not where the big multiples will come from."},
+ {s:"XRP",n:"XRP",p:"$1.49",mc:"$94B",ath:-61,mf:"0.63",v:["risk","Strong story, weak token link"],
+  what:"The token of the XRP Ledger, built by Ripple for fast cross-border payments.",
+  cat:["US spot XRP ETFs now hold about $1.7B, with new funds adding ~$76M in their first four days (22–25 Sep)","New SEC crypto guidance clears more of the regulatory overhang","Ripple's stablecoin RLUSD grew 86% in 2026 to $2.5B","XRPL upgrades in October: permission delegation (5 Oct) and batch transactions (9 Oct)"],
+  risk:["Banks can settle in RLUSD without ever buying XRP. The stablecoin may take XRP's bridge role","Ripple's monthly escrow releases of up to 1B XRP","Down 18% this year and 61% below its high. Only 63% of supply circulates"],
+  take:"Ripple the company is winning. It is less clear that XRP the token captures that value."},
+ {s:"SOL",n:"Solana",p:"$118.71",mc:"$70B",ath:-60,mf:"0.93",v:["top","Top 3 pick"],top:1,
+  what:"A fast, low-fee Layer 1. The main chain for retail trading, memecoins, payments and tokenized stocks.",
+  cat:["Alpenglow upgrade (target Oct 2026) cuts finality from ~12.8s to ~150ms, aimed at institutional trading","Solana ETFs hold $1.93B, more than XRP's, with $278M inflows in 30 days","Leads tokenized-stock adoption: 123,500 new holders in a single week","Faster disinflation from early 2027 cuts new supply"],
+  risk:["On-chain revenue has not recovered to the 2025 memecoin peak","Alpenglow already missed its 28 Sep activation date","Corporate treasuries holding SOL have started selling (e.g. Lion Group rotated into HYPE)"],
+  take:"The best performer of the last cycle (11.3×), now 60% off its high with the strongest catalysts among L1s."},
+ {s:"TRX",n:"TRON",p:"$0.335",mc:"$32B",ath:-24,mf:"1.00",v:["neu","Cash flow, limited upside"],
+  what:"The chain where most USDT moves. The default rail for stablecoin transfers in emerging markets.",
+  cat:["About $92B of USDT circulates on TRON, the largest stablecoin settlement layer","Over $1M in daily fees and 2.6M daily active addresses","Canary Staked TRX ETF (TRXS) launched on Cboe on 29 Sep 2026","Tron Inc. treasury now holds over 713M TRX"],
+  risk:["Control is concentrated around Justin Sun","Its value depends on Tether choosing to stay on TRON","Only 24% below its high, so there is less room for a rebound"],
+  take:"A real business with real fees, but it trades like a utility, not a moonshot."},
+ {s:"ZEC",n:"Zcash",p:"$1,519",mc:"$26B",ath:null,mf:"0.80",v:["risk","Momentum, late-entry risk"],
+  what:"A privacy coin with optional shielded (zero-knowledge) transactions and a 21M supply cap like Bitcoin.",
+  cat:["Grayscale Zcash ETF and a new Valour ZEC ETP (29 Sep 2026) open institutional access","NU7 upgrade on 5 Nov 2026 cuts block time from 75s to 25s","Zakura library made private transactions 14× faster to create on mobile","Capital rotating into privacy: ZEC +64% in September, +170% this year"],
+  risk:["A near-vertical run: from ~$860 on 1 Sep to $1,688 on 27 Sep, then a sharp pullback","Regulators may target privacy coins, especially after hacked funds moved into shielded pools","Large leveraged shorts and heavy volatility at these levels"],
+  take:"The trend is strong, but buying after a 64% month is a timing bet, not an investment edge. (Its listed ATH of $5,942 is a 2016 launch spike, so % from ATH is not meaningful.)"},
+ {s:"HYPE",n:"Hyperliquid",p:"$88.71",mc:"$22B",ath:-9,mf:"0.26",v:["top","Top 3 pick"],top:3,
+  what:"An on-chain perpetual futures exchange running on its own Layer 1. Trading fees are used to buy back HYPE.",
+  cat:["Highest revenue in crypto in 2026: $429M by 15 Sep, ahead of Pump.fun","Over $1B a year in fees routed into automatic HYPE buybacks","HIP-3 lets anyone launch perp markets; HIP-4 (May 2026) added outcome markets","Circle revenue-funded buybacks start on 3 Oct 2026"],
+  risk:["Only 26% of total supply circulates. Large unlocks are ahead","Hyperliquid Labs unstaked 3.75M HYPE (~$329M) for an OTC sale on 30 Sep","Trades near its high (-9%), and rivals like Aster and Lighter compete on fees"],
+  take:"The best business in the Top 10. The risk is the supply unlocks, not the product."},
+ {s:"DOGE",n:"Dogecoin",p:"$0.094",mc:"$15B",ath:-87,mf:"1.00",v:["risk","Pure sentiment"],
+  what:"The original meme coin. Its price moves on attention and Elon Musk headlines.",
+  cat:["US spot DOGE ETFs have been live since January 2026","DogeOS testnet (30 Sep) adds an EVM layer for apps paid in DOGE","Persistent talk of DOGE payments on X (not confirmed)"],
+  risk:["5 billion new DOGE minted every year, with no cap","ETF demand is small ($3.7M in Sep) and Bitwise is closing its DOGE ETF","87% below its high with no cash flows to anchor the price"],
+  take:"It can pump in a euphoric phase, but nothing fundamental supports it."},
+ {s:"LINK",n:"Chainlink",p:"$15.18",mc:"$11B",ath:-71,mf:"0.75",v:["top","Top 3 pick"],top:2,
+  what:"The standard oracle and cross-chain network. It brings real-world data and bank-grade messaging to blockchains.",
+  cat:["CCIP 2.0 (28–29 Sep 2026) added compliance controls for institutions","DTCC plans Chainlink-powered collateral automation for tokenized assets in Q4 2026","50+ banks in 16 countries testing instant FX settlement on Chainlink (Project Pangea)","Chosen as oracle for Open USD, a stablecoin backed by Visa, Mastercard and Stripe","Chainlink Reserve uses protocol revenue to buy LINK on the open market"],
+  risk:["Bank adoption does not always translate into token demand","Returned only 3.3× in the backtest despite the good news","Still 71% below its all-time high"],
+  take:"The clearest link between real institutional adoption and token buybacks, at a deep discount to its high."},
+ {s:"XMR",n:"Monero",p:"$538",mc:"$10B",ath:-33,mf:"1.00",v:["neu","Hold, regulatory overhang"],
+  what:"The most private cryptocurrency. Every transaction is private by default.",
+  cat:["FCMP++ upgrade on 5 Oct 2026 hides each transaction among the whole chain instead of 16 decoys","Benefits from the wider privacy-coin rotation","New spending options, like no-KYC cards"],
+  risk:["Delisted from most major exchanges already","EU anti-money-laundering rules from July 2027 restrict privacy coins on regulated platforms","Lagged the privacy rally: +3% in Sep while ZEC gained 64%"],
+  take:"The purest privacy asset, but access keeps shrinking. ZEC is the institutional privacy trade."}
+];
+const LOGO={"ETH":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDI0IDI0IiBjbGFzcz0id2ViM2ljb25zIj4KICAgIDxnIGNsaXAtcGF0aD0idXJsKCNFVEhfX2EpIj4KICAgICAgICA8cGF0aCBmaWxsPSIjMDAwIiBkPSJNMjQgMEgwdjI0aDI0eiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiM4RkZDRjMiIGQ9Ik0xMiA0djUuOTEybDUgMi4yMzZ6Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0NBQkNGOCIgZD0ibTEyIDQtNSA4LjE0OCA1LTIuMjM2eiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNDQkE3RjUiIGQ9Ik0xMiAxNS45OFYyMGw1LTYuOTJ6Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iIzc0QTBGMyIgZD0iTTEyIDIwdi00LjAybC01LTIuOXoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjQ0JBN0Y1IiBkPSJtMTIgMTUuMDQ4IDUtMi45LTUtMi4yMzZ6Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iIzc0QTBGMyIgZD0ibTcgMTIuMTQ4IDUgMi45VjkuOTEyeiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiMyMDI2OTkiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0ibTEyIDE1LjA0OC01LTIuOUwxMiA0bDUgOC4xNDh6bS00LjY2OC0zLjEzNiA0LjU4OC03LjQ3NnY1LjQzNnptLS4wNjguMjA0IDQuNjU2LTIuMDY4djQuNzY4em00LjgxNi0yLjA2OHY0Ljc2OGw0LjY1Mi0yLjd6bTAtLjE3NiA0LjU4OCAyLjA0LTQuNTg4LTcuNDc2eiIgY2xpcC1ydWxlPSJldmVub2RkIi8+CiAgICAgICAgPHBhdGggZmlsbD0iIzIwMjY5OSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJtMTIgMTUuOTE2LTUtMi44NEwxMiAyMGw1LTYuOTI0em0tNC40NC0yLjM0IDQuMzYgMi40OHYzLjU2em00LjUyIDIuNDh2My41Nmw0LjM2LTYuMDR6IiBjbGlwLXJ1bGU9ImV2ZW5vZGQiLz4KICAgIDwvZz4KICAgIDxkZWZzPgogICAgICAgIDxjbGlwUGF0aCBpZD0iRVRIX19hIj4KICAgICAgICAgICAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTAgMGgyNHYyNEgweiIvPgogICAgICAgIDwvY2xpcFBhdGg+CiAgICA8L2RlZnM+Cjwvc3ZnPgo=","BNB":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDI0IDI0IiBjbGFzcz0id2ViM2ljb25zIj4KICAgIDxnIGNsaXAtcGF0aD0idXJsKCNCTkJfX2EpIj4KICAgICAgICA8cGF0aCBmaWxsPSIjMDAwIiBkPSJNMjQgMEgwdjI0aDI0eiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNGMEI5MEIiIGQ9Ik03LjQ1NCA2LjQ0OSAxMiA0bDQuNTQ3IDIuNDQ5LTEuNjY3LjkwN0wxMiA1LjgwOSA5LjEyNSA3LjM1NnptOS4wOTMgMy4wOTMtMS42NjctLjkwNkwxMiAxMC4xODIgOS4xMjUgOC42MzZsLTEuNjcxLjkwNnYxLjgxbDIuODcgMS41NDZ2My4wODlsMS42NzYuOTA2IDEuNjcyLS45MDZ2LTMuMDlsMi44NzUtMS41NDZ6bTAgNC45MDNWMTIuNjNsLTEuNjY3LjkwN3YxLjgwOXptMS4xOS42NC0yLjg3NiAxLjU0MnYxLjgxM2w0LjU0Ny0yLjQ1M3YtNC44OThsLTEuNjcyLjkwMnptLTEuNjcyLTcuMDkgMS42NjcuOTA3djEuODFsMS42NzYtLjkwM1Y3Ljk5NmwtMS42NzItLjkwN0wxNi4wNjUgOHptLTUuNzQgOS4yOXYxLjgwOEwxMiAyMGwxLjY3Mi0uOTA3VjE3LjI5bC0xLjY3Mi45LTEuNjcxLS45MDd6TTcuNDUzIDE0LjQ0bDEuNjY3LjkwN3YtMS44MWwtMS42NjctLjkwNnYxLjgxM3ptMi44Ny02LjQ0NEwxMiA4LjkwMmwxLjY3Mi0uOTA2TDEyIDcuMDg5IDEwLjMzIDh6bS00LjA2LjkwNiAxLjY3MS0uOTA2LTEuNjY2LS45MDdMNC41OTMgOHYxLjgxM2wxLjY3MS45MDNWOC45MDJtMCAzLjA5LTEuNjcxLS45MDN2NC44OThsNC41NDYgMi40NTN2LTEuODE4TDYuMjcgMTUuMDh2LTMuMDkzeiIvPgogICAgPC9nPgogICAgPGRlZnM+CiAgICAgICAgPGNsaXBQYXRoIGlkPSJCTkJfX2EiPgogICAgICAgICAgICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMCAwaDI0djI0SDB6Ii8+CiAgICAgICAgPC9jbGlwUGF0aD4KICAgIDwvZGVmcz4KPC9zdmc+Cg==","XRP":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDI0IDI0IiBjbGFzcz0id2ViM2ljb25zIj4KICAgIDxwYXRoIGZpbGw9IiMwMDAiIGQ9Ik0yNCAwSDB2MjRoMjR6Ii8+CiAgICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTcuNjU0IDVoMi4zMTVsLTQuODE3IDUuMTM5QTQuMzcgNC4zNyAwIDAgMSAxMiAxMS41MDVhNC4zNyA0LjM3IDAgMCAxLTMuMTUyLTEuMzY2TDQuMDIzIDVoMi4zMjNsMy42NTYgMy45MzZjMS4wNyAxLjEzNiAyLjkyNSAxLjEzNiAzLjk5NiAwek02LjMxNSAxOC45OTJINGw0Ljg0Ny01LjEyNGE0LjM4IDQuMzggMCAwIDEgMy4xNTYtMS4zNjYgNC4zOCA0LjM4IDAgMCAxIDMuMTU2IDEuMzY3TDIwIDE4Ljk5OWgtMi4zMTZsLTMuNjc4LTMuOTJjLTEuMDcxLTEuMTM1LTIuOTI1LTEuMTM1LTMuOTk2IDB6Ii8+Cjwvc3ZnPgo=","SOL":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDI0IDI0IiBjbGFzcz0id2ViM2ljb25zIj4KICAgIDxnIGNsaXAtcGF0aD0idXJsKCNTT0xfX2EpIj4KICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI1NPTF9fYikiIGQ9Ik0yNCAwSDB2MjRoMjR6Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE3LjcgOC4zNTdhLjU1LjU1IDAgMCAxLS4zNjUuMTQ1SDQuNTE1Yy0uNDU1IDAtLjY4NS0uNTItLjM3LS44MjVsMi4xMDUtMi4wM2MuMS0uMDk1LjIzLS4xNS4zNjUtLjE1aDEyLjg3Yy40NiAwIC42ODUuNTI1LjM2NS44M3ptMCAxMC4wMDZjLS4xLjA5LS4yMy4xNC0uMzY1LjE0SDQuNTE1Yy0uNDU1IDAtLjY4NS0uNTE1LS4zNy0uODJsMi4xMDUtMi4wMzVjLjEtLjA5NS4yMy0uMTQ1LjM2NS0uMTQ1aDEyLjg3Yy40NiAwIC42ODUuNTIuMzY1LjgyNXptMC03LjcyYS41NS41NSAwIDAgMC0uMzY1LS4xNEg0LjUxNWMtLjQ1NSAwLS42ODUuNTE1LS4zNy44MmwyLjEwNSAyLjAzNWMuMS4wOS4yMy4xNDUuMzY1LjE0NWgxMi44N2MuNDYgMCAuNjg1LS41Mi4zNjUtLjgyNXoiLz4KICAgIDwvZz4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iU09MX19iIiB4MT0iNCIgeDI9IjIwLjM4NCIgeTE9IjE1Ljg0MSIgeTI9IjE1LjE5MiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICAgICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjNTk5REIwIi8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzQ3RjhDMyIvPgogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICAgICAgPGNsaXBQYXRoIGlkPSJTT0xfX2EiPgogICAgICAgICAgICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMCAwaDI0djI0SDB6Ii8+CiAgICAgICAgPC9jbGlwUGF0aD4KICAgIDwvZGVmcz4KPC9zdmc+Cg==","TRX":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDI0IDI0IiBjbGFzcz0id2ViM2ljb25zIj4KICAgIDxnIGNsaXAtcGF0aD0idXJsKCNUUlhfX2EpIj4KICAgICAgICA8cGF0aCBmaWxsPSIjQzQzNDJCIiBkPSJNMjQgMEgwdjI0aDI0eiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNmZmYiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTUuMjYgNC4xNjVhLjUuNSAwIDAgMSAuNDkyLS4xNWwxMC41ODEgMi41OWEuNS41IDAgMCAxIC4xNzcuMDgybDIuMTUzIDEuNTdhLjUuNSAwIDAgMSAuMTE4LjY4N2wtNy40MDcgMTAuODM3YS41LjUgMCAwIDEtLjg4Ny0uMTE1TDUuMTYxIDQuNjdhLjUuNSAwIDAgMSAuMS0uNTA1bTEuNzQ3IDIuNzA3IDMuNjk4IDEwLjQxLjYwOC01LjM5NXptNS4yOTUgNS4xODktLjYxNyA1LjQ4OSA1LjIzLTcuNjU0em01LjA4NS0zLjQ5NC0zLjM3MiAxLjU4MiAyLjI2LTIuMzkyem0tMi4xMy0xLjE5M0w3LjAzMiA1LjM2bDQuODIzIDUuNjE3eiIgY2xpcC1ydWxlPSJldmVub2RkIi8+CiAgICA8L2c+CiAgICA8ZGVmcz4KICAgICAgICA8Y2xpcFBhdGggaWQ9IlRSWF9fYSI+CiAgICAgICAgICAgIDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0wIDBoMjR2MjRIMHoiLz4KICAgICAgICA8L2NsaXBQYXRoPgogICAgPC9kZWZzPgo8L3N2Zz4K","ZEC":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDI0IDI0IiBjbGFzcz0id2ViM2ljb25zIj4KICAgIDxnIGNsaXAtcGF0aD0idXJsKCNaRUNfX2EpIj4KICAgICAgICA8cGF0aCBmaWxsPSIjRUNCMjQ0IiBkPSJNMjQgMEgwdjI0aDI0eiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0xMS4yOCAxNC45NDdoNC45M3YyLjk0OGgtMi45NDdWMjBoLTIuNTI4di0yLjEwNUg3Ljc5di0yLjY3Nmw0LjkwNy02LjE2Nkg3Ljc5VjYuMTA1aDIuOTQ1VjRoMi41Mjh2Mi4xMDVoMi45NDh2Mi42NzZ6Ii8+CiAgICA8L2c+CiAgICA8ZGVmcz4KICAgICAgICA8Y2xpcFBhdGggaWQ9IlpFQ19fYSI+CiAgICAgICAgICAgIDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0wIDBoMjR2MjRIMHoiLz4KICAgICAgICA8L2NsaXBQYXRoPgogICAgPC9kZWZzPgo8L3N2Zz4K","DOGE":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDI0IDI0IiBjbGFzcz0id2ViM2ljb25zIj4KICAgIDxnIGNsaXAtcGF0aD0idXJsKCNET0dFX19hKSI+CiAgICAgICAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTI0IDBIMHYyNGgyNHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjRTFCMDUxIiBkPSJtOS40NDggNC40MS0uMTk5LS4xNGEuMDc0LjA3NCAwIDAgMC0uMTE3LjA3bC4wMzEuMTk2LS4wMi43OHEwIC4wMzEtLjAyMy4wNTVsLS4wMi4wMmEuMTMuMTMgMCAwIDAtLjAzNC4wNjIgMjEgMjEgMCAwIDAtLjE2OC43NDEuMzYuMzYgMCAwIDEtLjA5NC4xNzJsLS4xNjguMThjLS4yMS4yMjYtLjE4My4yNjUuMDkuMTE2YTYgNiAwIDAgMCAuNjMyLS40MTdjLjA3LS4wNTUuMTk1LS4wNy4zNjMtLjA1YS4xMi4xMiAwIDAgMSAuMDc4LjAzOGMuMDcuMDc0LjE0NS4xMjkuMjI3LjE3Ni4wMjcuMDEyLjA0My4wMzkuMDQ2LjA3LjAyLjEzMyAwIC4yNzMtLjA5My4zNzVhMS4wNiAxLjA2IDAgMCAwLS4yNjYuNzEuMS4xIDAgMCAxLS4wNDYuMDg2Yy0uMi4xMTctLjIxMS4zNC0uMzc1LjQ5NXEtLjExNS4xMDUtLjI0Mi4xODhsLS4wMTYtLjUyM2EuMTIuMTIgMCAwIDAtLjEyOC0uMTE3Yy0uMDYzIDAtLjEyNS4wMzktLjE4LjEwMWExLjI1IDEuMjUgMCAwIDEtLjUyMy4zNzljLS4xNjQuMDM5LS4yNzMuMTY3LS4zNC4zOWEuNy43IDAgMCAxLS4xNDQuMjI2cS4wMy0uNTMzLS40OC0uNDgtLjExLjAxLS4zNS4yMTVhLjEzLjEzIDAgMCAwLS4wNC4wNy42My42MyAwIDAgMS0uMzc0LjQ2OGMtLjA2Ny4wMTYtLjA5OC0uMDE1LS4wOTQtLjA4MnEtLjAwMi0uMDE2LjAwOC0uMDNjLjI1Ny0uNDg5LjI2MS0xLjA3LjcxLTEuNDZxLjE4Mi0uMTY5LjQxLS4yNjZDOC4yODUgNi45NTEgOC42OSA2LjQ0IDguNzMgNS42OGwuMDIzLS43NjVxLjAwOS0uNDE2LjEzLS44MTVhLjE0LjE0IDAgMCAxIC4xNzEtLjA5NGwuMjE1LjA1OWEuMS4xIDAgMCAxIC4wNTguMDVsLjExNy4yOTd6Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0I4N0MyOSIgZD0ibTkuNDQ4IDQuNDExLjE0NS4xNjhxLjMyNS40NTEuNTQ2Ljk2OC4wNjkuMTY4LjM0Ny4zN2MuMTA1LjA4MiAwIC4xMjUtLjMyNC4xMTdhMi40IDIuNCAwIDAgMS0uNTctLjY4My43LjcgMCAwIDEtLjA5My0uMjkyLjY3LjY3IDAgMCAwLS4yMS0uNDQxLjA1LjA1IDAgMCAwLS4wODcuMDMxbC0uMDA0LjA5NGEuNS41IDAgMCAxLS4wMzktLjIwM2wtLjAyMy0uMmEuMDc0LjA3NCAwIDAgMSAuMTEzLS4wN2wuMTk1LjE0MXoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjQzg5NTM5IiBkPSJNMTUuNTk0IDQuNTcxYy0uMDgyLjAwOC0uMTI0LjA2Mi0uMTE3LjE1NiAwIC4xNDguMDc4LjI1LjA3OC4zOXEwIC4xMzMtLjAxMS4yNjZjLS4wMTYuMjA2LjE2My4zOTguMjE4LjU5M3EuMTE1LjQuMDU1LjcwNmE2IDYgMCAwIDAtLjA4Ni42MjQuMzYuMzYgMCAwIDEtLjEyOS4yNTQuMDYuMDYgMCAwIDAtLjAxNi4wNzhsLjAyNC4wMjNxLjE0OC4wODkuMTk1LjI0MmEuMDQ3LjA0NyAwIDAgMCAuMDkuMDA0LjUuNSAwIDAgMCAuMDU4LS4yNTdjLjA0LjAzOS4wNjcuMDc4LjA3LjEwMXEuMTIuMzI0LjI3NC42MjVjLjEwOS4yMjIuMTc1LjQxLjIwNy41NjVxLjEuNTA1LjEyOCAxLjAwM2MuMDA4LjE2LjA1NS40MDIuMTE3LjU0N3EuMjUyLjYyOS4zNTIgMS4yODN2Ljg3NGEuMS4xIDAgMCAwIC4wMjMuMDc4Yy4wOTguMTMuMTIuMjg1LjA3OC40NjlxLS4wMy4xMjkuMDU4LjIwNy4wNDEuMDM0LjA0LjA4NWEuNjYuNjYgMCAwIDEtLjE2LjQxLjguOCAwIDAgMC0uMTY0LjI3M2MtLjA5NC4yODUtLjI4NS41NS0uNTg2LjYyNWEuMi4yIDAgMCAwLS4xMTMuMDgyYy0uMTIuMjAyLS4xNTYuMzgyLS40MDYuNDc2YS4wNy4wNyAwIDAgMS0uMDc0LS4wMTJxLS4xMDUtLjA3NC0uMjM0LjAyN2MuMDUtLjE5NS4xMTctLjM5LjIwMy0uNTczYTEgMSAwIDAgMSAuMTc2LS4yNThxLjE5OC0uMjIuMTE3LS41N2EuMTIuMTIgMCAwIDEgLjAyLS4wOWMuMTMyLS4xOS4yMDYtLjM5LjM1OC0uNTc3YS44Ny44NyAwIDAgMCAuMTk1LS41OTMuMDMuMDMgMCAwIDAtLjAwNS0uMDE4LjAzLjAzIDAgMCAwLS4wMTQtLjAxM2gtLjAyNGEuMDQuMDQgMCAwIDAtLjAxNS4wMTFjLS4yMzQuMjU0LS41NS40MDYtLjc0Mi43MDNhNCA0IDAgMCAxLS44OS45OTUuMjEuMjEgMCAwIDAtLjA3Ny4xODdjLjAyMy4xODQgMCAuMzg2LjI0NS4zOS4wNC4wMDQuMDU1LjAyNC4wNTUuMDU5YS4zNC4zNCAwIDAgMS0uMDY2LjIwN3EtLjE3NS4yNDktLjM0LjUwN2EuMDUuMDUgMCAwIDAgLjA0Ny4wNWwuMDYzLjAwNWMtLjA3LjAzOS0uMTMzLjA5LS4yMTkuMDk3LS4yMzQuMDI0LS4zODYtLjAxMi0uNDU3LS4wOTdxLjItLjI1LjM2LS40MDJhLjQyLjQyIDAgMCAwIC4xMzQtLjQwNi4wNi4wNiAwIDAgMC0uMDYtLjAzNS42LjYgMCAwIDAtLjE2NC4wNDYuMDYuMDYgMCAwIDEtLjA2LS4wMDUuMDYuMDYgMCAwIDEtLjAxOC0uMDU3LjcuNyAwIDAgMCAuMDE1LS4yNDYuMS4xIDAgMCAxIC4wMTItLjA2MmwuMjE1LS4zNjNhLjAzLjAzIDAgMCAwIC4wMDQtLjAyMWwtLjAwNC0uMDEtLjAwOC0uMDA4YS4wMy4wMyAwIDAgMC0uMDE4LS4wMDYuMDMuMDMgMCAwIDAtLjAxNy4wMDYuOS45IDAgMCAxLS40NjkuMjY1Yy0uMDM1LjAwOC0uMDU0LS4wMDgtLjA2Ni0uMDM5bC0uMDA4LS4wMzEuMDA0LS4wMDRhLjYuNiAwIDAgMCAuMjQyLS4xNTYuMzQuMzQgMCAwIDAgLjA3OC0uMjIyYzAtLjIzOC4zNDQtLjUzNS41MDMtLjY5NWEuMjEuMjEgMCAwIDAgLjA2LS4xODMgNSA1IDAgMCAxLS4wNjctLjQzcS0uMDA2LS4wNzUuMDU4LS4xMDVhLjA2LjA2IDAgMCAxIC4wNC0uMDA4cS4wMTcuMDAyLjAzNC4wMTZsLjAzMi4wMzFxLjA0MS4wMzYuMDY2LS4wMTJsLjE0LS4yMzRhLjA3LjA3IDAgMCAwIC4wMDgtLjA0N2MtLjAzOS0uMjczLjA0LS41LjIyNy0uNjY3YS40NC40NCAwIDAgMCAuMTAxLS4yNjUuMDcuMDcgMCAwIDAtLjAzOS0uMDdsLS4xMTctLjA3OWEuMDguMDggMCAwIDEtLjA0LS4wNzguNjUuNjUgMCAwIDEgLjEzLS4zMTJxLjAyNC0uMDMtLjAwNC0uMDU0Yy0uMDktLjA3LS4xNTYtLjI0Ni0uMDc4LS4zNTFhLjI1LjI1IDAgMCAwIC4wMzktLjEwMi4wNi4wNiAwIDAgMC0uMDE2LS4wNThxLS4xNzYtLjE2NC0uMDY2LS4zNTYuMDE4LS4wNC0uMDA4LS4wN2wtLjE5MS0uMTk5YS4wNy4wNyAwIDAgMS0uMDItLjA1OC4yLjIgMCAwIDAtLjA1LS4xNTYuMDQuMDQgMCAwIDAtLjAzMi0uMDE2LjA0LjA0IDAgMCAwLS4wMTguMDA3LjA0LjA0IDAgMCAwLS4wMTMuMDE2IDEgMSAwIDAgMS0uMTA1LjE5NWwtLjAyNC4wMDhxLS4wMyAwLS4wMjMtLjAzMWwuMDM5LS4xOTVxLjAxMy0uMDQ4LS4wMzktLjA1bC0uMjg5LS4wMTJhLjA0LjA0IDAgMCAwLS4wMzUuMDE4LjA0LjA0IDAgMCAwIDAgLjA0bC4xMDUuMTU2YS4wNC4wNCAwIDAgMSAuMDA0LjAzNS4wNC4wNCAwIDAgMS0uMDI3LjAyNC4xNS4xNSAwIDAgMS0uMTAxLS4wMTZsLS4yNTgtLjEyOWEuMi4yIDAgMCAwLS4wODYtLjAxNWwtLjE5NS4wMTFjLS4wNDMgMC0uMDctLjAxNS0uMDc4LS4wNTRsLS4wMTItLjAzMWEuMDYuMDYgMCAwIDAtLjA3LS4wNDdjLS4yNTcuMDUxLS41Mi4wNi0uNzguMDI3YS4xMS4xMSAwIDAgMC0uMTEuMDU5Yy0uMTU4LjMwOC0uMzguNTgtLjY1MS43OTUtLjA4Ni4wNjctLjE4NC4wOTgtLjI4MS4xMzNhLjIuMiAwIDAgMC0uMDc4LjA1Yy0uMTYuMTgtLjMwNS4xMzctLjUyMy4xMzMtLjIzNC0uMDAzLS40Ni0uMDE1LS42ODctLjAyN2EuMzUuMzUgMCAwIDAtLjE1Ni0uMDYyLjA3LjA3IDAgMCAxLS4wNTktLjA2MiAxLjUgMS41IDAgMCAwLS4yMDItLjYyOS4wNy4wNyAwIDAgMC0uMDctLjAzOS4wNy4wNyAwIDAgMC0uMDYzLjA0N2wtLjEzNy4zNTlhLjA5LjA5IDAgMCAxLS4wNjEuMDU0LjA5LjA5IDAgMCAxLS4wOC0uMDIzLjEuMSAwIDAgMS0uMDIzLS4wNWwtLjAzNS0uMjI3YS41LjUgMCAwIDAtLjAyNy0uMTA1bC0uMDc4LS4yMTVhLjA1LjA1IDAgMCAxIC4wMjMtLjA2MmwuMDI0LS4wMDRoLjA1Yy4wMjggMCAuMDQzLS4wMTIuMDU1LS4wNGEyLjUgMi41IDAgMCAxIC4xODgtLjQyOC4zMS4zMSAwIDAgMC0uMDA0LS4zMTNjLS4wMTYtLjAyNy0uMDQtLjAzLS4wNjMtLjAwN2EzLjMgMy4zIDAgMCAwLS40Ni40ODRxLS4wNi4wODYtLjA3OC0uMDJhLjEuMSAwIDAgMC0uMDItLjA1Yy0uMDItLjAxNi0uMDM5LS4wMi0uMDY2LS4wMDktLjIzOC4xMTgtLjQyMi4yNTQtLjU0Ny40MThhLjM2LjM2IDAgMCAxLS4yMTguMTQ0Yy0uMDMxLjAwNC0uMDQtLjAwNy0uMDM1LS4wMzlxLjEyLS4zMTIuMzA0LS41OTNjLjA0LS4wNTQuMDI0LS4xMDktLjAzOS0uMTY0cS0uMDI5LS4wMzQtLjA2MiAwbC0uMjkzLjI3M3EwLS4wNDMuMDI3LS4wNzguMTc1LS4xNjUuMjc0LS40NTIuMDg3LjAwNi4xMDUtLjA1OWEuOS45IDAgMCAxIC4xMzYtLjI5MnEuMTMtLjA4Mi4yNDItLjE4OGMuMTY0LS4xNTYuMTc2LS4zNzguMzc1LS40OTVhLjEuMSAwIDAgMCAuMDQ3LS4wODZxLjAwMS0uNDA3LjI2NS0uNzFhLjQ2LjQ2IDAgMCAwIC4wOTQtLjM3NS4wOS4wOSAwIDAgMC0uMDQ3LS4wNy45LjkgMCAwIDEtLjIyMi0uMTc2LjEzLjEzIDAgMCAwLS4wNzgtLjAzOWMtLjE3Ni0uMDItLjI5NyAwLS4zNjcuMDUxcS0uMzI5LjI0Ni0uNjMyLjQxOGMtLjI3NC4xNDgtLjMuMTA5LS4wOS0uMTE4bC4xNjgtLjE4YS40LjQgMCAwIDAgLjA5My0uMTdsLjE2OC0uNzQyYS4xMy4xMyAwIDAgMSAuMDM1LS4wNjNsLjAyLS4wMmEuMDguMDggMCAwIDAgLjAyMy0uMDU0bC4wMi0uNzhhLjQuNCAwIDAgMCAuMDM1LjIwNy4zMy4zMyAwIDAgMCAuMTMyLjE2Ny4xLjEgMCAwIDEgLjA0Ny4wODYuMDkuMDkgMCAwIDEtLjA1OC4wNzhjLS4xNzIuMDctLjE1Ni4yODUtLjA1MS40MDIuMDk0LjExLjE1Ni4yMzQuMTc2LjM3MS4wMDMuMDQ3LjAzLjA3OC4wNzQuMTA1YS44NC44NCAwIDAgMCAuNjQ0LjA4NnEuNDgxIDAgLjMyMy0uMTE3LjY0NS4wNCAxLjIzLjE3NmMuMTE3LjAyMy4yMzguMDM5LjM1OS4wMzkuMjI2IDAgLjQzMy4wNjIuNjYzLjA4Mi4yMjYuMDIuNDUzLjA3OC42NjMtLjAzMmEuOS45IDAgMCAwIC4yOTMtLjI1My41NC41NCAwIDAgMCAuMzY3LS4xMTdjLjA3OC0uMDY3LjE0LS4xNDUuMTk1LS4yM2EuMi4yIDAgMCAxIC4wNTgtLjA0Ny43Ny43NyAwIDAgMCAuNDAyLS40MjZjLjA1MS0uMTI4LjAyNC0uMjczLjAyOC0uNDFxMC0uMDQ0LjAzLS4wNzdjLjE4NC0uMjA3LjYyNS0uMTYuODItLjA1NSIvPgogICAgICAgIDxwYXRoIGZpbGw9IiM4NTUxMUMiIGQ9Ik0xNS41OTQgNC41N2MuMTU2LjA4Ni4yNzMuMjQyLjM0LjQ2OS4xODUuNTQ5LjI0MSAxLjEzNC4xNjMgMS43MDlsLS4xNDQuOTAxYS41LjUgMCAwIDEtLjA1OS4yNThsLS4wMTguMDJhLjA1LjA1IDAgMCAxLS4wNTEtLjAwM2wtLjAxNy0uMDIxYS40My40MyAwIDAgMC0uMTk5LS4yNDIuMDYzLjA2MyAwIDAgMS0uMDI3LS4wNzguMS4xIDAgMCAxIC4wMi0uMDI0LjM2LjM2IDAgMCAwIC4xMjgtLjI1M3EuMDI5LS4zMjguMDg2LS42MjVhMS41IDEuNSAwIDAgMC0uMDU1LS43MDJjLS4wNTQtLjE5NS0uMjM0LS4zOS0uMjE4LS41OTdsLjAxMi0uMjYxYzAtLjE0NS0uMDc5LS4yNDYtLjA3OS0uMzk1LS4wMDctLjA5My4wMzYtLjE0NC4xMTgtLjE1Nm0tNS40MjggMS40NjhhLjg2Ljg2IDAgMCAxLS42NDgtLjA4Ni4xNC4xNCAwIDAgMS0uMDc4LS4xMDYuNy43IDAgMCAwLS4xNzItLjM3Yy0uMTAxLS4xMTctLjExNy0uMzMyLjA1MS0uNDAyYS4wOS4wOSAwIDAgMCAuMDQ3LS4xMjguMS4xIDAgMCAwLS4wMzUtLjAzNi4zLjMgMCAwIDEtLjEzMy0uMTY4bC4wMDQtLjA5NGEuMDUuMDUgMCAwIDEgLjA4Ni0uMDMuNjYuNjYgMCAwIDEgLjIxLjQ0LjcuNyAwIDAgMCAuMDk0LjI5M3EuMjMuNDA4LjU3LjY4N3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjQjg3QzI5IiBkPSJNMTMuOTc1IDYuMjY4YS4xLjEgMCAwIDEgLjA1LS4wMnEuMTQ2LS4wMTYuMTEuMTE4YS4xLjEgMCAwIDEtLjA0LjA1NS44NC44NCAwIDAgMC0uMzUuNjc1Yy0uMDE2LjIxNC4xMzYuMzIzLjEzMi41M2wtLjAxMS4wMzVhLjA3LjA3IDAgMCAxLS4wNTEuMDI0LjEyLjEyIDAgMCAxLS4xMTctLjA5NCAxIDEgMCAwIDAtLjE0OS0uMzI0LjEuMSAwIDAgMC0uMDU0LS4wMzkuMjMuMjMgMCAwIDEtLjE1Ni0uMTQ4LjIuMiAwIDAgMC0uMDQ3LS4wNzRsLS4yMjYtLjE5NWEuMTguMTggMCAwIDEtLjA3LS4xNTYuMDU0LjA1NCAwIDAgMSAuMDU1LS4wNDdjLjAxIDAgLjAxOCAwIC4wMjYuMDA4YS41My41MyAwIDAgMCAuMzI4LjA4NnEuMDQtLjAwMS4wNzQtLjAzMnoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjODU1MTFDIiBkPSJNMTUuMjkgNy4wOTJhMi4xIDIuMSAwIDAgMS0uNzcuODU4LjA2LjA2IDAgMCAxLS4wODEtLjAyM2wtLjA1MS0uMDg2YS4xLjEgMCAwIDAtLjEwMS0uMDQ3bC0uMjY2LjAzNWEuMDU4LjA1OCAwIDAgMS0uMDYxLS4wNjcuMS4xIDAgMCAxIC4wMTQtLjAzYy4xNTItLjE0NS4zMjgtLjMxNi4zOS0uNTJhLjYuNiAwIDAgMSAuMjE5LS4zLjA0My4wNDMgMCAwIDAtLjAyLS4wNzhsLS4xNDgtLjAwOGEuMDc0LjA3NCAwIDAgMS0uMDY2LS4wNjZjMC0uMDQzLjAxNS0uMDc4LjA1NS0uMTEuMDYyLS4wNS4xMi0uMS4xNzEtLjE2YS4yLjIgMCAwIDEgLjItLjA2NmMuMTU1LjAyOC4zMi4wNC40OS4wMjRhLjEyNS4xMjUgMCAwIDEgLjEyNi4wODYuNS41IDAgMCAxIC4wMi4yNTcgMSAxIDAgMCAxLS4xMjIuMyIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNCODdDMjkiIGQ9Ik05LjkgNy44OTlxLjEyOC0uMzk3LjM3OS0uODgyLjAyNC0uMDQ3LjA3LS4wMjMuMDczLjAzLjA2Ny4xMTNhMS40IDEuNCAwIDAgMS0uMjM1LjY0OGMtLjEzNi4yMS0uMTI4LjQyOS0uMTkuNjYzYS4wNi4wNiAwIDAgMS0uMDUxLjAzOXEtLjA1NC4wMDctLjA3LS4wMjdhLjM0LjM0IDAgMCAxLS4wNC0uMTkyIDMgMyAwIDAgMSAuMDctLjM0Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0UxQjA1MSIgZD0ibTExLjMzNyA4Ljg1NS0uMzc0LjI0NmMtLjExNC4wNDctLjIwNy4wNS0uMjkzLjAwOC0uMTQ4LS4wNzgtLjE2LS4yNzctLjE4Ny0uNDI1YS4zMy4zMyAwIDAgMSAuMDExLS4xNzJxLjA0OC0uMTQxLjA2Ni0uMjg5Yy4wMjgtLjI0Ni4yNTQtLjQxNy40NjktLjUzcS4yOTgtLjE0OS41NzMuMWMuMjU0LjIzNS4xNDkuNTcuMDgyLjg2YS4wNy4wNyAwIDAgMS0uMDU0LjA1LjUuNSAwIDAgMC0uMjg5LjE1MnoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjQjg3QzI5IiBkPSJNOS4wNSA4LjMzMmExIDEgMCAwIDAtLjEzNi4yOTNxLS4wMTguMDY0LS4xMDYuMDU5LS4xMTctLjQ5Ny0uNjA1LS41MDguMzE4LS4xMy41MjMtLjM4MmEuMjUuMjUgMCAwIDEgLjE4LS4xMDIuMTIuMTIgMCAwIDEgLjEyOS4xMTd6bTYuNDA3LjMxNnEuMjM1LS4wMTYuMjktLjI5NmwuMDA2LS4wMTQuMDEzLS4wMWEuMDQuMDQgMCAwIDEgLjAyNyAwbC4wMzEuMDEyYS4wOS4wOSAwIDAgMSAuMDU1LjA5OCA2LjUgNi41IDAgMCAwLS4wNjMuOTc1cS4wMDEuMTEtLjA4Ni4wNGMtLjA1LS4wNTEtLjA5LS4xNTctLjEwOS0uMzE3YS4xLjEgMCAwIDAtLjAzOS0uMDc4Yy0uMTM2LS4xMDUtLjI4LS4xNDgtLjMxMi0uMzQzYTEgMSAwIDAgMSAuMTkxLS44MDQuMDQuMDQgMCAwIDEgLjAyNC0uMDE2cS4wMTItLjAwMi4wMjMuMDA4di4wMTZsLS4wNzguMjI2cS0uMDEzLjA1MS4wMjcuMDg2LjA5NC4wNzEuMDcuMTcyYS4xMi4xMiAwIDAgMS0uMDUuMDc4LjI0LjI0IDAgMCAwLS4wNzguMDgyLjA2LjA2IDAgMCAwIC4wMjcuMDc4cS4wMTMuMDA5LjAzMS4wMDciLz4KICAgICAgICA8cGF0aCBmaWxsPSIjMEIwODAyIiBkPSJNOC4yMDMgOC4xNzdxLjQ4NC4wMTEuNjA1LjUwOGExLjE0IDEuMTQgMCAwIDEtLjI3My40NTZsLS4zMTYuMDg2Yy0uMjM0LS4yMzQtLjI2Ni0uNDkyLS4xMDYtLjc4cS4wMS0uMDE3LS4wMDctLjAyOC0uMDE0LS4wMS0uMDI4LjAwNGEuNy43IDAgMCAxLS4xNjQuMTc2cS0uMDU3LS4wMDUtLjA1LS4wNGMuMDYyLS4yMTguMTc1LS4zNS4zNC0uMzg2eiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNFRkUyQUQiIGQ9Ik03LjcyIDguNzg5cS4wMDEuMDM2LS4wMi4wNDNjLS4wNjcuMDY2LS4xMTcuMTA5LS4xNTIuMTE3cS0uMTE3LjA0NS0uMTE3LjE2Ny0uMDA2LjE4OC0uMDQ3LjM2Yy0uMDU1LjIxNC4wMi4zNDMuMjE0LjM5YS4xOTUuMTk1IDAgMCAwIC4yMTktLjA3OHEuMTQ2LS4xOTguMzI4LS4zNzlsLjA2Ni0uMDE1Yy4wNzggMCAuMDc4LjA0Ni4wMDQuMTQ4YS42LjYgMCAwIDEtLjA5NC4xMDFsLS4yOC4yMjdhLjcuNyAwIDAgMC0uMTQ5LjE2NGwtLjExNy4xODctLjMzNi4xMi4wMDgtLjAyN3EuMDAxLS4wMjQuMDMxLS4wMi4wMTguMDAxLjAzNi0uMDI2YS4wMi4wMiAwIDAgMCAuMDAzLS4wMiAyLjIgMi4yIDAgMCAxLS4wNTgtLjg1OGwuMDc0LS4yNzRhMS4yIDEuMiAwIDAgMCAuMDQzLS4zMi40Ni40NiAwIDAgMC0uMDc0LS4yNTcuMDguMDggMCAwIDAtLjA3NC0uMDRxLS4xOTUuMDEyLS4yNTQuMTY5YS45LjkgMCAwIDEtLjE0OC4yNzMgMSAxIDAgMCAwLS4xNi4yOTMgMyAzIDAgMCAxLS4yNzMuNTQyIDEgMSAwIDAgMS0uMTE3LjEyLjIzLjIzIDAgMCAwLS4wNTUuMTczLjE0LjE0IDAgMCAxLS4wMjcuMDc0LjIzLjIzIDAgMCAwLS4wNDcuMTU2cS0uMDAxLjA0Ny4wMzkuMDIzYS4xLjEgMCAwIDEgLjA2MiAwcS4yMjMuMTM2LjQ3Mi4yMWEuMDcuMDcgMCAwIDEgLjAyNC4wNTJsLS4wMDQuMDI3Yy0uMDk5LjIxOS0uMTQuNDYtLjExNy42OThxLjA0Mi40MS4xODMuNjguMDIyLjA0My4wNzguMDY2LjA0Mi4wMTMuMDQ3LS4wMjhsLjAxNi0uMDg1LjIwMy4zMjdjLS4yLjMyLS4wMzIuNjAxLjA5Ny44OTRhLjE0LjE0IDAgMCAxLS4wMTUuMTMzcS0uMTc4LjI0NS0uNDUzLjM3OGMtLjE0LjA3LS4yNzMtLjAwNC0uMzY3LS4xMWwtLjA1NS0uMDM4YS4wOC4wOCAwIDAgMC0uMDc4IDBjLS4wNzguMDM5LS4xMjguMDIzLS4xNTYtLjA1OXEtLjE1Mi0uNDgyLS4yOC0xLjAxNGEzLjMgMy4zIDAgMCAxIC4xMjgtMS45MTJxLjA5LS4yNTEuMTM3LS41MmMuMDM5LS4xOTguMDk3LS40MDkuMTgzLS42MjdhLjYuNiAwIDAgMSAuMDYzLS4xMTQuMTMuMTMgMCAwIDAgLjAyNy0uMDdjMC0uMDU4LjAzNS0uMTEuMDk0LS4xNDhhLjYzLjYzIDAgMCAwIC4zNzQtLjQ2OC4xMy4xMyAwIDAgMSAuMDQtLjA3cS4yNC0uMjA0LjM1LS4yMTVjLjM0LS4wNC41LjEyNS40OC40OCIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNGQ0Y5RjUiIGQ9Ik04LjIxNSA5LjIyNnEtLjUyNy0uMDY5LS4zMDUtLjYyOGEuNy43IDAgMCAwIC4xNjgtLjE3NmMuMDA4LS4wMDguMDE2LS4wMTIuMDI4LS4wMDRxLjAxOC4wMTEuMDA3LjAyOC0uMjQuNDMuMTA2Ljc4em0uMDQzLS43NWEuMDQuMDQgMCAwIDEgLjAzOS4wMTIuMDQuMDQgMCAwIDEgLjAwOC4wMzYuMTIuMTIgMCAwIDEtLjA3LjA4MWMtLjA0Ny4wMjQtLjA2Ny4wMDgtLjA1NS0uMDM5cS4wMTgtLjA3My4wNzgtLjA5Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0ZBRjJDRCIgZD0iTTcuMjQgMTAuMzQyYS4xNi4xNiAwIDAgMC0uMDY3LjA5LjQuNCAwIDAgMC0uMTE3LjE5NWMuMDA4LS4xMDktLjA2My0uMTA1LS4yLjAwOC0uMTc5LjE0LS4yMzcuNDYtLjIzMy42NzUtLjAyNi0uMjQ4LjAxNS0uNS4xMi0uNzI2YS4wNy4wNyAwIDAgMC0uMDIzLS4wNSAyIDIgMCAwIDEtLjQ3Mi0uMjA3LjA2LjA2IDAgMCAwLS4wNjIgMHEtLjA0MS4wMTgtLjA0LS4wMjhhLjIuMiAwIDAgMSAuMDQ3LS4xNTYuMS4xIDAgMCAwIC4wMjgtLjA3OGMwLS4wNjYuMDE1LS4xMjUuMDU4LS4xNjhxLjA5LS4wOTIuMTEtLjEyLjE2Mi0uMjQ0LjI3Ny0uNTQ3LjA2NS0uMTY4LjE2LS4yODlhLjkuOSAwIDAgMCAuMTQ4LS4yNzNxLjA2LS4xNTcuMjU0LS4xNjdhLjA4LjA4IDAgMCAxIC4wNzguMDM5LjQ2LjQ2IDAgMCAxIC4wNy4yNTdxLS4wMDEuMTY2LS4wNDMuMzI0bC0uMDc0LjI3M2MtLjAzOS4yOS0uMDE5LjU4NC4wNTguODY2bC0uMDA0LjAwOHEtLjAxNi4wMjgtLjAzOS4wMjdjLS4wMTUtLjAwMy0uMDI3IDAtLjAyNy4wMnoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjNUI0RjQwIiBkPSJNNy44NjQgOC41NjJjMCAuMDIuMDExLjAzMi4wNS4wMzYtLjE1Mi4zNzQtLjA1LjU4NS4zMDUuNjI0bC4zMTItLjA4MmEuMTIuMTIgMCAwIDAtLjAyMy4wNzQuNTcuNTcgMCAwIDEtLjI5Ny4xOGwtLjA2Ni4wMTVjLS4yOTMtLjAxMi0uNDMtLjMyLS40NDUtLjU3Ny4wMTUgMCAuMDIzLS4wMi4wMi0uMDQzYS44LjggMCAwIDAgLjE0NC0uMjI3Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0ZDRjlGNSIgZD0iTTguNTE1IDguNTg2Yy0uMDI3LjA0LS4wMjcuMDg2IDAgLjEwNi4wMjguMDIuMDc0LjAwNC4wOTgtLjAzMS4wMjctLjA0LjAyNy0uMDg2IDAtLjEwNnMtLjA3NC0uMDA0LS4wOTguMDMxIi8+CiAgICAgICAgPHBhdGggZmlsbD0iI0UwQzA2RSIgZD0iTTEwLjc0IDEwLjU3NXEtLjA4Ny0uMDE2LS4wODYuMDY3Yy4wMDguMTc5LS4wMDguMzQzLS4wNDcuNDhxLS4wMjkuMTE4LS4wMzUuMjQxYzAgLjE4LS4wNjIuMy4wMi41MDRsLjAwOC40MTNxMCAuMDUuMDMuMDg2LjIwNy4yNTguNDA2LjQ4LjI0MS4yNzEuMDMyLjUzNWMtLjExNy4xNDQtLjIxLjI3My0uNDAyLjMxNmEyLjEgMi4xIDAgMCAwLS43MzguM2MtLjE1Ni4xMDYtLjM0My4xNDUtLjUyMy4yMDMtLjEyNC4wNDMtLjEyOC4wOS0uMDAzLjE0bC4zOTguMTY4Yy4zNy4xNjQuNzMuMTc2IDEuMTIzLjEwMi4yNTQtLjA0Ny4zNjMtLjMyOC40OTYtLjUxNS4xMjktLjE5NS4zNzgtLjE5MS41NS0uMzQ0YTMuNSAzLjUgMCAwIDEgLjQ4LS4zNDMuMTIuMTIgMCAwIDAgLjA1NS0uMDYyYy4wNTQtLjEzNy4wOTMtLjI3Ny4yMjYtLjM2LjMxNi0uMTk1LjYyNC0uMzQzLjkxMy0uNDQ0LjI3My0uMDk0LjUwMy0uMjUuNzY5LS4zNjdhLjA2LjA2IDAgMCAxIC4wNzguMDI3cS4wMy4wNDUgMCAuMDljLS4xMzcuMjIzLS4yNS40NzItLjQ1Ny42NGwtLjYuNTA3Yy0uMTMzLjExLS4xMjUuMzI4LS4xNDkuNDg4cS0uMDMxLjIzMi0uMjczLjQwNmMtLjE1Ni4xMS0uMzEyLjIxNC0uNDg0LjMxMi0uMDk3LjA1NS0uMTA1LjExNy0uMDE1LjE5MXEuMDMuMDI1LjA3OC4wMjdjLjAzIDAgLjA2Mi4wMTIuMDg1LjAzMmwuMjM5LjIwN2EuMDUuMDUgMCAwIDEgLjAxMy4wNmwtLjAxMy4wMTgtLjAyNC4wMDdjLS4yOTYuMDU5LS42MDkuMTE3LS43MTguNDQ1YS4wOS4wOSAwIDAgMCAuMDYzLjExNy4yLjIgMCAwIDAgLjE1NS0uMDJjLjIyLS4xMTYuNDg0LS4yMTQuNzI2LS4xMTZxLjIyMy4wODYuNDQ1LjA4NWMuMTQgMCAuMjc0LjA1MS4zOS4xNDlxLjA0My4wMy4wOS4wMjNhLjI2LjI2IDAgMCAwIC4xNTYtLjA4MnEuMTAxLjEyOC40NTMuMDk4Yy4wODYtLjAwOC4xNDgtLjA1NS4yMTgtLjA5OGwuNjk1LS40MjFxLjEyOS0uMTA0LjIzNC0uMDI3LjAzNS4wMjMuMDc0LjAxMWMuMjUtLjA5Ny4yODUtLjI3My40MDYtLjQ3NmEuMi4yIDAgMCAxIC4xMTctLjA4MmMuMjk3LS4wNzQuNDg4LS4zNC41ODUtLjYyNGEuOC44IDAgMCAxIC4xNTctLjI3My42NC42NCAwIDAgMCAuMTYzLS40MS4xLjEgMCAwIDAtLjAzOS0uMDg2Yy0uMDU4LS4wNTQtLjA3OC0uMTItLjA1OC0uMjA3LjA0My0uMTgzLjAyLS4zMzktLjA3OC0uNDY4YS4xMy4xMyAwIDAgMS0uMDI3LS4wNzhsLjAwNy0uODc0cS4xMDYuMzg4LjI1NC43NDIuMTguNDQ5LjIyNi42OTQuMTM3Ljc2MS4wMjggMS41My0uMDc2LS4yLS4xNjguMDkzYy0uMDYzLjIwMy0uMDQzLjM2Ny0uMTU2LjU1OGExLjIgMS4yIDAgMCAwLS4xMjkuNDk2cS0uMDQxLjM4LS4wNjYuNzQxYy0uMDA4LjEyNS0uMDc4LjIxOS0uMi4yODVhLjEyLjEyIDAgMCAwLS4wNTQuMDU5Yy0uMDQ3LjEwMS0uMDYyLjE4Ny0uMTQ4LjI2OS0uMTU2LjE1Mi0uNTA4LjQ3Ni0uNTYyLjY4Ny0uMDMxLjExNy0uMTI5LjE4LS4yMzQuMjI2YS43LjcgMCAwIDAgLjE0LS4yOTYgMiAyIDAgMCAxIC4wNzgtLjMxMyAzIDMgMCAwIDEgLjE4LS4zNTljLjIzLS4zODIuMTQ4LS44MTUuMDkzLTEuMjMzYS4xMS4xMSAwIDAgMC0uMTAxLS4wOTQgMS4xIDEuMSAwIDAgMC0uNTM5LjA3OWMtLjI5Ni4xMzItLjU0Ni4yMTgtLjgxOS40NjgtLjE5NS4xNzUtLjMxMi40My0uNTE1LjU3cS0uMzY0LjI0Mi0uOTkxLjQ5NS0uNjU2LjI1Ny0xLjMyLjQ5NmEyIDIgMCAwIDAtLjM2Mi4xNjhjLS40MTQuMjM0LS42MTcuNjgyLTEuMDk3LjhhMS4yIDEuMiAwIDAgMC0uNDE3LjE5NGMtLjE4LjEyMi0uNDA2LjE1Ny0uNjE3LjE5Ni0uMjM0LjA0My0uNDUyLjE0NC0uNzAyLjE5OS0uMjE5LS4wNzgtLjQ0OS0uMTY0LS42OS0uMjQyYTQgNCAwIDAgMS0uNjcyLS4zIDEzIDEzIDAgMCAxLS43MzMtLjQ1IDUuMiA1LjIgMCAwIDEtLjg0LS42OThjLS4yNTctLjI2NS0uMjU3LS42LS4wOTMtLjkxMy4xMi0uMzQ0LjE5NS0uNjUyLjIwNy0uOTI5cS4wMy0uNDk5LjA3LS45OC4wMTItLjE0NC4xMjUtLjQ5NS4xMzMtLjQyOC4wMzktLjg5Ny0uMDEtLjA0Ni4wMzEtLjA1OWMuMDItLjAwOC4wNC0uMDA0LjA2MyAwIC4wOTcuMTEuMjI2LjE4My4zNjYuMTE3cS4yNzctLjEzOC40NTMtLjM4MmEuMTQuMTQgMCAwIDAgLjAxNi0uMTMzYy0uMTMtLjI5My0uMjk3LS41NzMtLjA5OC0uODkzYS44LjggMCAwIDEtLjAyNy4xODMuMjEuMjEgMCAwIDAgLjAyMy4xNzJsLjAyNy4wNjZxLjA0My4yMDYuMjQyLjMxMi4yNjQuMTUyLjU2Mi4yMzguMjQ3LjA3OC40ODgtLjE5LjE3Ny4wMDQuNjA1LjEzMmEuMzcuMzcgMCAwIDAgLjQwMi0uMTFjLjA3OC0uMDMuMjU3LS4wNjIuNTI3LS4wOTNxLjE3Ny0uMDI0LjY5NC0uMjM0YS4wNS4wNSAwIDAgMCAuMDI3LS4wMzEuMDYuMDYgMCAwIDAgMC0uMDR2LS4wMjNhLjAzNS4wMzUgMCAwIDAtLjAzNS0uMDIzaC0uMDExYTIuOCAyLjggMCAwIDEtLjgyOC4xNDRjLS4xMDkgMC0uMjEuMDQ3LS4zMTIuMDc4LS4xODMuMDYzLS41MzQtLjEwNS0uNjk0LS4xOTFhLjI2LjI2IDAgMCAxIC4xMi0uMjU0LjE2LjE2IDAgMCAwIC4wNTEtLjA2MnEuMDM2LS4wODcuMTM3LS4wODYuMTE4LjAyOC4zODItLjA0LjE2NS0uMDM2LjE3Mi0uMTQzYS4xLjEgMCAwIDAtLjA1LS4wODYuMjIuMjIgMCAwIDEtLjA5LS4wOThjLS4wMDgtLjAxNSAwLS4wMzEuMDItLjAzOWwuMDIyLS4wMDRxLjAxOC0uMDA1LjAyNC4wMDguMDI5LjA3Mi4wOTQuMDg2LjA0LjAxMi4wODUtLjAyNC4xMzUtLjEwNC4xMy0uMzJhLjY0LjY0IDAgMCAxIC4yNzYtLjI0MnEuMDQzLS4wMjQuMDMxLS4wNjZhLjkuOSAwIDAgMC0uMTg3LS40MWMtLjEwMS0uMTE3LS4yNjUtLjE2LS4zOS0uMjYtLjE2LS4xMy0uMzc5LS4xMDYtLjU2Mi0uMDQ4YS4wNC4wNCAwIDAgMC0uMDIzLjAydi4wMTFxLjAwMS4wMjYtLjAyOC4wMjhhLjIzLjIzIDAgMCAwLS4xMTcuMDQ3IDEuNSAxLjUgMCAwIDAtLjQyMS0uMzE2Yy0uMjczLS4xNjgtLjYyNS0uMTQ5LS45MzctLjE0MWwuMTE3LS4xODdhLjYuNiAwIDAgMSAuMTQ1LS4xNjRsLjI4LS4yMjdhLjYuNiAwIDAgMCAuMDk0LS4xMDFxLjEwOS0uMTUtLjAwNC0uMTQ4YS41Ny41NyAwIDAgMCAuMjk3LS4xOGwuMjkzLS4yNzNxLjAzMy0uMDM0LjA2NiAwIC4wODYuMDgzLjAzOS4xNjRhMyAzIDAgMCAwLS4zMDguNTkzYy0uMDA4LjAzMSAwIC4wNDMuMDM1LjA0YS4zNi4zNiAwIDAgMCAuMjE4LS4xNDVjLjEyNS0uMTY0LjMwOS0uMy41NDctLjQxOHEuMDM2LS4wMTYuMDYyLjAwOC4wMjMuMDIuMDI3LjA1LjAxMy4xMDcuMDc4LjAyYTMgMyAwIDAgMSAuNDU3LS40ODRxLjA0LS4wMzQuMDYyLjAwOGEuMy4zIDAgMCAxIDAgLjMxMiAzIDMgMCAwIDAtLjE4My40M2MtLjAxMi4wMjctLjAyNy4wMzktLjA1NS4wMzloLS4wNWEuMDUuMDUgMCAwIDAtLjA0Ny4wNDN2LjAyM2wuMDc4LjIxNXEuMDIzLjA1My4wMjcuMTA1bC4wMzUuMjI2YS4wODYuMDg2IDAgMCAwIC4xMy4wNjMuMS4xIDAgMCAwIC4wMzgtLjA0M2wuMTMzLS4zNmEuMDc0LjA3NCAwIDAgMSAuMTMyLS4wMDdjLjExOC4xOTkuMTg0LjQxLjIwMy42MjRhLjA3LjA3IDAgMCAwIC4wNTkuMDY3LjM2LjM2IDAgMCAxIC4xNTYuMDYyIi8+CiAgICAgICAgPHBhdGggZmlsbD0iIzBCMDgwMiIgZD0iTTEyLjQzIDkuNDYzYS4zNC4zNCAwIDAgMS0uMTY1LjAzMi4xLjEgMCAwIDAtLjA3OC4wM2MtLjA5LjA4Ny0uMTYuMTk2LS4yOC4yNWEuNjcuNjcgMCAwIDEtLjQ2OS4wMzZjLS4xNTItLjIxOS0uMTY4LS40My0uMDU5LS42MzZhLjA0LjA0IDAgMCAxIC4wNy0uMDA4LjE4LjE4IDAgMCAwIC4xMy4wN3EuMDguMDAxLjA1LS4wNzRjLS4xNi0uMzYtLjUzOC4wNDctLjYwNS4xOTVxLS4xMTcuMjcxLjE4OC40ODRsLjAxNS4wMzFxLjAxMi4wMy0uMDExLjA1OWEuMS4xIDAgMCAxLS4wNC4wMmMtLjE1NS0uMDQ0LS4zODYtLjA3MS0uNDcyLS4yMTJhLjguOCAwIDAgMS0uMTA1LS4yNTMuMDguMDggMCAwIDEgLjAyNC0uMDc4bC4zMzktLjMxMi4zNzktLjI0MnEuNDE3LS4xMTUuNjgzLjA5Ny4xOTQuMTUyLjM5LjQxNC4wMjMuMDI0LjAyMy4wNDNsLS4wMDQuMDV6Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0UxQjA1MSIgZD0iTTcuNyA4LjgzMWMuMDEyLjI1OC4xNTYuNTY2LjQ0NS41NzgtLjExNy4xMTctLjIzLjI0Ni0uMzI4LjM3OGEuMTk1LjE5NSAwIDAgMS0uMjE4LjA3OGMtLjE5NS0uMDQ3LS4yNy0uMTc1LS4yMTUtLjM5YTIgMiAwIDAgMCAuMDQ3LS4zNTljMC0uMDc4LjA0LS4xMzcuMTE3LS4xNjRhLjcuNyAwIDAgMCAuMTUyLS4xMTd6Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0ZDRjlGNSIgZD0iTTExLjQzNSA5LjgxcS0uMDQyLjA1Mi0uMjIzLjAzMmMtLjIwMy0uMTQtLjI2NS0uMzA0LS4xODctLjQ4NC4wNjYtLjE0OC40NDUtLjU1NC42MDUtLjE5NS4wMi4wNS4wMDQuMDc4LS4wNS4wNzRhLjE4LjE4IDAgMCAxLS4xMy0uMDcuMDM5LjAzOSAwIDAgMC0uMDcuMDA4cS0uMTY3LjMwOS4wNTUuNjM2Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0ZBRjJDRCIgZD0iTTE1LjQ2NiAxMS43YTIuNCAyLjQgMCAwIDAtLjUxNS0uMDRxLS4yNTguMDA2LS41MTYtLjAxYTIuMjQgMi4yNCAwIDAgMC0xLjAxNC4xNjdxLS42MjYuMjY0LTEuMTYuNTVhLjMuMyAwIDAgMS0uMTE2LjA0LjMuMyAwIDAgMS0uMTQtLjAyOC45Mi45MiAwIDAgMC0uNjUyLS4wNTUuMTEuMTEgMCAwIDEtLjA5OC0uMDE1LjQzLjQzIDAgMCAxLS4xNjQtLjIuMTYuMTYgMCAwIDAtLjE2NC0uMS4zNi4zNiAwIDAgMS0uMzM1LS4xNDVjLS4wODItLjItLjAyLS4zMi0uMDItLjVhMSAxIDAgMCAxIC4wNC0uMjQycS4wNTMtLjIxLjA0Mi0uNDggMC0uMDgyLjA4Ni0uMDY2Yy4yMjYuMDEyLjQ1Ny4wMjQuNjg3LjAyNy4yMTguMDA0LjM2My4wNDcuNTI3LS4xMzJhLjIuMiAwIDAgMSAuMDc0LS4wNTFjLjA5Ny0uMDM5LjE5NS0uMDY2LjI4LS4xMzNhMi41IDIuNSAwIDAgMCAuNjUyLS43OTYuMTEuMTEgMCAwIDEgLjExMy0uMDU4cS40MDQuMDQ3Ljc3Ny0uMDI4YS4wNjMuMDYzIDAgMCAxIC4wNy4wNDdsLjAwOC4wMzFxLjAyLjA2LjA3OC4wNTVsLjItLjAxMmMuMDMgMCAuMDU4IDAgLjA4NS4wMTZsLjI1OC4xMjlhLjIuMiAwIDAgMCAuMTAxLjAxNS4wNC4wNCAwIDAgMCAuMDE2LS4wMDguMDQuMDQgMCAwIDAgLjAxMS0uMDE1LjA0LjA0IDAgMCAwIDAtLjAzNWwtLjEwOS0uMTU2YS4wNC4wNCAwIDAgMSAwLS4wNC4wNC4wNCAwIDAgMSAuMDM1LS4wMTlsLjI4OS4wMTJjLjAzNSAwIC4wNDcuMDIuMDM5LjA1bC0uMDQuMTk2YzAgLjAyLjAwNS4wMzEuMDI0LjAzMS4wMDggMCAuMDIgMCAuMDI0LS4wMTJhMSAxIDAgMCAwIC4xMDktLjE5LjA0LjA0IDAgMCAxIC4wMjctLjAyNC4wNC4wNCAwIDAgMSAuMDMyLjAxNS4yLjIgMCAwIDEgLjA1LjE1NmMwIC4wMjQuMDA0LjA0LjAyLjA1OWwuMTkuMTk1Yy4wMi4wMjMuMDIuMDQ3LjAwOS4wNzRxLS4xMS4xOTQuMDY2LjM1MS4wMjUuMDMuMDIuMDYzYS4yNC4yNCAwIDAgMS0uMDQzLjA5N2MtLjA3OC4xMS0uMDEyLjI4NS4wNzguMzU1cS4wMjkuMDI1LjAwNC4wNTVhLjYuNiAwIDAgMC0uMTMuMzEyLjA4LjA4IDAgMCAwIC4wNC4wNzhsLjExNy4wNzhxLjA0LjAyNC4wMzkuMDdhLjQ0LjQ0IDAgMCAxLS4xMDEuMjY2Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iIzVCNEY0MCIgZD0iTTEyLjQyOSA5LjQ2NWEuMTYuMTYgMCAwIDEtLjA0Ny4xMDljLS4xNTYuMTY4LS4zMzUuMzctLjU1NC40NC0uMjU4LjA3OS0uNDI1LS4wMTktLjY1Mi0uMDYyYS4xLjEgMCAwIDAgLjA0LS4wMTlxLjAyMy0uMDMuMDExLS4wNTlsLS4wMTYtLjAzYy4xMjEuMDE1LjE5NSAwIC4yMjMtLjAzMnEuMjQ2LjA3LjQ2OC0uMDM1Yy4xMjUtLjA1NS4xOTUtLjE2NC4yODktLjI1YS4xLjEgMCAwIDEgLjA3OC0uMDMxLjM0LjM0IDAgMCAwIC4xNjQtLjAzNXptLTQuODUuNzU3Yy4zMTItLjAwOC42NjMtLjAyOC45MzYuMTRhLjQuNCAwIDAgMC0uMDk3LjA2M2MtLjA0My4xMTctLjEzLjE1Ni0uMjQ2LjExN2ExLjk1IDEuOTUgMCAwIDAtLjg3LS4wNjdxLS4wNTQuMDEtLjEzLS4wNDNhLjE2LjE2IDAgMCAxIC4wNjctLjA4NXoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjMEIwODAyIiBkPSJNOC41MTYgMTAuMzZxLjI1MS4xMzEuNDIxLjMxM2wuMDMxLjA3Yy0uMDM5LjE4OC0uMTY4LjUyLS4zNS42MDlhLjE2LjE2IDAgMCAwLS4wNzkuMDc4LjE2LjE2IDAgMCAxLS4wNjYuMDc4IDUgNSAwIDAgMC0uMzkuMjVjLS4xMjUuMDkzLS4zMTMuMTMyLS40NTMuMDVhMS40IDEuNCAwIDAgMS0uNTExLS41MTVsLjAwNC0uMDJjLS4wMDgtLjA1IDAtLjA4NS4wMTEtLjEwNHEuMDI5LS4wMzYuMDc0LS4wMTIuMDcuMDQuMTMzLjAxNS4xNzUtLjA2LS4wMDgtLjA5N2EuNi42IDAgMCAxLS4yNTctLjEzNy42My42MyAwIDAgMS0uMDItLjMxMi40LjQgMCAwIDEgLjExNy0uMTk1cS4wNzYuMDUzLjEzLjA0M2ExLjk1IDEuOTUgMCAwIDEgLjg3LjA3Yy4xMTYuMDQuMjAyLS4wMDQuMjQ1LS4xMTdxLjAxMS0uMDI0LjA5OC0uMDY2Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0VGRTJBRCIgZD0iTTkuOTM1IDExLjU5OWMuMDEyLS4wMzYtLjAxMS0uMDY3LS4wNzgtLjA5OC0uMDI3LS4wMTYtLjAzOS0uMDQtLjAyNy0uMDY2cS4wMzUtLjEyOC0uMDctLjIyN2EzIDMgMCAwIDEtLjMyLS4zNS40My40MyAwIDAgMC0uMzEyLS4xNTdxLS4wNi0uMDEtLjA0Ny4wNjZjLS4wMjQuMDA4LS4wNTkgMC0uMTEzLS4wMjNsLS4wMzItLjA3YS4yMy4yMyAwIDAgMSAuMTE3LS4wNGMuMDIgMCAuMDMyLS4wMTUuMDI4LS4wM3YtLjAxMmEuMDQuMDQgMCAwIDEgLjAyMy0uMDJjLjE4NC0uMDU4LjQwMi0uMDc4LjU2Mi4wNDcuMTI1LjEwMS4yODkuMTQuMzkuMjYxYS45LjkgMCAwIDEgLjE4OC40MWMuMDA4LjAzMiAwIC4wNS0uMDMyLjA2N2EuNi42IDAgMCAwLS4yNzMuMjQyeiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNGQ0Y5RjUiIGQ9Ik03LjA1NiAxMC42MjhhLjYzLjYzIDAgMCAwIC4wMi4zMTJsLjA0Ny4zMzYtLjAwNC4wMTljLS4yNjIuMjAzLS4zMi40MjItLjE3Mi42NDhsLS4wMTUuMDg2YzAgLjAyNy0uMDIuMDM5LS4wNDMuMDI3YS4xNC4xNCAwIDAgMS0uMDgyLS4wNjYgMS44IDEuOCAwIDAgMS0uMTgtLjY4Yy0uMDA4LS4yMTQuMDUtLjUzNC4yMy0uNjc4LjEzNy0uMTEuMjA3LS4xMTMuMiAwem0yLjg4Ljk3MXEuMDA2LjIxNi0uMTI5LjMyLS4wNDUuMDM2LS4wODUuMDI0Yy0uMDQtLjAwOC0uMDc1LS4wNC0uMDk0LS4wODZxLS4wMDYtLjAxNi0uMDIzLS4wMDhsLS4wMjQuMDA0Yy0uMDIzLjAwOC0uMDI3LjAyNC0uMDIuMDRhLjI0LjI0IDAgMCAwIC4wOS4wOTcuMS4xIDAgMCAxIC4wNTEuMDg1YzAgLjA3LS4wNjIuMTE4LS4xNzIuMTQ5cS0uMjY0LjA2LS4zODIuMDM5YS4zMy4zMyAwIDAgMS0uMjE1LS4xNzIuMS4xIDAgMCAxLS4wMTUtLjA3OCAxIDEgMCAwIDAgLjAxNS0uMjhjLS4wMTEtLjExNC4wNDctLjIwOC4xMTctLjI4NmEuMS4xIDAgMCAwIC4wMzItLjA3OHYtLjZjLS4wMDgtLjA1Mi4wMTEtLjA3OS4wNS0uMDcxYS40Ni40NiAwIDAgMSAuMzEzLjE2Yy4wOTMuMTI1LjIwMi4yNDIuMzE2LjM1MXEuMTA1LjA5OS4wNy4yMjZjLS4wMDguMDMyIDAgLjA1MS4wMjcuMDY3LjA2Ny4wMzEuMDkuMDYyLjA3OC4wOTciLz4KICAgICAgICA8cGF0aCBmaWxsPSIjOTY4Qzc4IiBkPSJNOC45NjggMTAuNzQ0cS4wOC4wMzQuMTEzLjAyM3YuNjA1YS4xLjEgMCAwIDEtLjAzMS4wNzRjLS4wNy4wNzgtLjEyOS4xNzItLjExNy4yODVxLjAxLjEzNi0uMDE2LjI3N2EuMTMuMTMgMCAwIDAgLjAxMi4wNzhxLjA4NC4xNDguMjE4LjE3Mi0uMS0uMDAxLS4xMzYuMDg2YS4xNC4xNCAwIDAgMS0uMDUuMDYyLjI2LjI2IDAgMCAwLS4xMjIuMjUzcS0uNDEzLS4xNTUtLjgyMy0uMzEyYTEgMSAwIDAgMC0uNzI2IDBxLS4wODkuMTk0LjAzMS4zNGMuMDU5LjA3LjE0LjE0NC4yMzguMTY4LjEzMy4wMy4zNzUuMDcuNDY5LjE2OC4wMi4wMTkuMDM5LjAzLjA3LjAzbC4zNjctLjAwM2MtLjE1Ni4xOC0uMzI0LjI0Mi0uNDg4LjE5MWEzIDMgMCAwIDEtLjU2Mi0uMjM0LjQ2LjQ2IDAgMCAxLS4yNDItLjMxNi4yLjIgMCAwIDAtLjAyNy0uMDY3LjIxLjIxIDAgMCAxLS4wMjQtLjE3MS44LjggMCAwIDAgLjAyOC0uMTg0bC0uMjAzLS4zMjhxLS4yMjItLjM0LjE3MS0uNjQ3LjIwNS4zNC41MDguNTE1Yy4xNDQuMDc4LjMzMS4wMzkuNDYtLjA1YTQgNCAwIDAgMSAuMzg2LS4yNS4xNi4xNiAwIDAgMCAuMDctLjA3OS4xNC4xNCAwIDAgMSAuMDc5LS4wNzhjLjE4LS4wOS4zMTItLjQyMS4zNS0uNjA4em0tMS44OTMuMTk1YS42NC42NCAwIDAgMCAuMjU4LjEzNnEuMTc2LjAzOC4wMDguMDk4YS4xNS4xNSAwIDAgMS0uMTMzLS4wMTZxLS4wNDYtLjAyMy0uMDc0LjAxMi0uMDI0LjAzLS4wMTIuMTA1eiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiM1QjRGNDAiIGQ9Ik04LjIxOSAxMS4zMzhjLjEwOS4wNDcuMjA2LjA2My4yMTguMDQuMDEyLS4wMzItLjA3LS4wODctLjE4LS4xMzMtLjEwOS0uMDQzLS4yMDYtLjA1OS0uMjE4LS4wMzItLjAwOC4wMjguMDcuMDgyLjE4LjEzeiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiM5NjhDNzgiIGQ9Ik05LjQ2OCAxMS40NjJxMCAuMDM0LS4wMzUuMDUtLjAzMS4wMTctLjA0LS4wMi0uMDAyLS4wMjIuMDA4LS4wNDZjLjA0LS4wNzguMDYzLS4wNy4wNjcuMDE1Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0U3Q0Y5MCIgZD0iTTE1LjQ2NSAxMS42OTlxLS4yOC4yNTItLjIyNi42NjcuMDAyLjAyNC0uMDA4LjA0N2wtLjE0LjIzNGMtLjAxNi4wMzEtLjA0LjAzOS0uMDY3LjAxMmwtLjAzMS0uMDMyYS4xLjEgMCAwIDAtLjAzOS0uMDE1Yy0uMDA4IDAtLjAyNCAwLS4wMzUuMDA4cS0uMDY1LjAzLS4wNTkuMTA1Yy4wMTYuMTQuMDQuMjguMDY3LjQzYS4yLjIgMCAwIDEtLjA1OS4xODNjLS4xNTYuMTU2LS41LjQ1Ni0uNTA3LjY5NGEuMzMuMzMgMCAwIDEtLjA3NC4yMjMuNi42IDAgMCAxLS4yNDIuMTU2di4wMDRsLjAwNC4wM2MuMDExLjAzMi4wMy4wNDguMDY2LjA0YS45LjkgMCAwIDAgLjQ2OC0uMjYyLjAzLjAzIDAgMCAxIC4wMTgtLjAwNnEuMDEgMCAuMDE3LjAwNi4wMS4wMDYuMDEuMDE2YS4wMy4wMyAwIDAgMS0uMDAyLjAybC0uMjE0LjM2MmEuMS4xIDAgMCAwLS4wMTYuMDYzLjcuNyAwIDAgMS0uMDEyLjI0NnYuMDIzYS4wNTUuMDU1IDAgMCAwIC4wNS4wNDNsLjAyOC0uMDA0YS42LjYgMCAwIDEgLjE2NC0uMDQ3cS4wMjQtLjAwMS4wNDMuMDE2LjAxOC4wMTYuMDI0LjAzOWEuNDMuNDMgMCAwIDEtLjE0MS4zOXEtLjE5NS4xODUtLjM2LjM5OGEuMjQuMjQgMCAwIDEtLjE1NS4wNzguMS4xIDAgMCAxLS4wODItLjAyLjYyLjYyIDAgMCAwLS4zOS0uMTQ4Yy0uMTU2IDAtLjMtLjAyNy0uNDQ5LS4wODUtLjI0Mi0uMDk4LS41MDcgMC0uNzIyLjExN2EuMi4yIDAgMCAxLS4xNTYuMDIuMS4xIDAgMCAxLS4wNTgtLjA0NS4xLjEgMCAwIDEtLjAwOC0uMDczYy4xMDktLjMyOC40MjEtLjM5LjcxOC0uNDQ1YS4wNS4wNSAwIDAgMCAuMDM3LS4wMzYuMDUuMDUgMCAwIDAtLjAxNC0uMDVsLS4yMzQtLjIwN2EuMTMuMTMgMCAwIDAtLjA5LS4wMy4xMi4xMiAwIDAgMS0uMDc4LS4wMjhjLS4wOS0uMDc0LS4wNzgtLjEzNy4wMTYtLjE5NXEuMjU3LS4xNC40ODQtLjMwOC4yNDItLjE3NC4yNzMtLjQwNmMuMDIzLS4xNi4wMTUtLjM3OS4xNDgtLjQ5MmwuNi0uNTAzYy4yMDgtLjE2OC4zMjEtLjQxOC40NTgtLjY0YS4wOC4wOCAwIDAgMCAwLS4wOS4wNi4wNiAwIDAgMC0uMDc5LS4wMjdjLS4yNjUuMTE3LS40OTUuMjczLS43NjguMzY3cS0uNDQuMTUyLS45MTMuNDQ0Yy0uMTMzLjA3OC0uMTcyLjIyMy0uMjI3LjM2YS4xMi4xMiAwIDAgMS0uMDU0LjA2MnEtLjI3Ni4xNjMtLjQ4LjM0M2MtLjE3Mi4xNTYtLjQyMi4xNTItLjU1LjM0NC0uMTMzLjE4Ny0uMjQyLjQ2OC0uNDk2LjUxNWExLjg0IDEuODQgMCAwIDEtMS4xMjQtLjEwMmwtLjM5OC0uMTY4Yy0uMTI1LS4wNS0uMTItLjA5NyAwLS4xNC4xODQtLjA1OS4zNjctLjA5OC41MjctLjIwMy4yMjUtLjE0Ni40NzUtLjI0Ny43MzgtLjMuMTktLjA0LjI4OC0uMTc2LjQwMS0uMzE2cS4yMS0uMjYyLS4wMy0uNTM1YTkgOSAwIDAgMS0uNDA3LS40OC4xNC4xNCAwIDAgMS0uMDMtLjA4NmwtLjAwOS0uNDEzYS4zNS4zNSAwIDAgMCAuMzM2LjE0LjE2LjE2IDAgMCAxIC4xNjQuMTAxLjUuNSAwIDAgMCAuMTY0LjIuMTIuMTIgMCAwIDAgLjA5Ny4wMTUuOS45IDAgMCAxIC42NTIuMDU1cS4wNjcuMDMuMTQuMDIzYS4zLjMgMCAwIDAgLjExNy0uMDM1IDEzIDEzIDAgMCAxIDEuMTU2LS41NDZjLjMyLS4xMzUuNjY3LS4xOTQgMS4wMTQtLjE3MnEuMjYuMDE1LjUyLjAwOGMuMTc1IDAgLjM0Ni4wMDguNTE0LjAzOXoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjOTY4Qzc4IiBkPSJtOS4zMDcgMTIuMDA4LS4wMTktLjAyN2MtLjAxNi0uMDI4LS4wMDgtLjA0LjAyMy0uMDQ3LjAyLS4wMDQuMDQgMCAuMDUxLjAxMWwuMDEuMDEyLjAwNi4wMTZxLjAwMS4wMzUtLjAyOC4wNDdhLjAzLjAzIDAgMCAxLS4wMjcgMCAuMDQuMDQgMCAwIDEtLjAxNi0uMDEyIi8+CiAgICAgICAgPHBhdGggZmlsbD0iIzVCNEY0MCIgZD0iTTguNDggMTIuMTY1YS4wNC4wNCAwIDAgMS0uMDIzLS4wMTYuMDQuMDQgMCAwIDEtLjAwOC0uMDIzYzAtLjAzNS4wMDgtLjA2My4wNC0uMDc4cS4wNC0uMDI1LjA2Mi4wMTUuMDE2LjAzLjAyLjA1OS0uMDAxLjA1OS0uMDU1LjA0N3oiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjMEIwODAyIiBkPSJNOC44NCAxMi42NjRjLjE2LjA4Mi41MS4yNS42OTQuMTg3LjEwMi0uMDMxLjIwMy0uMDc4LjMxMy0uMDc4LjI4NS0uMDA0LjU2OC0uMDUzLjgzOC0uMTQ0YS4wNC4wNCAwIDAgMSAuMDMyLjAyM2wuMDA3LjAydi4wMzlhLjA2LjA2IDAgMCAxLS4wMzEuMDMxcS0uNTE0LjIxNi0uNjk0LjIzNGMtLjI3My4wNC0uNDQ1LjA2Ni0uNTI3LjA5N2E2IDYgMCAwIDAtLjM3OS0uMTcxIDIgMiAwIDAgMC0uMzk0LS4xMTcgNy40IDcuNCAwIDAgMS0xLjQwOC0uNDM3IDEgMSAwIDAgMSAuNzI1IDBxLjQxLjE1OC44Mi4zMTJ6Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iIzVCNEY0MCIgZD0iTTcuMjkgMTIuMzQ2cS42OS4yOTQgMS40MDQuNDQxYy4xNTcuMDMxLjI5LjA2Ny4zOTguMTE3cS4xOTguMDgyLjM3OS4xNjgtLjE3NS4xNzctLjQwMi4xMS0uMjk1LS4wOTktLjYwNS0uMTMzbC0uMzY3LjAwNGEuMS4xIDAgMCAxLS4wNy0uMDMyYy0uMDkzLS4wOTctLjMzNS0uMTM2LS40NjgtLjE2N2EuNS41IDAgMCAxLS4yMzgtLjE2OHEtLjExOC0uMTQ2LS4wMzEtLjM0Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0I4N0MyOSIgZD0ibTE1LjU2MiAxNS4zNjctLjY5NC40MjFoLS4wNjNhLjA1LjA1IDAgMCAxLS4wNDctLjA1M2wuMDA4LS4wMjUuMzMyLS40ODRhLjQuNCAwIDAgMCAuMDY2LS4yMDZxLS4wMDItLjA1NC0uMDU0LS4wNTVjLS4yNS0uMDA4LS4yMjMtLjIxLS4yNDItLjM5cS0uMDEzLS4xMjIuMDc0LS4xOTFhNCA0IDAgMCAwIC44OS0uOTkyYy4xOS0uMy41MDctLjQ1Mi43NC0uNzA2YS4wNC4wNCAwIDAgMSAuMDM5LS4wMTJxLjAxLjAwNS4wMTUuMDEzYS4wNC4wNCAwIDAgMSAuMDA1LjAxOS44Ny44NyAwIDAgMS0uMTk1LjU5M2MtLjE1Mi4xODMtLjIyNi4zOS0uMzU5LjU3N2EuMTIuMTIgMCAwIDAtLjAyLjA5Yy4wNTUuMjM0LjAxNy40MjEtLjExNi41N2ExIDEgMCAwIDAtLjE3Ni4yNTcgMyAzIDAgMCAwLS4yMDMuNTc0Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0UxQjA1MSIgZD0iTTcuMDYgMTQuNDU5Yy0uMDcuMDItLjA2Ni4wNzguMDA4LjE4Ny4wMzUuMDQuMDc0LjA4Ni4xMTcuMTIxLjM2My4zMDQuNTU0LjYxNyAxLjA0Mi44MDRhLjE0LjE0IDAgMCAxIC4wNy4wN2MuMDM5LjA3OC4wNjYuMTUyLjA5LjIyNi4wNjIuMTc2LjE3NS4zMzYuMzUuNDc2YS4xLjEgMCAwIDAgLjA3OS4wMi4xLjEgMCAwIDAgLjA2Ni0uMDUuMS4xIDAgMCAxIC4wMjQtLjAzMi4wNS4wNSAwIDAgMSAuMDM1LS4wMTJxLjAxOSAwIC4wMzEuMDEyYy4yMjYuMjAzLjMxMi43MDIuMzg2IDEuMDE1YS4wNzQuMDc0IDAgMCAwIC4wOS4wNXEuMDItLjAwMS4wMzEtLjAyYy4yMDctLjIxNC4zNC0uNDY4LjM5LS43NjhxLjAwNy0uMDQ2LjA1NS0uMDM5aC4wMjdhLjAyLjAyIDAgMCAxIC4wMi4wMTJ2LjAwOGwtLjAxMi4xMjhjMCAuMDM1LjAxMi4wNDcuMDQ3LjA0M3EuMDM1IDAgLjA1LS4wMzVsLjE4NC0uNDAyYS41NC41NCAwIDAgMSAuMjQ2LS4yMzhjLjIzNC0uMTE3LjQ4NC0uMjI2LjY4Ny0uMzg2cS4yNjMtLjIxLjU2Ni0uMzU1YS4wNC4wNCAwIDAgMC0uMDA4LS4wNXEtLjAxMi0uMDA2LS4wNDcuMDA3LjI0OC0uMTA2LjM1NS0uMTcyLjI5MS0uMTc1LjIwNy4xNTItLjA1OC4yMS0uMTU2LjQwNmEuNS41IDAgMCAxLS4yMS4yMjNjLS4yNzQuMTU2LS40NTMuNDA1LS43MzUuNTM4YTEuMjQgMS4yNCAwIDAgMC0uNjU5LjczYy0uMDk0LjI5Ni0uMjczLjU0Ni0uNDQuOGExLjcgMS43IDAgMCAxLS43ODEuNjA0LjkuOSAwIDAgMC0uMjU4LjExNC4wNi4wNiAwIDAgMS0uMDc4LS4wMDggMS4xIDEuMSAwIDAgMS0uMDktLjMyNCAzLjggMy44IDAgMCAwLS4zMTItMS4xMjggMS4xIDEuMSAwIDAgMC0uMjQyLS4zNTFxLS41ODctLjU3LTEuMTUtMS4xNjNjLS4xNjktLjE3NS0uMjUtLjM3OC0uMzU2LS41ODVhMS42NSAxLjY1IDAgMCAxLS4xMjktLjg3OC4xLjEgMCAwIDEgLjAyOC0uMDJjLjAwNy0uMDAzLjAyLS4wMDcuMDMtLjAwM3EuMDIgMCAuMDMyLjAxMXoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjQjg3QzI5IiBkPSJtNy4wNiAxNC40NTkuMzYuMjY1cS4xMjkuMDk0LjI0MS4yMTFjLjI1LjI1NC43MDMuMzY3IDEuMDY1LjQ1N3EuMzA0LjA3Ni44LjA2NiAxLjExLS4wMyAyLjIwNS0uMjE1YS4wNC4wNCAwIDAgMSAuMDEuMDE1LjA0LjA0IDAgMCAxLS4wMTQuMDQ4IDMgMyAwIDAgMC0uNTU0LjM0M2MtLjIwMy4xNi0uNDUzLjI3LS42ODcuMzg2YS41NS41NSAwIDAgMC0uMjQ2LjIzNXEtLjA4OC4yMDktLjE4My40MDVhLjA2LjA2IDAgMCAxLS4wNS4wNGMtLjAzNiAwLS4wNDgtLjAxMi0uMDQ4LS4wNDhsLjAxMi0uMTI4LS4wMDEtLjAwOC0uMDA1LS4wMDYtLjAwNi0uMDA0LS4wMDctLjAwMmgtLjAyOHEtLjA0Ni0uMDA3LS4wNTQuMDRhMS40MyAxLjQzIDAgMCAxLS4zOS43NjguMDcuMDcgMCAwIDEtLjA3LjAyLjA3LjA3IDAgMCAxLS4wNTEtLjA1MWMtLjA3OC0uMzEyLS4xNTctLjgxMi0uMzg3LTEuMDE1YS4wNS4wNSAwIDAgMC0uMDMxLS4wMTFjLS4wMTYgMC0uMDI3IDAtLjAzNS4wMTFhLjEuMSAwIDAgMC0uMDIzLjAzMS4xLjEgMCAwIDEtLjA2Ny4wNTEuMS4xIDAgMCAxLS4wNzgtLjAyIDEuMDUgMS4wNSAwIDAgMS0uMzUxLS40NzUgMiAyIDAgMCAwLS4wOS0uMjI3LjEzLjEzIDAgMCAwLS4wNy0uMDdjLS40ODgtLjE4Ny0uNjc5LS41LTEuMDQyLS44MDRhMSAxIDAgMCAxLS4xMTctLjEycS0uMTE1LS4xNTgtLjAwOC0uMTg4Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0M4OTUzOSIgZD0iTTE3LjYxMSAxNC43NHEuMDM2LjI1OC4wOS41MWMuMDU0LjI0Mi4wMzkuNDU3LjA1LjcwMy4wMDguMjUzLjA5NC41NDYuMTAyLjgzMSAwIC4xOTEgMCAuMzc5LS4wMTIuNTY2LS4wMTIuMzUxLS42OTQuODk3LTEuMDUzIDEuMjAycS0uNDU5LjM5Mi0uODU5LjM1LS4yMjItLjE0Ni0uNjIgMC0uMTE2LjA0Mi0uMDI3LS4wNDYuMTY4LS4xNzcuMjUzLS40NGEuMTYuMTYgMCAwIDEgLjA1LS4wNzljLjA5NS0uMDc4LjE5Ni0uMTM2LjMxMy0uMTgzLjEwMS0uMDQ3LjE5OS0uMTEuMjMtLjIyNy4wNTUtLjIxLjQwNi0uNTM0LjU2Mi0uNjg2LjA4Ni0uMDgyLjEwMS0uMTY4LjE0OC0uMjc0YS4xMi4xMiAwIDAgMSAuMDU1LS4wNTRjLjEyNS0uMDY3LjE5NS0uMTYuMTk5LS4yODVhMjAgMjAgMCAwIDEgLjA2Ni0uNzQyYy4wMTYtLjE3MS4wNDMtLjM0My4xMzMtLjQ5NS4xMS0uMTkxLjA5LS4zNTUuMTU2LS41NTguMDU5LS4xOTUuMTE3LS4yMjYuMTY0LS4wOTQiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjRTdDRjkwIiBkPSJNMTUuODk0IDE4LjE1NWExLjIgMS4yIDAgMCAwLS4zMDguMTgzLjE2LjE2IDAgMCAwLS4wNS4wNzhjLS4wNS4xNjQtLjEzOC4zMTUtLjI1NS40NC0uMDU4LjA2LS4wNDYuMDc5LjAzMi4wNDhxLjM5My0uMTQ3LjYxNiAwYS4zMy4zMyAwIDAgMS0uMDgyLjIzOC40LjQgMCAwIDEtLjIwMy4xMjVxLS41Mi4xNjktLjk0LjM5Yy0uMjE1LjExLS40NDEuMTI1LS42NzEuMTgzLS4wNy4wMi0uMTUyIDAtLjIxLjA1NWEuMS4xIDAgMCAxLS4wMzkuMDIzLjEuMSAwIDAgMS0uMDQ0LjAwNCAxLjcgMS43IDAgMCAwLS41MDMuMDE2cS0uMjI3LjA0Ny0uNDQ5LjA0N2MtMS4wMDcuMDExLTIuMDY0LjA0Ni0zLjA3OS0uMDU1YS45LjkgMCAwIDEtLjM5LS4xMzdsLS40MTgtLjI2OWMuMjU0LS4wNTQuNDc3LS4xNTYuNzAzLS4xOTkuMjE1LS4wMzkuNDQtLjA3NC42Mi0uMTk1YTEuMiAxLjIgMCAwIDEgLjQxOC0uMTk1Yy40OC0uMTE3LjY4My0uNTcgMS4wOTItLjguMTE3LS4wNjYuMjQyLS4xMjUuMzY3LS4xNjhhNDQgNDQgMCAwIDAgMS4zMi0uNDk1cS42MjYtLjI1NC45OS0uNDk2Yy4yLS4xMzYuMzI0LS4zOS41MTUtLjU3My4yNzQtLjI0Ni41MjMtLjMzMi44Mi0uNDY1YTEuMSAxLjEgMCAwIDEgLjUzOC0uMDc4LjExLjExIDAgMCAxIC4xMDIuMDk0Yy4wNTQuNDE3LjEzNi44NS0uMDk0IDEuMjMzYTMgMyAwIDAgMC0uMTgzLjM1OSAzIDMgMCAwIDAtLjA3NC4zMTIuNjYuNjYgMCAwIDEtLjE0LjI5NiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik02LjkyNyA1Ljk1MnYzLjIyM2gxLjUzNHY2LjA0SDYuOTI3djMuMjIzaDYuMTc3cS4xMjItLjAwMy4yNDItLjAxNWE1LjQgNS40IDAgMCAwIDIuMzA3LS43NTdjMS4zODktLjg0IDIuNTktMi40ODIgMi41OS01LjI2OCAwLTIuOTI3LTEuMTQ3LTQuNjcxLTIuNTM2LTUuNTkyYTUuMjMgNS4yMyAwIDAgMC0yLjU5OS0uODU0em02LjEyNyA5LjI2M2gtMS4xMzZ2LTYuMDRoMS4xN2MuMDQ4LjAwNy4xMy4wMTUuMjM1LjAzOS4yMS4wNDcuNDg0LjE0Ljc1LjMxMi40MjguMjg5IDEuMTA3Ljk2IDEuMTA3IDIuODcyIDAgMS42MzktLjYyNCAyLjIxNi0xLjA1NyAyLjQ4MmEyLjQ0IDIuNDQgMCAwIDEtMS4wNy4zMzUiLz4KICAgIDwvZz4KICAgIDxkZWZzPgogICAgICAgIDxjbGlwUGF0aCBpZD0iRE9HRV9fYSI+CiAgICAgICAgICAgIDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0wIDBoMjR2MjRIMHoiLz4KICAgICAgICA8L2NsaXBQYXRoPgogICAgPC9kZWZzPgo8L3N2Zz4K","LINK":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDI0IDI0IiBjbGFzcz0id2ViM2ljb25zIj4KICAgIDxnIGNsaXAtcGF0aD0idXJsKCNMSU5LX19hKSI+CiAgICAgICAgPHBhdGggZmlsbD0iIzJFNjFERSIgZD0iTTI0IDBIMHYyNGgyNHoiLz4KICAgICAgICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJtMTIgNCA2LjQzIDMuODUxdjcuNzk0TDExLjA4MiAyMHYtMS4wOThsLTUuNDk2LTMuMjg1LS4wMTYtNy43MnptLjAwOCAxMy4zMTYgNC41ODUtMi43MTVWOC44OTRsLTQuNTkyLTIuNzQ4TDcuNDA4IDguOTN2NS42NDR6Ii8+CiAgICA8L2c+CiAgICA8ZGVmcz4KICAgICAgICA8Y2xpcFBhdGggaWQ9IkxJTktfX2EiPgogICAgICAgICAgICA8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMCAwaDI0djI0SDB6Ii8+CiAgICAgICAgPC9jbGlwUGF0aD4KICAgIDwvZGVmcz4KPC9zdmc+Cg==","XMR":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDI0IDI0IiBjbGFzcz0id2ViM2ljb25zIj4KICAgIDxnIGNsaXAtcGF0aD0idXJsKCNYTVJfX2EpIj4KICAgICAgICA8cGF0aCBmaWxsPSIjRjYwIiBkPSJNMjQgMEgwdjI0aDI0eiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0xMiA0YTcuOTkgNy45OSAwIDAgMSA3LjU5MyAxMC41SDE3VjcuODExbC01LjAwNyA1LjIxN0w3IDcuODE4VjE0LjVINC40MDZBNy45IDcuOSAwIDAgMSA0IDEyLjAwNyA4IDggMCAwIDEgMTIgNG0uMDIyIDExLjM5NyAzLjQ3OC0zLjQ3OFYxNmgzLjMzMmMtMS40NzkgMi40NDEtMy45NCA0LjAwMS02LjgzMiA0LTIuODg0IDAtNS40Mi0xLjY5OS02LjgzMi00SDguNXYtNC4wODF6Ii8+CiAgICA8L2c+CiAgICA8ZGVmcz4KICAgICAgICA8Y2xpcFBhdGggaWQ9IlhNUl9fYSI+CiAgICAgICAgICAgIDxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0wIDBoMjR2MjRIMHoiLz4KICAgICAgICA8L2NsaXBQYXRoPgogICAgPC9kZWZzPgo8L3N2Zz4K","HYPE":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDI0IDI0IiBjbGFzcz0id2ViM2ljb25zIj4KICAgIDxnIGNsaXAtcGF0aD0idXJsKCNoeXBlci1ldm1fX2EpIj4KICAgICAgICA8cGF0aCBmaWxsPSIjMDcyNzIzIiBkPSJNMjQgMEgwdjI0aDI0eiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiM1MEQyQzEiIGQ9Ik0yMCAxMS45NDJhOSA5IDAgMCAxLS44IDMuNzk1Yy0uNzcyIDEuNzItMi42MiAzLjEyNy00LjMwOSAxLjYzLTEuMzc3LTEuMjItMS42MzItMy42OTgtMy42OTUtNC4wNi0yLjcyOS0uMzMzLTIuNzk1IDIuODU0LTQuNTc4IDMuMjE0LTEuOTg3LjQwNy0yLjY0Ni0yLjk2LTIuNjE3LTQuNDg4LjAzLTEuNTI5LjQzMy0zLjY3OCAyLjE2LTMuNjc4IDEuOTg3IDAgMi4xMjEgMy4wMzEgNC42NDQgMi44NjcgMi40OTgtLjE3MiAyLjU0Mi0zLjMyNSA0LjE3NC00LjY3NSAxLjQwOC0xLjE2NiAzLjA2NS0uMzExIDMuODk0IDEuMDkzLjc2OSAxLjI5OCAxLjEwNyAyLjgyMiAxLjEyNCA0LjMwMnoiLz4KICAgIDwvZz4KICAgIDxkZWZzPgogICAgICAgIDxjbGlwUGF0aCBpZD0iaHlwZXItZXZtX19hIj4KICAgICAgICAgICAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTAgMGgyNHYyNEgweiIvPgogICAgICAgIDwvY2xpcFBhdGg+CiAgICA8L2RlZnM+Cjwvc3ZnPgo="};
+const PICKR={SOL:"Deepest discount among strong L1s (60% off ATH), the strongest catalyst list (Alpenglow, ETF inflows, tokenized stocks), and the best record from the last cycle (11.3×).",LINK:"Real banks and market infrastructure (DTCC, 50+ banks, a Visa/Mastercard-backed stablecoin) are building on it, and revenue now buys LINK. Still 71% below its high.",HYPE:"The only Top 10 coin with large revenue that directly buys back the token. Highest revenue in crypto in 2026. Watch the unlocks."};
+T10.forEach((c,i)=>c.rank=i+1);
+let t10Mode="all", t10i=0;
+function t10Slides(){
+  const list=T10.filter(c=>t10Mode==="all"||c.top);
+  if(t10Mode==="top")list.sort((a,b)=>a.top-b.top);
+  return [...list.map(c=>({k:"coin",c})),{k:"sum"}];
+}
+function coinCard(c){return `
+  <article class="coin solo ${c.top?'top':''}">
+    <div class="coin-h"><div class="idl"><img class="logo-lg" src="${LOGO[c.s]}" alt="${c.n} logo" width="64" height="64"><div class="id"><span class="rkk num">#${c.rank} altcoin by market cap</span><span class="sym">${c.s}</span><span class="full">${c.n}</span></div></div><span class="chip ${c.v[0]}">${c.top?'★ Top 3 pick #'+c.top:c.v[1]}</span></div>
+    <div class="stats">
+      <div class="stat"><span class="l">Price</span><span class="v">${c.p}</span></div>
+      <div class="stat"><span class="l">Mkt cap</span><span class="v">${c.mc}</span></div>
+      <div class="stat"><span class="l">From ATH</span><span class="v ${c.ath===null?'':'neg'}">${c.ath===null?'n/a':c.ath+'%'}</span></div>
+      <div class="stat"><span class="l">MC / FDV</span><span class="v">${c.mf}</span></div>
+    </div>
+    <p class="what">${c.what}</p>
+    <div class="lists"><div><h4 class="c">Catalysts</h4><ul>${c.cat.map(x=>`<li>${x}</li>`).join("")}</ul></div><div><h4 class="r">Risks</h4><ul>${c.risk.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>
+    <p class="take"><b>My take:</b> ${c.take}</p>
+  </article>`;}
+function sumCard(){
+  const tops=T10.filter(c=>c.top).sort((a,b)=>a.top-b.top);
+  return `<div class="panel sum"><div class="eyebrow">My Top 3 by upside potential</div><div class="picks">${tops.map(c=>`<div class="pick"><div class="pk-h"><img src="${LOGO[c.s]}" alt="" width="44" height="44"><div><div class="rk">#${c.top}</div><div class="sym">${c.s}</div></div></div><div class="muted small">${c.n} · ${c.p} · ${c.ath}% from ATH</div><p>${PICKR[c.s]}</p></div>`).join("")}</div><p class="muted small" style="margin:0">Honourable mention: ETH. Biggest momentum but riskiest entry: ZEC.</p></div>`;
+}
+function renderT10(){
+  const S=t10Slides();t10i=Math.max(0,Math.min(S.length-1,t10i));const cur=S[t10i];
+  document.getElementById("strip").innerHTML=S.map((s,i)=>s.k==="coin"?`<button role="tab" aria-selected="${i===t10i}" data-i="${i}" title="${s.c.n}"><img src="${LOGO[s.c.s]}" alt="" width="22" height="22"><span>${s.c.s}</span>${s.c.top?'<i class="dot" aria-label="Top 3"></i>':''}</button>`:`<button role="tab" aria-selected="${i===t10i}" data-i="${i}" class="star"><span>★ Top 3</span></button>`).join("");
+  document.querySelectorAll("#strip button").forEach(b=>b.onclick=()=>{t10i=+b.dataset.i;renderT10()});
+  document.getElementById("t10view").innerHTML=cur.k==="coin"?coinCard(cur.c):sumCard();
+  document.getElementById("t10pos").textContent=cur.k==="coin"?`Coin ${t10i+1} of ${S.length-1}`:"Summary";
+  document.getElementById("t10prev").disabled=t10i===0;document.getElementById("t10next").disabled=t10i===S.length-1;
+}
+function t10Step(d){const n=t10Slides().length;const j=t10i+d;if(j<0||j>=n)return false;t10i=j;renderT10();return true;}
+document.getElementById("t10prev").onclick=()=>t10Step(-1);document.getElementById("t10next").onclick=()=>t10Step(1);
+document.querySelectorAll("#t10f button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#t10f button").forEach(x=>x.setAttribute("aria-pressed",x===b));t10Mode=b.dataset.f;t10i=0;renderT10()});
+renderT10();
+
+/* ---------- Stage 3: universe ---------- */
+const CATS=[...new Set(U.map(t=>t.c))].map(c=>({c,n:U.filter(t=>t.c===c).length,mc:U.filter(t=>t.c===c).reduce((s,t)=>s+t.mc,0)})).sort((a,b)=>b.n-a.n);
+const bn=v=>v>=1000?"$"+(v/1000).toFixed(v>=10000?0:1)+"B":"$"+Math.round(v)+"M";
+const maxN=CATS[0].n;
+let fCat=null, scope="all", sortK="mc", sortD=-1;
+const selTokens=U.filter(t=>SEL.includes(t.c));
+document.getElementById("u-kpis").innerHTML=[
+  ["Tokens",U.length,"above $100M, ex Top 10"],["Combined value",bn(U.reduce((s,t)=>s+t.mc,0)),"market cap"],
+  ["Median size",bn([...U].sort((a,b)=>a.mc-b.mc)[Math.floor(U.length/2)].mc),"half are smaller than this"],["Categories",CATS.length,SEL.length+" selected later"]
+].map(([l,v,n])=>`<div class="kpi"><span class="l">${l}</span><span class="v">${v}</span><span class="n">${n}</span></div>`).join("");
+function renderCats(){
+  document.getElementById("cats").innerHTML=CATS.map(k=>`<button class="cat" aria-pressed="${fCat===k.c}" data-c="${k.c}"><span class="cn">${k.c}</span><span class="cc">${k.n}</span><span class="cm">${bn(k.mc)}</span><span class="mini"><span style="width:${k.n/maxN*100}%"></span></span></button>`).join("");
+  document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{fCat=fCat===b.dataset.c?null:b.dataset.c;renderCats();renderTable()});
+}
+const COLS=[["Rank","r"],["Token","n"],["Category","c"],["Mkt cap","mc"],["FDV","fdv"],["MC/FDV","mf"],["From ATH","ath"]];
+const RANK={};[...U].sort((a,b)=>b.mc-a.mc).forEach((t,i)=>RANK[t.s]=i+1);
+function renderTable(){
+  const q=document.getElementById("q").value.trim().toLowerCase();
+  let rows=U.map(t=>({...t,r:RANK[t.s]})).filter(t=>(!fCat||t.c===fCat)&&(scope==="all"||SEL.includes(t.c))&&(!q||t.s.toLowerCase().includes(q)||t.n.toLowerCase().includes(q)));
+  rows.sort((a,b)=>{const x=a[sortK],y=b[sortK];return (typeof x==="string"?x.localeCompare(y):x-y)*sortD});
+  document.getElementById("cnt").textContent=rows.length+" shown";
+  document.getElementById("ut").innerHTML=`<thead><tr>${COLS.map(([h,k])=>`<th data-k="${k}">${h}${sortK===k?(sortD<0?" ↓":" ↑"):""}</th>`).join("")}</tr></thead><tbody>`+
+   rows.map(t=>`<tr class="${SEL.includes(t.c)?'':'excl'}"><td>${t.r}</td><td><b>${t.s}</b> <span class="muted">${t.n}</span></td><td>${t.c}${t.sub?` <span class="muted">· ${t.sub}</span>`:''}</td><td>${bn(t.mc)}</td><td>${bn(t.fdv)}</td><td>${t.mf.toFixed(2)}</td><td class="neg">${t.ath.toFixed(0)}%</td></tr>`).join("")+"</tbody>";
+  document.querySelectorAll("#ut th").forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sortK===k)sortD*=-1;else{sortK=k;sortD=(k==="n"||k==="c"||k==="r"||k==="ath")?1:-1}renderTable()});
+}
+document.getElementById("q").oninput=renderTable;
+document.querySelectorAll("#scope button").forEach(b=>b.onclick=()=>{scope=b.dataset.s;document.querySelectorAll("#scope button").forEach(x=>x.setAttribute("aria-pressed",x===b));renderTable()});
+renderCats();renderTable();
+
+/* ---------- Stage 4: selection ---------- */
+const cnt=c=>U.filter(t=>t.c===c).length;
+document.getElementById("selN").textContent=selTokens.length;
+document.getElementById("inl").innerHTML=SEL.map(c=>`<div class="ri in"><span class="mk">✓</span><span class="t"><b>${c}</b><span>${WHY[c]}</span></span><span class="ct">${cnt(c)}</span></div>`).join("");
+document.getElementById("outl").innerHTML=Object.keys(OUT).map(c=>`<div class="ri out"><span class="mk">✕</span><span class="t"><b>${c}</b><span>${OUT[c]}</span></span><span class="ct">${cnt(c)}</span></div>`).join("");
+
+/* ---------- Stage 5: allocation ---------- */
+const SIZES=SEL.map(c=>({c,n:cnt(c)}));const TOT=SIZES.reduce((s,x)=>s+x.n,0);
+let N=20, method="prop", alloc={};
+function lr(total,weights){ // largest remainder
+  const W=weights.reduce((s,w)=>s+w,0);const ex=weights.map(w=>total*w/W);const fl=ex.map(Math.floor);
+  let left=total-fl.reduce((s,v)=>s+v,0);ex.map((e,i)=>[e-fl[i],i]).sort((a,b)=>b[0]-a[0]).slice(0,left).forEach(([,i])=>fl[i]++);return {fl,ex};
+}
+function compute(){
+  const w=SIZES.map(x=>x.n);let out;
+  if(method==="floor"){const r=lr(N-SIZES.length,w);out=r.fl.map(v=>v+1);}
+  else{const r=lr(N,w);out=r.fl.slice();
+    out.forEach((v,i)=>{if(v===0){out[i]=1;let best=-1,bv=1e9;out.forEach((o,j)=>{if(o>1){const s=r.ex[j]-o;if(s<bv){bv=s;best=j}}});if(best>=0)out[best]--;}});}
+  alloc={};SIZES.forEach((x,i)=>alloc[x.c]=out[i]);
+}
+function renderAlloc(){
+  const sum=Object.values(alloc).reduce((s,v)=>s+v,0);
+  document.getElementById("nOut").textContent=sum;
+  document.getElementById("atab").innerHTML=SIZES.map(x=>{const a=alloc[x.c];return `<div class="arow"><div class="nm">${x.c}<small>${x.n} tokens · ${(x.n/TOT*100).toFixed(0)}% of universe</small></div><div class="slots">${Array.from({length:a},()=>'<span class="slot"></span>').join("")}</div><div class="pct">${(a/sum*100).toFixed(0)}%</div><div class="step"><button data-c="${x.c}" data-d="-1" aria-label="Remove a ${x.c} slot">−</button><span>${a}</span><button data-c="${x.c}" data-d="1" aria-label="Add a ${x.c} slot">+</button></div></div>`}).join("");
+  document.querySelectorAll(".step button").forEach(b=>b.onclick=()=>{const c=b.dataset.c;alloc[c]=Math.max(1,alloc[c]+ +b.dataset.d);renderAlloc()});
+  const st=document.getElementById("astat");
+  const l1d=alloc["Layer 1"]+alloc["DeFi"];
+  st.className="status "+(sum===N?"ok":"off");
+  st.textContent=sum===N?`${sum} tokens. Layer 1 and DeFi take ${l1d} slots (${(l1d/sum*100).toFixed(0)}%), matching their ${((cnt("Layer 1")+cnt("DeFi"))/TOT*100).toFixed(0)}% share of the universe.`:`Manual split adds up to ${sum}, not the target of ${N}. Adjust a category or press Reset.`;
+}
+document.getElementById("nSl").oninput=e=>{N=+e.target.value;compute();renderAlloc()};
+document.querySelectorAll("#meth button").forEach(b=>b.onclick=()=>{method=b.dataset.m;document.querySelectorAll("#meth button").forEach(x=>x.setAttribute("aria-pressed",x===b));compute();renderAlloc()});
+document.getElementById("reset").onclick=()=>{N=20;document.getElementById("nSl").value=20;method="prop";document.querySelectorAll("#meth button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.m==="prop"));compute();renderAlloc()};
+compute();renderAlloc();
+document.getElementById("next").innerHTML=[
+  "<b>Videos 2 to 6</b> go category by category: Layer 1, DeFi, AI, then Meme with Launchpad, then Privacy with RWA.",
+  "<b>Every token gets the same scorecard:</b> supply and unlocks (MC/FDV), revenue and buybacks, narrative strength, distance from ATH, liquidity and listings, team and backers.",
+  "<b>20 tokens first, then a shortlist.</b> Once all 20 are picked, we cut to the final 10–12 with weights and an exit plan."
+].map(t=>`<li>${t}</li>`).join("");
+
+/* ---------- stage nav ---------- */
+const ST=[...document.querySelectorAll("section.stage")];let cur=0;
+document.getElementById("rail").innerHTML=ST.map((s,i)=>`<button role="tab" aria-selected="${i===0}" data-i="${i}"><i>${String(i+1).padStart(2,"0")}</i>${s.dataset.title}</button>`).join("");
+function go(i){cur=Math.max(0,Math.min(ST.length-1,i));ST.forEach((s,j)=>s.hidden=j!==cur);document.querySelectorAll("#rail button").forEach((b,j)=>b.setAttribute("aria-selected",j===cur));
+  document.getElementById("prev").disabled=cur===0;document.getElementById("nxt").disabled=cur===ST.length-1;window.scrollTo({top:0,behavior:"instant"});
+  try{localStorage.setItem("m10x-v1-stage",cur)}catch(e){}}
+document.querySelectorAll("#rail button").forEach(b=>b.onclick=()=>go(+b.dataset.i));
+function fwd(){if(ST[cur].id==="s2"&&t10Step(1)){window.scrollTo({top:0,behavior:"instant"});return}go(cur+1);if(ST[cur].id==="s2"){t10i=0;renderT10()}}
+function back(){if(ST[cur].id==="s2"&&t10Step(-1)){window.scrollTo({top:0,behavior:"instant"});return}go(cur-1);if(ST[cur].id==="s2"){t10i=t10Slides().length-1;renderT10()}}
+document.getElementById("prev").onclick=back;document.getElementById("nxt").onclick=fwd;
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight")fwd();if(e.key==="ArrowLeft")back()});
+let saved=0;try{saved=+(localStorage.getItem("m10x-v1-stage")||0)}catch(e){}go(saved||0);
+</script>
+</body>
+</html>
