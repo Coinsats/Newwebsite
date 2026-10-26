@@ -210,9 +210,15 @@ h2{font:700 clamp(20px,3vw,26px)/1.15 var(--display);margin:0;text-wrap:balance}
 </div>
 
 <script>
+window.addEventListener("error", function (e) {
+  var el = document.getElementById("strip");
+  if (el && !el.dataset.err) { el.dataset.err = "1"; el.innerHTML = '<span class="tick" style="border-color:var(--down);color:var(--down)">The page script stopped: ' + String(e.message || "error").replace(/[<>&]/g, "") + '. If you just edited the file, check that the Finnhub key is inside quotation marks.</span>'; }
+});
+</script>
+<script>
 /* ===== Settings ===== */
-// Paste your free Finnhub API key between the quotes (finnhub.io > Dashboard). Leave empty to use the last close below.
-const FINNHUB_KEY = d9tkt71r01qujo6l61s0d9tkt71r01qujo6l61sg;
+// Paste your free Finnhub API key BETWEEN THE QUOTES, e.g. const FINNHUB_KEY = "abc123"; Leave "" to use the last close below.
+const FINNHUB_KEY = "d9tkt71r01qujo6l61s0d9tkt71r01qujo6l61sg";
 // Used when live stock prices are unavailable (last close you logged).
 const STOCK_FALLBACK = { MSTR: 142.28, ASST: 27.45, asOf: "26 Oct 2026 close" };
 const REFRESH_SECONDS = 60;
@@ -266,7 +272,7 @@ function render() {
     `<span class="tick">${btcImg}BTC <b>${price(S.btc)}</b></span>` +
     `<span class="tick"><span class="tag">M</span>MSTR <b>${price(S.mstr)}</b></span>` +
     `<span class="tick"><span class="tag">A</span>ASST <b>${price(S.asst)}</b></span>` +
-    `<span class="status"><span class="dot ${live}"></span><span>${S.cryptoLive ? "Crypto live from CoinGecko" : "Crypto prices from " + SNAP_AT + " (live feed unavailable)"} · ${S.stockLive ? "stocks live from Finnhub" : "stocks: " + STOCK_FALLBACK.asOf}${S.at ? " · updated " + S.at.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : ""}</span><button class="btn" type="button" id="refresh">Refresh</button></span>`;
+    `<span class="status"><span class="dot ${live}"></span><span>${S.cryptoLive ? "Crypto live from " + (S.source || "CoinGecko") : "Crypto prices from " + SNAP_AT + " (live feed unavailable)"} · ${S.stockLive ? "stocks live from Finnhub" : "stocks: " + STOCK_FALLBACK.asOf}${S.at ? " · updated " + S.at.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : ""}</span><button class="btn" type="button" id="refresh">Refresh</button></span>`;
   document.getElementById("refresh").onclick = () => load(true);
 
   // hero
@@ -367,10 +373,22 @@ async function getJSON(url, ms) {
   try { const r = await fetch(url, { signal: c.signal }); if (!r.ok) throw new Error(r.status); return await r.json(); } finally { clearTimeout(t); }
 }
 async function loadCrypto() {
-  const ids = ROWS.map(t => t.id).concat("bitcoin").join(",");
-  const j = await getJSON("https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=" + ids);
-  let n = 0; for (const t of ROWS) { const v = j[t.id] && j[t.id].usd; if (v > 0) { S.px[t.id] = v; n++; } }
-  if (j.bitcoin && j.bitcoin.usd > 0) S.btc = j.bitcoin.usd; else throw new Error("no btc");
+  const ids = ROWS.map(t => t.id).concat("bitcoin");
+  let got = {};
+  try {
+    const j = await getJSON("https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=" + ids.join(","));
+    ids.forEach(id => { if (j[id] && j[id].usd > 0) got[id] = j[id].usd; });
+    S.source = "CoinGecko";
+  } catch (e) { got = {}; }
+  if (Object.keys(got).length < ids.length) {
+    // Backup feed (same CoinGecko ids) if CoinGecko is rate-limited
+    const j = await getJSON("https://coins.llama.fi/prices/current/" + ids.map(i => "coingecko:" + i).join(","));
+    ids.forEach(id => { const c = j.coins && j.coins["coingecko:" + id]; if (got[id] == null && c && c.price > 0) got[id] = c.price; });
+    S.source = "CoinGecko via DefiLlama";
+  }
+  let n = 0; for (const t of ROWS) if (got[t.id] != null) { S.px[t.id] = got[t.id]; n++; }
+  if (got.bitcoin == null) throw new Error("no btc");
+  S.btc = got.bitcoin;
   S.cryptoLive = n === ROWS.length;
 }
 async function loadStocks() {
