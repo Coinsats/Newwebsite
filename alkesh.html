@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alkesh Portfolio · CoinSats</title>
+<meta name="description" content="Live crypto portfolio tracker for Alkesh, managed by Zubair Abdul Jabbar (CoinSats.io). Prices from CoinGecko.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   CoinSats · Alkesh Portfolio — live tracker
+   Edit the DATA section in the <script> block to add new
+   deposits or trades. Everything else recalculates itself.
+   ========================================================= */
+:root{
+  --bg:#070d1c; --bg2:#0b1428; --card:#0f1a33; --card2:#13203d;
+  --line:#1e2c4d; --line2:#2a3b62;
+  --ink:#eef2fb; --ink2:#a9b5d0; --ink3:#6f7ea3;
+  --gold:#d4af37; --gold2:#f0d27a; --goldbg:rgba(212,175,55,.10);
+  --up:#2fd18b; --upbg:rgba(47,209,139,.12);
+  --down:#ff5d6c; --downbg:rgba(255,93,108,.12);
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --sans:'Manrope',system-ui,-apple-system,Segoe UI,sans-serif;
+  --r:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+body{
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(212,175,55,.10), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(58,96,190,.18), transparent 60%),
+    var(--bg);
+  min-height:100vh;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 60px}
+a{color:var(--gold2);text-decoration:none}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* Header */
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:46px;height:46px;border-radius:12px;background:linear-gradient(145deg,var(--gold2),var(--gold) 55%,#9c7a1c);display:grid;place-items:center;color:#1a1300;font-weight:800;font-size:22px;box-shadow:0 6px 22px rgba(212,175,55,.25)}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700}
+h1{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.sub{color:var(--ink2);font-size:13.5px;margin-top:3px}
+.status{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.live{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--ink2);background:var(--card);border:1px solid var(--line);padding:7px 12px;border-radius:999px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ink3)}
+.dot.ok{background:var(--up);box-shadow:0 0 0 0 rgba(47,209,139,.6);animation:pulse 2s infinite}
+.dot.err{background:var(--down)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,209,139,.55)}70%{box-shadow:0 0 0 9px rgba(47,209,139,0)}100%{box-shadow:0 0 0 0 rgba(47,209,139,0)}}
+.btn{font:600 12px var(--sans);color:var(--gold2);background:var(--goldbg);border:1px solid rgba(212,175,55,.35);padding:7px 14px;border-radius:999px;cursor:pointer}
+.btn:hover{background:rgba(212,175,55,.18)}
+.btn:disabled{opacity:.5;cursor:wait}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-bottom:16px}
+.card{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.hero-main{position:relative;overflow:hidden;border-color:rgba(212,175,55,.28)}
+.hero-main::after{content:"";position:absolute;inset:auto -60px -80px auto;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.16),transparent 70%)}
+.label{font-size:12px;color:var(--ink3);text-transform:uppercase;letter-spacing:.12em;font-weight:700}
+.big{font-size:46px;font-weight:600;letter-spacing:-.03em;margin:8px 0 6px;line-height:1}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 14px var(--mono);padding:5px 11px;border-radius:999px}
+.pill.up{color:var(--up);background:var(--upbg)}
+.pill.down{color:var(--down);background:var(--downbg)}
+.hero-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.hero-foot{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px;padding-top:18px;border-top:1px dashed var(--line2);position:relative;z-index:1}
+.mini .label{font-size:10.5px}
+.mini .v{font:600 17px var(--mono);margin-top:4px}
+.mini .s{font-size:11.5px;color:var(--ink3);margin-top:2px}
+
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.kpi .v{font:600 22px var(--mono);margin-top:6px;letter-spacing:-.01em}
+.kpi .s{font-size:12px;color:var(--ink3);margin-top:3px}
+.up{color:var(--up)} .down{color:var(--down)} .gold{color:var(--gold2)}
+
+/* Sections */
+.grid2{display:grid;grid-template-columns:1fr 1.25fr;gap:16px;margin-bottom:16px}
+h2{font-size:15px;font-weight:700;letter-spacing:-.005em;display:flex;align-items:center;gap:10px;margin-bottom:16px}
+h2 .tag{font:500 11px var(--sans);color:var(--ink3);background:var(--bg2);border:1px solid var(--line);padding:3px 8px;border-radius:999px}
+.section{margin-bottom:16px}
+
+/* Donut */
+.alloc{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.donut{width:190px;height:190px;flex:0 0 auto;position:relative}
+.donut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.donut .center{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.donut .center b{font:600 18px var(--mono);display:block}
+.donut .center span{font-size:11px;color:var(--ink3)}
+.legend{flex:1;min-width:180px;display:flex;flex-direction:column;gap:9px}
+.lg{display:flex;align-items:center;gap:10px;font-size:13px}
+.lg i{width:10px;height:10px;border-radius:3px;flex:0 0 auto}
+.lg .n{flex:1;color:var(--ink2)}
+.lg .p{font-family:var(--mono);font-weight:600}
+
+/* P&L bars */
+.bars{display:flex;flex-direction:column;gap:13px}
+.bar{display:grid;grid-template-columns:70px 1fr 92px;align-items:center;gap:12px;font-size:13px}
+.bar .t{font-weight:700}
+.track{height:22px;position:relative;background:var(--bg2);border-radius:6px;border:1px solid var(--line)}
+.track .mid{position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--line2)}
+.track .fill{position:absolute;top:3px;bottom:3px;border-radius:4px}
+.bar .val{text-align:right;font-family:var(--mono);font-weight:600}
+
+/* Tables */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -22px;padding:0 22px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:820px}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);font-weight:700;text-align:right;padding:0 10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left;padding-left:0}
+td{padding:13px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:rgba(255,255,255,.015)}
+tfoot td{border-top:1px solid var(--line2);border-bottom:none;font-weight:700;padding-top:14px}
+.coin{display:flex;align-items:center;gap:11px}
+.coin img,.coin .ph{width:30px;height:30px;border-radius:50%;background:var(--card2);flex:0 0 auto}
+.coin .ph{display:grid;place-items:center;font-size:11px;font-weight:800;color:var(--ink2)}
+.coin b{display:block;font-size:14px}
+.coin small{color:var(--ink3);font-size:11.5px}
+.spark{width:96px;height:30px;display:block;margin-left:auto}
+.chg{font:600 12px var(--mono);padding:3px 7px;border-radius:6px}
+.chg.up{background:var(--upbg)} .chg.down{background:var(--downbg)}
+.type{font:700 10.5px var(--sans);letter-spacing:.08em;padding:3px 8px;border-radius:5px;text-transform:uppercase}
+.type.buy{color:var(--up);background:var(--upbg)}
+.type.sell{color:var(--down);background:var(--downbg)}
+.type.dep{color:var(--gold2);background:var(--goldbg)}
+.muted{color:var(--ink3)}
+
+.note{font-size:12px;color:var(--ink3);line-height:1.6}
+.banner{display:none;margin-bottom:16px;padding:11px 15px;border-radius:12px;font-size:13px;background:var(--downbg);border:1px solid rgba(255,93,108,.35);color:#ffc2c8}
+footer{margin-top:30px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer .note{max-width:720px}
+
+@media (max-width:900px){
+  .hero,.grid2{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:20px 16px 48px}
+  h1{font-size:23px}
+  .big{font-size:36px}
+  .status{align-items:flex-start}
+  .hero-foot{grid-template-columns:1fr 1fr}
+  .kpi .v{font-size:18px}
+  .card{padding:18px}
+  .tbl-wrap{margin:0 -18px;padding:0 18px}
+  .donut{width:160px;height:160px}
+  .bar{grid-template-columns:58px 1fr 80px;gap:8px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="logo">₿</div>
+      <div>
+        <div class="eyebrow">CoinSats · Managed Portfolio</div>
+        <h1>Alkesh Portfolio</h1>
+        <div class="sub">Managed by Zubair Abdul Jabbar · CMA Authorized FinFluencer · Held on Binance &amp; OKX</div>
+      </div>
+    </div>
+    <div class="status">
+      <span class="live"><span class="dot" id="dot"></span><span id="statusText">Connecting to CoinGecko…</span></span>
+      <button class="btn" id="refreshBtn" type="button">↻ Refresh prices</button>
+    </div>
+  </header>
+
+  <div class="banner" id="banner"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="card hero-main">
+      <div class="label">Portfolio value (live)</div>
+      <div class="big num" id="totalValue">—</div>
+      <div class="hero-row">
+        <span class="pill" id="totalPnlPill">—</span>
+        <span class="muted" style="font-size:13px">on <span class="num" id="capitalTxt">—</span> capital received</span>
+      </div>
+      <div class="hero-foot">
+        <div class="mini"><div class="label">Capital received</div><div class="v num" id="kCapital">—</div><div class="s" id="kCapitalInr">—</div></div>
+        <div class="mini"><div class="label">Invested in crypto</div><div class="v num" id="kInvested">—</div><div class="s" id="kInvestedS">—</div></div>
+        <div class="mini"><div class="label">Cash in hand</div><div class="v num" id="kCash">—</div><div class="s">USDT · not yet deployed</div></div>
+      </div>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="label">Crypto holdings value</div><div class="v num" id="kHold">—</div><div class="s">Live market value</div></div>
+      <div class="kpi"><div class="label">Unrealised P&amp;L</div><div class="v num" id="kUnreal">—</div><div class="s" id="kUnrealS">On invested amount</div></div>
+      <div class="kpi"><div class="label">24h change</div><div class="v num" id="k24">—</div><div class="s" id="k24s">Holdings, last 24 hours</div></div>
+      <div class="kpi"><div class="label">Best / worst</div><div class="v" id="kBest" style="font-size:15px;font-family:var(--sans);font-weight:700;line-height:1.5">—</div><div class="s" id="kSince">—</div></div>
+    </div>
+  </section>
+
+  <!-- HOLDINGS -->
+  <section class="card section">
+    <h2>Holdings <span class="tag" id="holdTag">—</span></h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th>Asset</th><th>Quantity</th><th>Avg buy</th><th>Live price</th><th>24h</th><th>7d trend</th><th>Cost</th><th>Value</th><th>P&amp;L</th><th>P&amp;L %</th>
+        </tr></thead>
+        <tbody id="holdBody"></tbody>
+        <tfoot id="holdFoot"></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <!-- CHARTS -->
+  <section class="grid2">
+    <div class="card">
+      <h2>Allocation <span class="tag">by live value, incl. cash</span></h2>
+      <div class="alloc">
+        <div class="donut"><svg viewBox="0 0 42 42" id="donut"></svg><div class="center"><div><b class="num" id="donutTotal">—</b><span>total value</span></div></div></div>
+        <div class="legend" id="legend"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Return by coin <span class="tag">P&amp;L % vs. cost</span></h2>
+      <div class="bars" id="bars"></div>
+    </div>
+  </section>
+
+  <!-- TRANSACTIONS -->
+  <section class="card section">
+    <h2>All transactions <span class="tag" id="txTag">—</span></h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th>Date</th><th>Type</th><th>Asset</th><th>Quantity</th><th>Price</th><th>Amount (USD)</th><th>Amount (INR)</th><th>Cash balance</th><th>Today's value</th>
+        </tr></thead>
+        <tbody id="txBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p class="note">
+      Live prices from the CoinGecko public API, refreshed every 60 seconds. P&amp;L is shown in USD; INR figures are the amounts Alkesh sent (₹100 = $1 as recorded). Cash in hand is held as USDT and valued at $1.
+      This page tracks a privately managed portfolio. It is not investment advice, and crypto assets are highly volatile.
+    </p>
+    <p class="note" style="text-align:right">
+      <a href="https://coinsats.io">coinsats.io</a><br>
+      Prices by <a href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a><br>
+      <span id="footUpdated">—</span>
+    </p>
+  </footer>
+</div>
+
+<script>
+/* ==================================================================
+   DATA — edit this section to update the portfolio.
+   - Add each new deposit to DEPOSITS.
+   - Add each trade to TRADES (type: "BUY" or "SELL"). `usd` is the
+     total USD spent (BUY) or received (SELL), `qty` is coins.
+   - New coin? Add it to COINS with its CoinGecko id (the id from the
+     coin's coingecko.com URL, e.g. coingecko.com/en/coins/pendle).
+   ================================================================== */
+const INVESTOR = "Alkesh";
+
+const DEPOSITS = [
+  { date: "2026-10-09", inr: 50000,  usd: 500  },
+  { date: "2026-10-30", inr: 100000, usd: 1000 },
+];
+
+const TRADES = [
+  { date: "2026-10-15", type: "BUY", coin: "NEAR",   qty: 27.295,     usd: 144.21 },
+  { date: "2026-10-21", type: "BUY", coin: "NEAR",   qty: 66.916049,  usd: 355.79 },
+  { date: "2026-11-07", type: "BUY", coin: "PUMP",   qty: 63892+1331, usd: 250 },
+  { date: "2026-11-07", type: "BUY", coin: "PENDLE", qty: 76.8+44.4,  usd: 200 },
+  { date: "2026-11-07", type: "BUY", coin: "ZAMA",   qty: 123+1313,   usd: 100 },
+  { date: "2026-11-07", type: "BUY", coin: "SYRUP",  qty: 1049,       usd: 150 },
+];
+
+const COINS = {
+  NEAR:   { id: "near",     name: "NEAR Protocol", color: "#4fd1c5" },
+  PUMP:   { id: "pump-fun", name: "Pump.fun",      color: "#7c8cff" },
+  PENDLE: { id: "pendle",   name: "Pendle",        color: "#e58cff" },
+  ZAMA:   { id: "zama",     name: "Zama",          color: "#ffb454" },
+  SYRUP:  { id: "syrup",    name: "Maple (SYRUP)", color: "#ff7a8a" },
+};
+const CASH_COLOR = "#d4af37";
+
+/* Last known prices (7 Nov 2026), used only if CoinGecko can't be reached. */
+const FALLBACK = {
+  "near":     { current_price: 3.71,      price_change_percentage_24h: -1.35 },
+  "pump-fun": { current_price: 0.0037536, price_change_percentage_24h: -8.39 },
+  "pendle":   { current_price: 1.65,      price_change_percentage_24h: -2.59 },
+  "zama":     { current_price: 0.069379,  price_change_percentage_24h: -2.51 },
+  "syrup":    { current_price: 0.142336,  price_change_percentage_24h: -0.60 },
+};
+
+const REFRESH_MS = 60000;
+/* ================================================================== */
+
+const $ = id => document.getElementById(id);
+const usd = (v, d = 2) => (v <= -0.005 ? "-$" : "$") + Math.abs(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+const sgnUsd = v => (v >= 0.005 ? "+" : v <= -0.005 ? "−" : "") + "$" + Math.abs(v).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const pct = (v, d = 2) => (Math.abs(v) < 0.5 * 10 ** -d ? "" : v > 0 ? "+" : "−") + Math.abs(v).toFixed(d) + "%";
+const cls = v => (v >= 0 ? "up" : "down");
+const inr = v => "₹" + v.toLocaleString("en-IN");
+function price(v) {
+  if (v == null || isNaN(v)) return "—";
+  const a = Math.abs(v);
+  const d = a >= 100 ? 2 : a >= 1 ? 3 : a >= 0.01 ? 4 : 6;
+  return "$" + v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+}
+function qtyFmt(v) {
+  const d = v >= 1000 ? 0 : v >= 1 ? 4 : 6;
+  return v.toLocaleString("en-US", { maximumFractionDigits: d });
+}
+function dateFmt(s) {
+  const d = new Date(s + "T00:00:00");
+  return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+/* ---------- Portfolio math (average-cost method) ---------- */
+function buildBook() {
+  const pos = {};
+  let realised = 0;
+  const sorted = [...TRADES].sort((a, b) => a.date.localeCompare(b.date));
+  for (const t of sorted) {
+    const p = pos[t.coin] || (pos[t.coin] = { qty: 0, cost: 0 });
+    if (t.type === "BUY") { p.qty += t.qty; p.cost += t.usd; }
+    else {
+      const avg = p.qty ? p.cost / p.qty : 0;
+      const costOut = avg * t.qty;
+      realised += t.usd - costOut;
+      p.qty -= t.qty; p.cost -= costOut;
+      if (p.qty < 1e-12) { p.qty = 0; p.cost = 0; }
+    }
+  }
+  const capital = DEPOSITS.reduce((s, d) => s + d.usd, 0);
+  const capitalInr = DEPOSITS.reduce((s, d) => s + (d.inr || 0), 0);
+  const bought = TRADES.filter(t => t.type === "BUY").reduce((s, t) => s + t.usd, 0);
+  const sold = TRADES.filter(t => t.type === "SELL").reduce((s, t) => s + t.usd, 0);
+  const cash = capital - bought + sold;
+  return { pos, realised, capital, capitalInr, cash, bought, sold };
+}
+
+/* ---------- Data fetch ---------- */
+let market = {};
+let lastOk = null;
+let usingFallback = false;
+
+async function fetchPrices() {
+  const ids = [...new Set(Object.values(COINS).map(c => c.id))].join(",");
+  const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}&sparkline=true&price_change_percentage=24h`;
+  const btn = $("refreshBtn");
+  btn.disabled = true;
+  try {
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const data = await r.json();
+    if (!Array.isArray(data) || !data.length) throw new Error("Empty response");
+    market = {};
+    for (const c of data) market[c.id] = c;
+    lastOk = new Date();
+    usingFallback = false;
+    try { localStorage.setItem("alkesh_market", JSON.stringify({ t: lastOk.getTime(), market })); } catch (e) {}
+    setStatus("ok");
+  } catch (e) {
+    // Try last cached prices, then the built-in snapshot
+    let cached = null;
+    try { cached = JSON.parse(localStorage.getItem("alkesh_market") || "null"); } catch (_) {}
+    if (cached && cached.market && !Object.keys(market).length) { market = cached.market; lastOk = new Date(cached.t); }
+    if (!Object.keys(market).length) market = FALLBACK;
+    usingFallback = market === FALLBACK;
+    setStatus("err", e.message);
+  } finally {
+    btn.disabled = false;
+    render();
+  }
+}
+
+function setStatus(state, msg) {
+  const dot = $("dot"), txt = $("statusText"), ban = $("banner");
+  if (state === "ok") {
+    dot.className = "dot ok";
+    txt.textContent = "Live · updated " + lastOk.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    ban.style.display = "none";
+  } else {
+    dot.className = "dot err";
+    txt.textContent = "Price feed unavailable";
+    ban.style.display = "block";
+    ban.textContent = usingFallback
+      ? `Couldn't reach CoinGecko (${msg}). Showing last known prices from 7 Nov 2026 — it will retry automatically.`
+      : `Couldn't reach CoinGecko (${msg}). Showing prices from ${lastOk ? lastOk.toLocaleString() : "the last successful update"} — it will retry automatically.`;
+  }
+  $("footUpdated").textContent = lastOk ? "Last price update: " + lastOk.toLocaleString() : "Snapshot prices: 7 Nov 2026";
+}
+
+/* ---------- Render ---------- */
+function sparkSvg(arr, color) {
+  if (!arr || arr.length < 2) return '<span class="muted">—</span>';
+  const step = Math.max(1, Math.floor(arr.length / 48));
+  const pts = arr.filter((_, i) => i % step === 0);
+  const min = Math.min(...pts), max = Math.max(...pts), rng = max - min || 1;
+  const w = 96, h = 30;
+  const d = pts.map((v, i) => `${(i / (pts.length - 1) * w).toFixed(1)},${(h - 3 - (v - min) / rng * (h - 6)).toFixed(1)}`).join(" ");
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline fill="none" stroke="${color}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" points="${d}"/></svg>`;
+}
+
+function render() {
+  const book = buildBook();
+  const rows = [];
+  for (const [sym, p] of Object.entries(book.pos)) {
+    if (p.qty <= 0) continue;
+    const meta = COINS[sym] || { id: sym.toLowerCase(), name: sym, color: "#8899bb" };
+    const m = market[meta.id] || {};
+    const px = m.current_price;
+    const value = px != null ? p.qty * px : NaN;
+    const ch24 = m.price_change_percentage_24h ?? m.price_change_percentage_24h_in_currency ?? null;
+    const prev = (ch24 != null && !isNaN(value)) ? value / (1 + ch24 / 100) : NaN;
+    rows.push({ sym, meta, m, qty: p.qty, cost: p.cost, avg: p.cost / p.qty, px, value, pnl: value - p.cost, pnlPct: (value - p.cost) / p.cost * 100, ch24, prev });
+  }
+  rows.sort((a, b) => (b.value || 0) - (a.value || 0));
+
+  const hold = rows.reduce((s, r) => s + (r.value || 0), 0);
+  const holdPrev = rows.reduce((s, r) => s + (isNaN(r.prev) ? (r.value || 0) : r.prev), 0);
+  const cost = rows.reduce((s, r) => s + r.cost, 0);
+  const total = hold + book.cash;
+  const totalPnl = total - book.capital;
+  const totalPct = book.capital ? totalPnl / book.capital * 100 : 0;
+  const unreal = hold - cost;
+  const unrealPct = cost ? unreal / cost * 100 : 0;
+  const d24 = hold - holdPrev;
+
+  // Hero
+  $("totalValue").textContent = usd(total);
+  const pill = $("totalPnlPill");
+  pill.className = "pill " + cls(totalPnl);
+  pill.textContent = `${totalPnl >= 0 ? "▲" : "▼"} ${sgnUsd(totalPnl)} · ${pct(totalPct)}`;
+  $("capitalTxt").textContent = usd(book.capital, 0);
+  $("kCapital").textContent = usd(book.capital);
+  $("kCapitalInr").textContent = `${inr(book.capitalInr)} · ${DEPOSITS.length} deposit${DEPOSITS.length > 1 ? "s" : ""}`;
+  $("kInvested").textContent = usd(cost);
+  $("kInvestedS").textContent = `${(cost / book.capital * 100).toFixed(0)}% deployed · ${rows.length} coins`;
+  $("kCash").textContent = usd(book.cash);
+
+  $("kHold").textContent = usd(hold);
+  const ku = $("kUnreal"); ku.className = "v num " + cls(unreal); ku.textContent = sgnUsd(unreal);
+  $("kUnrealS").innerHTML = `<span class="${cls(unreal)}">${pct(unrealPct)}</span> on ${usd(cost)} invested`;
+  const k24 = $("k24"); k24.className = "v num " + cls(d24); k24.textContent = sgnUsd(d24);
+  $("k24s").innerHTML = `<span class="${cls(d24)}">${pct(holdPrev ? d24 / holdPrev * 100 : 0)}</span> on holdings`;
+
+  const ranked = rows.filter(r => !isNaN(r.pnlPct)).sort((a, b) => b.pnlPct - a.pnlPct);
+  if (ranked.length) {
+    const b = ranked[0], w = ranked[ranked.length - 1];
+    $("kBest").innerHTML = `<span class="muted" style="font-weight:600">Best</span> <span class="${cls(b.pnlPct)}">${esc(b.sym)} ${pct(b.pnlPct, 1)}</span><br><span class="muted" style="font-weight:600">Worst</span> <span class="${cls(w.pnlPct)}">${esc(w.sym)} ${pct(w.pnlPct, 1)}</span>`;
+  }
+  const first = DEPOSITS.map(d => d.date).sort()[0];
+  const days = Math.max(0, Math.floor((Date.now() - new Date(first + "T00:00:00")) / 864e5));
+  $("kSince").textContent = `Managing since ${dateFmt(first)} · ${days} days`;
+
+  // Holdings table
+  $("holdTag").textContent = `${rows.length} coins + cash`;
+  $("holdBody").innerHTML = rows.map(r => `
+    <tr>
+      <td><div class="coin">${r.m.image ? `<img src="${esc(r.m.image)}" alt="" loading="lazy">` : `<span class="ph">${esc(r.sym.slice(0, 3))}</span>`}<div><b>${esc(r.sym)}</b><small>${esc(r.meta.name)}</small></div></div></td>
+      <td class="num">${qtyFmt(r.qty)}</td>
+      <td class="num muted">${price(r.avg)}</td>
+      <td class="num">${price(r.px)}</td>
+      <td>${r.ch24 != null ? `<span class="chg ${cls(r.ch24)}">${pct(r.ch24)}</span>` : "—"}</td>
+      <td>${sparkSvg(r.m.sparkline_in_7d && r.m.sparkline_in_7d.price, r.meta.color)}</td>
+      <td class="num muted">${usd(r.cost)}</td>
+      <td class="num">${isNaN(r.value) ? "—" : usd(r.value)}</td>
+      <td class="num ${cls(r.pnl)}">${isNaN(r.pnl) ? "—" : sgnUsd(r.pnl)}</td>
+      <td class="num ${cls(r.pnl)}">${isNaN(r.pnlPct) ? "—" : pct(r.pnlPct)}</td>
+    </tr>`).join("") + `
+    <tr>
+      <td><div class="coin"><span class="ph" style="background:var(--goldbg);color:var(--gold2)">$</span><div><b>CASH</b><small>USDT · undeployed</small></div></div></td>
+      <td class="num">${qtyFmt(book.cash)}</td><td class="num muted">$1.00</td><td class="num">$1.00</td><td class="muted">—</td><td class="muted">—</td>
+      <td class="num muted">${usd(book.cash)}</td><td class="num">${usd(book.cash)}</td><td class="num muted">$0.00</td><td class="num muted">0.00%</td>
+    </tr>`;
+  $("holdFoot").innerHTML = `
+    <tr><td>Total</td><td></td><td></td><td></td><td></td><td></td>
+      <td class="num">${usd(cost + book.cash)}</td><td class="num">${usd(total)}</td>
+      <td class="num ${cls(totalPnl)}">${sgnUsd(totalPnl)}</td><td class="num ${cls(totalPnl)}">${pct(totalPct)}</td></tr>`;
+
+  // Donut
+  const slices = rows.map(r => ({ label: r.sym, v: r.value || 0, color: r.meta.color }))
+    .concat(book.cash > 0 ? [{ label: "Cash (USDT)", v: book.cash, color: CASH_COLOR }] : []);
+  const sum = slices.reduce((s, x) => s + x.v, 0) || 1;
+  const C = 2 * Math.PI * 15.915;
+  let off = 0;
+  $("donut").innerHTML = `<circle cx="21" cy="21" r="15.915" fill="none" stroke="#13203d" stroke-width="5.5"/>` +
+    slices.map(s => {
+      const len = s.v / sum * C;
+      const seg = `<circle cx="21" cy="21" r="15.915" fill="none" stroke="${s.color}" stroke-width="5.5" stroke-dasharray="${Math.max(0, len - 0.35)} ${C}" stroke-dashoffset="${-off}"/>`;
+      off += len; return seg;
+    }).join("");
+  $("donutTotal").textContent = usd(total, 0);
+  $("legend").innerHTML = slices.map(s => `
+    <div class="lg"><i style="background:${s.color}"></i><span class="n">${esc(s.label)}</span><span class="num muted" style="font-size:12px">${usd(s.v)}</span><span class="p">${(s.v / sum * 100).toFixed(1)}%</span></div>`).join("");
+
+  // Bars
+  const maxAbs = Math.max(10, ...rows.map(r => Math.abs(r.pnlPct || 0)));
+  $("bars").innerHTML = rows.map(r => {
+    const w = Math.abs(r.pnlPct || 0) / maxAbs * 50;
+    const pos = r.pnlPct >= 0;
+    return `<div class="bar"><span class="t">${esc(r.sym)}</span>
+      <div class="track"><div class="mid"></div><div class="fill" style="${pos ? `left:50%` : `right:50%`};width:${w}%;background:${pos ? "var(--up)" : "var(--down)"};opacity:.85"></div></div>
+      <span class="val ${cls(r.pnlPct)}">${isNaN(r.pnlPct) ? "—" : pct(r.pnlPct, 1)}</span></div>`;
+  }).join("") + `<p class="note" style="margin-top:4px">Bars are scaled to ±${maxAbs.toFixed(0)}%. Centre line = break-even.</p>`;
+
+  // Transactions ledger (chronological with running cash)
+  const events = [
+    ...DEPOSITS.map(d => ({ ...d, kind: "DEP" })),
+    ...TRADES.map(t => ({ ...t, kind: t.type })),
+  ].sort((a, b) => a.date.localeCompare(b.date) || (a.kind === "DEP" ? -1 : 1));
+  let bal = 0;
+  const txRows = events.map(e => {
+    if (e.kind === "DEP") {
+      bal += e.usd;
+      return `<tr><td>${dateFmt(e.date)}</td><td><span class="type dep">Deposit</span></td><td class="muted">Cash from ${esc(INVESTOR)}</td>
+        <td class="muted">—</td><td class="muted">—</td><td class="num gold">+${usd(e.usd)}</td><td class="num">${e.inr ? inr(e.inr) : "—"}</td><td class="num">${usd(bal)}</td><td class="muted">—</td></tr>`;
+    }
+    const meta = COINS[e.coin] || { id: e.coin.toLowerCase() };
+    const px = (market[meta.id] || {}).current_price;
+    const now = px != null ? e.qty * px : NaN;
+    const buy = e.kind === "BUY";
+    bal += buy ? -e.usd : e.usd;
+    const chg = buy && !isNaN(now) ? (now - e.usd) / e.usd * 100 : null;
+    return `<tr><td>${dateFmt(e.date)}</td><td><span class="type ${buy ? "buy" : "sell"}">${buy ? "Buy" : "Sell"}</span></td><td><b>${esc(e.coin)}</b></td>
+      <td class="num">${qtyFmt(e.qty)}</td><td class="num">${price(e.usd / e.qty)}</td>
+      <td class="num">${buy ? "−" : "+"}${usd(e.usd)}</td><td class="muted">—</td><td class="num">${usd(bal)}</td>
+      <td class="num">${isNaN(now) ? "—" : usd(now)}${chg != null ? ` <span class="${cls(chg)}" style="font-size:11.5px">(${pct(chg, 1)})</span>` : ""}</td></tr>`;
+  });
+  $("txBody").innerHTML = txRows.reverse().join("");
+  $("txTag").textContent = `${DEPOSITS.length} deposits · ${TRADES.length} trades · newest first`;
+
+  document.title = `${usd(total)} (${pct(totalPct)}) · ${INVESTOR} Portfolio · CoinSats`;
+}
+
+$("refreshBtn").addEventListener("click", fetchPrices);
+// Draw immediately from cached (or snapshot) prices, then go live
+try { const c = JSON.parse(localStorage.getItem("alkesh_market") || "null"); if (c && c.market) market = c.market; } catch (e) {}
+if (!Object.keys(market).length) market = FALLBACK;
+render();
+fetchPrices();        // then pull live prices
+setInterval(fetchPrices, REFRESH_MS);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchPrices(); });
+</script>
+</body>
+</html>
